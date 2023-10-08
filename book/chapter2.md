@@ -52,3 +52,17 @@ wegwegw
 
 #### Codi HTML
 weigwoeg
+
+{% tabs %}
+    {% tab title="Codi TS" %}
+        ```typescript
+            "Hello world"
+        ```
+    {% endtab %}
+
+    {% tab title="Codi HTML" %}
+        ```html
+            <div></div>
+        ```
+    {% endtab %}
+{% endtabs %}
