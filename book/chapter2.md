@@ -1,23 +1,54 @@
-# Components Angular
-La creació de nou contingut en Angular (pàgines, una llista, una capçalera, etc.) es basa en els *components*. Així doncs, un component pot ser tota una nova pàgina
-![La pàgina està formada per un únic component: AppComponent](img/wireframe_component1_1.png)
-o podem crear una pàgina utilitzant múltiples components que podran ser reutilitzables
-![L'AppComponent estructura tota la pàgina i, en el seu interior, conté el HeaderComponent i el CarouselComponent](img/wireframe_component1_2.png)
+# Capítol 2. Format `JSON` i LocalStorage
+Angular utilitza el format `JSON` i el LocalStorage per crear objectes complexos, sense fer ús d'una classe, i tenir capacitat de persistència de dades.
 
-## Creació d'un Component Angular
-Per crear un component d'Angular cal fer-ho utilitzant la comanda següent dins de la carpeta del projecte angular que, en aquest cas, suposarem que s'anomena `AngularProject`
-```console
-macervero@debian:~AngularProject$ ng generate component [ruta/nom_component]
+## Format `JSON`
+El format `JSON` és un format molt simple que permet definir objectes mitjançant un conjunt de tuples `clau-valor`. Actualment, a més a més, ha desplaçat el llenguatge de marques `XML` en l'àmbit de la transmissió de dades per internet (serveis web), ja que el `JSON` és molt més lleuger que l'`XML`.
+
+La seva sintaxi està formada, bàsicament pels següents símbols:`{`, `}`, `[`, `]`, `:`, `"`, `'` i `,`, de tal manera que, per exemple, per descriure les dades d'un alumne podem crear el següent objecte:
+
+```json
+{
+    "first_name": "Ignasi",
+    "last_name": "Vila Guerrero",
+    "dni": "123456789A",
+    "high_school": "Institut Caparrella",
+    "studies": "DAW",
+    "course": 2,
+    "subjects": [
+        {
+            "code": "MP06",
+            "name": "Desenvolupament en entorn client"
+        }, 
+        {
+            "code": "MP07",
+            "name": "Desenvolupament en entorn servidor"
+        },
+        {
+            "code": "MP08",
+            "name": "Desplegament d'aplicacions web"
+        },
+        {
+            "code": "MP09",
+            "name": "Disseny d'interfícies web"
+        },
+        {
+            "code": "MP12",
+            "name": "Projecte"
+        },
+        {
+            "code": "MP13",
+            "name": "FCT"
+        },
+    ]
+}
 ```
 
-Així doncs, si executem
-```console
-macervero@debian:~AngularProject$ ng generate component pages/home
-```
-es crearà el component `HomeComponent` dins de la ruta `src/app/pages` del nostre projecte.
+Les dades en format `JSON` es poden emmagatzemar en un fitxer amb extensió `.json` o es poden utilitzar per crear objectes dins del codi Angular.
 
-Aquesta comanda crea els quatre fitxers que estan associats a un component:
-- home.component.html: 
-- home.component.ts
-- home.component.css
-- home.component.ts.spec
+## Exemple {.tabset .tabset-fade}
+
+### tab Codi TS
+wegwegw
+
+### tab Codi HTML
+weigwoeg
