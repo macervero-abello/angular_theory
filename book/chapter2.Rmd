@@ -45,10 +45,10 @@ La seva sintaxi està formada, bàsicament pels següents símbols:`{`, `}`, `[`
 
 Les dades en format `JSON` es poden emmagatzemar en un fitxer amb extensió `.json` o es poden utilitzar per crear objectes dins del codi Angular.
 
-## Exemple {.tabset .tabset-fade}
+### Exemple {.tabset .tabset-fade}
 
-### tab Codi TS
+#### Codi TS
 wegwegw
 
-### tab Codi HTML
+#### Codi HTML
 weigwoeg
