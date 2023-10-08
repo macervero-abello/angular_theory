@@ -43,26 +43,95 @@ La seva sintaxi està formada, bàsicament pels següents símbols:`{`, `}`, `[`
 }
 ```
 
-Les dades en format `JSON` es poden emmagatzemar en un fitxer amb extensió `.json` o es poden utilitzar per crear objectes dins del codi Angular.
-
-### Exemple {.tabset .tabset-fade}
-
-#### Codi TS
-wegwegw
-
-#### Codi HTML
-weigwoeg
+Les dades en format `JSON` es poden emmagatzemar en un fitxer amb extensió `.json` o es poden utilitzar per crear objectes dins del codi Angular, tal com mostren les pestanyes següents:
 
 {% tabs %}
-    {% tab title="Codi TS" %}
-        ```typescript
-            "Hello world"
-        ```
-    {% endtab %}
+{% tab title="Codi TS: app.component.ts" %}
+```typescript
+import { Component } from '@angular/core';
 
-    {% tab title="Codi HTML" %}
-        ```html
-            <div></div>
-        ```
-    {% endtab %}
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+  public personal_data: any = {
+    "firstname": "Maria dels Àngels",
+    "surname": "Cerveró Abelló"
+  }
+
+  //...
+}
+```
+{% endtab %}
+
+{% tab title="Codi HTML: app.component.html" %}
+```html
+<!-- Accés a una de les propietats de l'objecte personal_data -->
+<div>{{ personal_data.firstname }}</div>
+```
+{% endtab %}
+
+{% tab title="Visualització al navegador" %}
+![Visualització del resultat al navegador](img/json_result.png)
+{% endtab %}
+{% endtabs %}
+
+## LocalStorage
+Tots els navegadors tenen una petita capacitat d'emmagatzematge per permetre la persistència de certes dades necessàries per al funcionament d'una aplicació web. S'anomena *LocalStorage* i permet emmagatzemar 5MB d'informació per cada aplicació que s'executi al navegador.
+
+El LocalStorage guarda les dades mitjançant l'ús de tuples `clau-valor` (com si fos un diccionari o un `map`), de tal manera que té mètodes per emmagatzemar-les, esborrar-les i recuperar-les.
+
+{% tabs %}
+{% tab title="Codi TS: app.component.ts" %}
+```typescript
+//...
+
+export class AppComponent {
+  public personal_data: any = {
+    "firstname": "Maria dels Àngels",
+    "surname": "Cerveró Abelló"
+  }
+  public hours_per_day = 6;
+
+  saveData(): void {
+    localStorage.setItem("PERSONAL_DATA", JSON.stringify(this.personal_data));
+    localStorage.setItem("HOURS_PER_DAY", JSON.stringify(this.hours_per_day));
+  }
+
+  restoreData(): boolean {
+    let pdtmp = localStorage.getItem("PERSONAL_DATA");
+    let hpdtmp = localStorage.getItem("HOURS_PER_DAY");
+
+    if(pdtmp != null && hpdtmp != null) {
+      this.personal_data = JSON.parse(pdtmp);
+      this.hours_per_day = JSON.parse(hpdtmp);
+      return true;
+    }
+
+    return false;
+  }
+
+  deleteData(): void {
+    localStorage.removeItem("PERSONAL_DATA");
+    localStorage.removeItem("HOURS_PER_DAY");
+  }
+}
+```
+{% endtab %}
+
+{% tab title="Codi HTML: app.component.html" %}
+```html
+<button (click)="saveData()">Guardar</button>
+<br/>
+<button (click)="restoreData()">Carregar</button>
+<br/>
+<button (click)="deleteData()">Esborrar</button>
+```
+{% endtab %}
+
+{% tab title="Visualització del LocalStorage" %}
+![Visualització del LocalStorage](img/localstorage.png)
+{% endtab %}
 {% endtabs %}

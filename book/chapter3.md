@@ -1,7 +1,10 @@
 # Capítol 3. Components Angular
 La creació de nou contingut en Angular (pàgines, una llista, una capçalera, etc.) es basa en els *components*. Així doncs, un component pot ser tota una nova pàgina
+
 ![La pàgina està formada per un únic component: AppComponent](img/wireframe_component1_1.png)
+
 o podem crear una pàgina utilitzant múltiples components que podran ser reutilitzables
+
 ![L'AppComponent estructura tota la pàgina i, en el seu interior, conté el HeaderComponent i el CarouselComponent](img/wireframe_component1_2.png)
 
 ## Creació d'un Component Angular
