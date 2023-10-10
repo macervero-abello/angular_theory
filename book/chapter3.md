@@ -291,3 +291,5 @@ export class AppComponent {
 ![Visualització del resultat al navegador](img/random_nested_list.png)
 {% endtab %}
 {% endtabs %}
+
+*Vídeo 069 capítol "05 Components & Databinding Deep Dive" del curs d'Udemy*
