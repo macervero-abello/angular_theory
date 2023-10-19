@@ -1,5 +1,6 @@
 # Table of contents
 
-* [Guia Angular per al curs 2023/2024](book/chapter1.md)
-* [Captíol 2. Format JSON i LocalStorage](book/chapter2.md)
-* [Captíol 3. Components Angular](book/chapter3.md)
+* [Guia Angular per al curs 2023/2024](book/intro.md)
+* [Capítol 1. Format JSON i LocalStorage](book/chapter2.md)
+* [Capítol 2. Components Angular](book/chapter3.md)
+* [Capítol 3. Estils externs](book/chapter1.md)
