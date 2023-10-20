@@ -56,3 +56,36 @@ Per fer-ho, s'utilitza la comanda CSS `@import url`
 ```
 
 #### Modificació del fitxer `angular.json`
+Aquesta metodologia és la més genuïna i autènticament Angular. Consisteix en modificar el fitxer de configuració `angular.json` per afegir la ruta al fitxer `w3.css` fins de l'apartat `architect` $\rightarrow$ `build` $\rightarrow$ `options` $\rightarrow$ `styles`
+
+```json
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "FirstAngularProject": {
+      //...
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            //...
+            "styles": [
+              "src/styles.css",
+              "src/assets/css/w3.css"
+            ],
+            "scripts": []
+          },
+          //...
+        },
+        //...
+      }
+    }
+  }
+}
+```
+
+{% hint style="warning" %}
+**Atenció:** en cas que el servidor Angular `ng serve` estigués actiu, caldrà aturar-lo i tornar-lo a iniciar cada cop que es modifiqui el fitxer `angular.json`
+{% endhint %}
