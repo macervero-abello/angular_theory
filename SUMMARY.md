@@ -4,3 +4,4 @@
 * [Capítol 1. Format JSON i LocalStorage](book/chapter1.md)
 * [Capítol 2. Components Angular](book/chapter2.md)
 * [Capítol 3. Estils externs](book/chapter3.md)
+* [Capítol 4. *Routing*](book/chapter4.md)
