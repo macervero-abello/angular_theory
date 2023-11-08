@@ -25,37 +25,47 @@ Per configurar el *routing* clàssic cal seguir els passos següents:
 #### Contextualització d'un exemple
 Per fer l'explicació, suposarem que tenim una aplicació amb dues pàgines: la pàgina `home`, definida al `HomeComponent`, i la pàgina `about`, definida a l'`AboutComponent`.
 
-#### Configuració dels fragments de les rutes
-La configuració de les rutes, en el cas del *routing* clàssic, es realitza al fitxer de configuració i dependències `app.module.ts`.
+#### Configuració dels fragments de les rutes i activació del servei de *routing*
+La configuració de les rutes i l'activació del servei de *routing* es realitza al fitxer de configuració de dependències `app.module.ts`.
 
-Es crea un array de rutes, on cada ruta és un objecte `JSON` que, com a mínim, té l'atribut `path` per definir el fragment que es desitja i l'atribut `component` per establir el component que s'ha de carregar.
+Primer de tot cal crear un array de rutes (`Routes`), on cada ruta és un objecte `JSON` que, com a mínim, té l'atribut `path` per definir el fragment que es desitja i l'atribut `component` per establir el component que s'ha de carregar.
+
+L'ordre en què es defineixen les rutes dins d'aquest array és important, ja que l'enrutador d'Angular utilitza la política *first-mach wins*, és a dir, utilitza la primera ruta que coincideix amb el fragment de la `URL`. Per tant, les rutes s'han d'ordenar de més específiques a menys.
+
+Un cop definides les rutes cal importar el mòdul `RouterModule` i configurar-lo amb l'array creat.
 
 {% tabs %}
 {% tab title="Codi app.module.ts" %}
-```typescript
+```typescript:hightlight{2, 4}
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { Routes } from '@angular/router';
-
 import { AppComponent } from './app.component';
+import { HomeComponent } from './pages/home/home.component';
+import { AboutComponent } from './pages/about/about.component';
+import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
-    { path: 'home', component: 'HomeComponent' },
-    { path: 'about', component: 'AboutComponent' }
-];
+  { path: 'home', component: HomeComponent },
+  { path: 'about', component: AboutComponent },
+]
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HomeComponent,
+    AboutComponent,
+    ListComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    RouterModule.forRoot(routes)
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
 
 ```
 {% endtab %}
