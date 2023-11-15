@@ -16,7 +16,7 @@ Això significa que l'arrencada inicial de l'aplicació és més lenta i, en cas
 
 Aquest tipus de *routing* és addient en els casos d'aplicacions amb poques rutes configurades, ja que el temps de càrrega inicial es pot considerar inapreciable.
 
-### Configuració
+### Configuració bàsica
 Per configurar el *routing* clàssic cal seguir els passos següents:
 1. Configurar els fragments de les rutes i enllaçar-los als components corresponents
 2. Activar el servei de *routing*
@@ -121,14 +121,70 @@ Com que tota aplicació Angular és una SPA (*Single Page Application*), es nece
 
 Fet això, només cal afegir enllaços i botons per saltar entre components, tenint en compte que l'ús de l'atribut `href` dels enllaços queda totalment prohibit perquè provoca una recàrrega de la pàgina i, per tant, trenca el principi bàsic de l'SPA (reinicia tota l'aplicació perquè la torna a descarregar del servidor). Aquest atribut queda substituït per l'atribut `routerLink` que ofereix Angular i que es pot aplicar a qualsevol etiqueta.
 
-```typescript
+```html
 <a [routerLink]="['/home']">Home</a>
 ```
 
-L'atribut `routerLink` espera rebre un array amb les múltiples fragments de la nova `URL`. Per exemple, l'enllaç `<a [routerLink]="['/home']">Home</a>` crearà la ruta `localhost:4200/home`. En canvi, l'enllaç `<a [routerLink]="['/home', gallery]">Home</a>` crearà la ruta `localhost:4200/home/gallery`.
+L'atribut `routerLink` espera rebre un array amb els múltiples fragments de la nova `URL`, els quals poden ser absoluts o relatius. Per exemple:
+* Si estem a la pàgina `home` (`HomeComponent`), l'enllaç
+```html
+<a [routerLink]="['/about']">Home</a>
+```
+defineix una ruta absoluta i generarà la `URL` `localhost:4200/about`. 
+* Si estem a la pàgina `home` (`HomeComponent`), l'enllaç
+```html
+<a [routerLink]="['about']">Home</a>
+```
+defineix una ruta relativa i generarà la `URL` `localhost:4200/home/about`.
+* L'enllaç 
+```html
+<a [routerLink]="['/home', gallery]">Home</a>
+```
+defineix múltiples fragments i crearà la ruta `localhost:4200/home/gallery`.
 
-Pel que fa als botons, la navegació s'haurà de definir a través del seu event `click` i l'ús del *service* `Router` que ofereix Angular.
+Pel que fa als botons, la navegació s'haurà de definir a través del seu event `click` i l'ús del *service* `Router` que ofereix Angular; per exemple, el component `AboutComponent` pot definir el botó següent:
+```html
+<button (click)="navigateToHome()">Home</button>
+```
+A partir d'aquí, per la navegació per botó haurà d'injectar el *service* `Router` dins del seu constructor, tal com mostra el codi següent:
+```typescript
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
+@Component({
+  selector: 'app-about',
+  templateUrl: './about.component.html',
+  styleUrls: ['./about.component.css']
+})
+export class AboutComponent {
+
+  constructor(private _router: Router) {}
+}
+```
+Com es veurà en els capítols següents, tots els *services*, tant els que ofereix Angular com els que crearem nosaltres segons les necessitats de la nostra aplicació, aconstumen a seguir el patró d'instanciació `Singelton` i, per tant, només exiteix una única instància de cada *service* per a tota l'aplicació. Per poder-ne sol·licitar l'ús, els components o les classes ho han de fer a través del procés d'injecció, el qual defineix un atribut de classe dins de la zona de paràmetres del constructor.
+
+El *service* `Router` té, entre altres, el mètode `navigate`, el qual espera rebre un array de fragments de ruta (exactament com l'atribut `routerLink`). Així doncs, per acabar de configurar la navegació a través del botó de l'exemple, només cal definir la funció `navigateToHome()`, la qual haurà de fer ús del `Router`:
+
+```typescript
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+
+@Component({
+  selector: 'app-about',
+  templateUrl: './about.component.html',
+  styleUrls: ['./about.component.css']
+})
+export class AboutComponent {
+
+  constructor(private _router: Router) {}
+
+  navigateToAbout(): void {
+    this._router.navigate(['/home']);
+  }
+}
+```
+
+Exemple complet:
 {% tabs %}
 {% tab title="Codi app.module.ts" %}
 ```typescript
@@ -170,13 +226,13 @@ export class AppModule { }
 {% endtab %}
 
 {% tab title="Codi home.component.html" %}
-```typescript
+```html
 <a [routerLink]="['/about']">About</a>
 ```
 {% endtab %}
 
 {% tab title="Codi about.component.html" %}
-```typescript
+```html
 <button (click)="navigateToHome()">Home</button>
 ```
 {% endtab %}
@@ -203,6 +259,8 @@ export class AboutComponent {
 {% endtab %}
 {% endtabs %}
 
+### Configuració de subrutes
+De subrutes n'hi ha de dos tipus, les estàtiques i les parametritzades i, tot i que la teoria bàsica és la mateixa, les subrutes es tracten a part pel petit increment de complexitat del tractament de les rutes parametritzades.
 
 ## *Lazy routing*
 El *lazy routing* es caracteritza pel fet que les rutes i, per tant, els components associats, no es carreguen fins que l'usuari hi entra per primer cop (no hi ha cap precàrrega)
