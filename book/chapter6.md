@@ -128,8 +128,8 @@ Així doncs, el tractament de la crida `http` té aquesta estructura bàsica
 ```typescript
 this._http.get("path_to_file or url").subscribe({
     next: (param) => {code},
-    complete: () => (code),
-    error: (param) => (code)
+    complete: () => {code},
+    error: (param) => {code}
 });
 ```
 
