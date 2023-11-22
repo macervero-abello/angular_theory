@@ -5,3 +5,5 @@
 * [Capítol 2. Components Angular](book/chapter2.md)
 * [Capítol 3. Estils externs](book/chapter3.md)
 * [Capítol 4. *Routing*](book/chapter4.md)
+* [Capítol 5. Patró *MVC*](book/chapter5.md)
+* [Capítol 6. Lectura d'un fitxer JSON](book/chapter6.md)
