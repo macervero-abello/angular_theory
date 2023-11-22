@@ -89,3 +89,16 @@ Aquesta metodologia és la més genuïna i autènticament Angular. Consisteix en
 {% hint style="warning" %}
 **Atenció:** en cas que el servidor Angular `ng serve` estigués actiu, caldrà aturar-lo i tornar-lo a iniciar cada cop que es modifiqui el fitxer `angular.json`
 {% endhint %}
+
+## Llibreria FontAwesome (icones)
+La llibreria [FontAwesome](https://fontawesome.com/) conté un conjunt d'icones, algunes de pagament però moltes de lliures.
+
+Per poder-la utilitzar en qualsevol projecte Angular només fa falta instal·lar la llibreria corresponent seguint les comandes següents:
+
+```
+npm install @fortawesome/fontawesome-svg-core
+npm install @fortawesome/free-solid-svg-icons
+npm install @fortawesome/angular-fontawesome@0.14
+```
+
+Vegeu la compatibilitat de les versions Angular i FontAwesome en aquesta [pàgina](https://www.npmjs.com/package/@fortawesome/angular-fontawesome)
