@@ -199,6 +199,8 @@ import { RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'about', component: AboutComponent },
+  { path: '', redirectTo: 'home', pathMatch: 'full'},
+  { path: '**', component: PageNotFoundComponent },
 ];
 
 @NgModule({
@@ -261,6 +263,238 @@ export class AboutComponent {
 
 ### Configuració de subrutes
 De subrutes n'hi ha de dos tipus, les estàtiques i les parametritzades i, tot i que la teoria bàsica és la mateixa, les subrutes es tracten a part pel petit increment de complexitat del tractament de les rutes parametritzades.
+
+A part d'això, la càrrega d'una subruta es pot tractar com una pàgina addicional o com un element nou dins de la pàgina que ja s'estava visitant.
+
+#### Subrutes estàtiques
+Són aquelles rutes que tenen una `URL` constant (els segments estan predefinits) i, per tant, sempre carreguen el mateix contingut.
+
+Per exemplificar-ho, suposem que a la pàgina d'inici hi posem un nou enllaç que, en preme'l, mostri un formulari de contacte. La `URL` inicial serà `localhost:4200/home` i la que mostrarà el formulari serà `localhost:4200/home/contact.` Aquest nou formulari es pot mostrar com un nou element dins de la pàgina inicial o com una pàgina individual.
+
+##### Subrutes estàtiques que formen part d'una altra pàgina
+Seguint l'exemple anterior, la configuració de les rutes al fitxer `app.module.ts` seria el següent:
+
+```typescript
+...
+const routes: Routes = [
+  { path: 'home', component: HomeComponent, children: [
+      {path: 'contact', component: ContactComponent}
+    ]
+  },
+  { path: 'about', component: AboutComponent },
+  ...
+];
+
+@NgModule({
+  ...
+  imports: [
+    BrowserModule,
+    RouterModule.forRoot(routes)
+  ],
+  ...
+})
+export class AppModule { }
+```
+
+Aquest codi mostra una ruta principal definida pel `path: 'home'` que té una subruta especificada amb la propietat `children`. Quan l'usuari entri a l'`URL` `localhost:4200/home` es carregarà el component `HomeComponent` i, en canvi, quan entri a l'`URL` `localhost:4200/home/contact` es carregaran els components `HomeComponent` i, també, `ContactComponent`.
+
+Per tal d'assolir aquest objectiu, el codi `HTML` del component `HomeComponent` ha de ser el següent (navegant amb enllaços, és clar):
+
+```html
+<div class="home_content">
+  <a [routerLink]="['/about']">About</a><br/>
+  <a [routerLink]="['contact']">Contact</a>
+
+  <router-outlet></router-outlet>
+</div>
+```
+
+Quan l'usuari premi l'enllaç *Contact*, la subruta `/home/contact` es carregarà en el contenidor de routes (etiqueta *router-outlet*) del `HomeComponent`. D'aquesta manera aconseguim visualitzar, a la vegada, el `HomeComponent` (carregat a través del *router-outlet* de l'`AppComponent`) i el `ContactComponent` (carregat a través del *router-outlet* del `HomeComponent`).
+
+Si el contingut del component `ContentComponent` és el que es mostra a continuació:
+
+```html
+<div class="contact_content">
+  <label>eMail</label>
+  <input type="email" placeholder="User's email"/> <br/>
+  
+  <label>Message</label>
+  <textarea placeholder="User's message"></textarea>
+</div>
+```
+
+El resultat final en pantalla mostra el següent:
+
+![Visualització del resultat al navegador](img/subrouting_1.png)
+
+##### Subrutes estàtiques que són pàgines diferents
+Seguint amb el mateix exemple, la configuració de les rutes al fitxer `app.module.ts` és lleugerament diferent a l'anterior versió:
+
+```typescript
+...
+const routes: Routes = [
+  { path: 'home', children: [
+      {path: '', component: HomeComponent},
+      {path: 'contact', component: ContactComponent}
+    ]
+  },
+  { path: 'about', component: AboutComponent },
+  ...
+];
+
+@NgModule({
+  ...
+  imports: [
+    BrowserModule,
+    RouterModule.forRoot(routes)
+  ],
+  ...
+})
+export class AppModule { }
+```
+
+En aquest cas, la ruta `home` té dues subrutes:
+ - una ruta per defecte que és l'encarregada de carregar el `HomeComponent` i
+ - una ruta amb el nou segment `contact` que s'encarrega de carregar el `ContactComponent`.
+
+A més a més, per assolir l'objectiu, el document `HTML` de `HomeComponent` ja no ha de tenir l'etiqueta *router-outlet*
+
+```html
+<div class="home_content">
+  <a [routerLink]="['/about']">About</a><br/>
+  <a [routerLink]="['contact']">Contact</a>
+</div>
+```
+
+Fent aquests petits canvis, totes les pàgines es carreguen al contenidor *router-outlet* que conté `AppComponent` i, per tant, el resultat en pantalla és el següent:
+
+![Visualització del resultat al navegador](img/subrouting_2.png)
+
+#### Subrutes parametritzades
+Són aquelles rutes que tenen una `URL` variable, és a dir, els segments estan parametritzats i, per tant, són capaces de canviar el contingut mostrat depenent d'aquests paràmetres.
+
+Per exemplificar-ho, suposem que afegim una pàgina que mostra un llistat d'elements. Cada cop que l'usuari premi un d'aquests elements es mostrarà una nova ruta amb totes les seves dades detallades.La `URL` de la llista serà `localhost:4200/list` i la que mostrarà els detalls de cadascun dels elements `localhost:4200/home/0.`, on `0` és el paràmetre i serà un identificador o un valor que estigui enllaçat a l'element que volem visualitzar.
+
+Addicionalment, i tal com passa amb les subrutes estàtiques, la pàgina amb la informació detallada dels elements es pot mostrar dins del llistat o com una pàgina individual.
+
+##### Subrutes parametritzades que formen part d'una altra pàgina
+Seguint l'exemple anterior, la configuració de les rutes al fitxer `app.module.ts` seria el següent:
+
+```typescript
+...
+const routes: Routes = [
+  { path: 'home', component: HomeComponent, children: [
+      {path: 'contact', component: ContactComponent}
+    ]
+  },
+  { path: 'about', component: AboutComponent },
+  { path: 'list', component: ListComponent, children: [
+      {path: ':id', component: DetailsComponent}
+    ]
+  }
+  ...
+];
+
+@NgModule({
+  ...
+  imports: [
+    BrowserModule,
+    RouterModule.forRoot(routes)
+  ],
+  ...
+})
+export class AppModule { }
+```
+
+Aquest codi mostra una ruta principal definida pel `path: 'list'` que té una subruta parametritzada especificada amb la propietat `children`. Quan un `path` de ruta començar pel símbol `:` significa que el valor és un paràmetre que rep el nom especificat a continuació. En el cas de l'exemple, el paràmetre rep el nom d'`id`.
+
+Quan l'usuari entri a l'`URL` `localhost:4200/list` es carregarà el component `ListComponent` i, en canvi, quan entri a l'`URL` `localhost:4200/list/3` es carregaran els components `ListComponent` i, també, `DetailsComponent`.
+
+Per tal d'assolir aquest objectiu, el codi `HTML` del component `ListComponent` ha de ser el següent (navegant amb enllaços):
+
+{% tabs %}
+{% tab title="Codi list.component.html" %}
+```html
+<div class="list_content">
+  <ul>
+    <li *ngFor="let elem of elems; let idx=index" [routerLink]="[idx]">
+      {{ elem }}
+    </li>
+  </ul>
+
+  <router-outlet></router-outlet>
+</div>
+```
+{% endtab %}
+
+{% tab title="Codi list.component.ts" %}
+```typescript
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-list',
+  templateUrl: './list.component.html',
+  styleUrls: ['./list.component.css']
+})
+export class ListComponent {
+
+  public elems: string[] = ['Element 1', 'Element 2', 'Element 3'];
+
+}
+```
+{% endtab %}
+{% endtabs %}
+
+Quan l'usuari premi l'enllaç associat a qualsevol dels elements, la subruta `/list/:id` es carregarà en el contenidor de routes (etiqueta *router-outlet*) del `ListComponent`. D'aquesta manera aconseguim visualitzar, a la vegada, el `ListComponent` (carregat a través del *router-outlet* de l'`AppComponent`) i el `DetailsComponent` (carregat a través del *router-outlet* del `ListComponent`).
+
+Ara cal veure com tracta el paràmetre el component `DetailsComponent` sabent que, el seu contingut `HTML` és el següent:
+
+```html
+<div class="details_content">
+  Element {{ idx }}
+</div>
+```
+
+Per tal d'obtenir l'identificador correcte, el codi *typescript* del component `DetailsComponent` ha de fer ús d'un nou *service* que ofereix Angular, l'`ActivatedRoute`, que s'encarrega de tractar totes i cadascuna de les rutes en el moment en què s'activen (l'usuari les escriu al navegador).
+
+```typescript
+import { Component } from '@angular/core';
+import { ActivatedRoute, Params } from '@angular/router';
+
+@Component({
+  selector: 'app-details',
+  templateUrl: './details.component.html',
+  styleUrls: ['./details.component.css']
+})
+export class DetailsComponent {
+
+  public idx: number = 0;
+
+  constructor(private _activatedRoute: ActivatedRoute) {
+    this._activatedRoute.params.subscribe({
+      next: (params: Params) => {
+        this.idx = params['id'] as number;
+        this.idx++;
+      },
+      complete: () => {
+        console.log("Parameterized route processed");
+      },
+      error: (msg: string) => {
+        console.log("Error: " + msg);
+      }
+    });
+  }
+}
+```
+
+Aquest codi segueix els passos següents:
+ 1. Injecta el servei `Activated route` dins del constructor
+ 2. Un dels atributs que té aquest servei és el `params`, que és un *map* (un *diccionari* o un *array associatiu*) que compleix el patró `Observer`, és a dir, que es manté *observant* la ruta i, cada cop que els paràmetres canvien, es modifiquen el valors d'aquest atribut.
+ 3. Com que estem treballant amb el patró `Observer`, caldrà *subscriure'ns* (subscribe) a l'atribut `params` per tal que poder-nos assabentar de tots els seus canvis.
+
+El resultat final en pantalla mostra el següent:
+
+![Visualització del resultat al navegador](img/subrouting_3.png)
 
 ## *Lazy routing*
 El *lazy routing* es caracteritza pel fet que les rutes i, per tant, els components associats, no es carreguen fins que l'usuari hi entra per primer cop (no hi ha cap precàrrega)
