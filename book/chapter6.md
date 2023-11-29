@@ -118,12 +118,14 @@ export class CarService {
 ## Lectura del document JSON amb el mètode `get`
 Tal com hem explicat al principi del capítol, la lectura del fitxer JSON es tractarà com una crida `http`, per tant, utilitzarem el mètode `get` del *service* `HttpClient`.
 
-Qualsevol mètode del *service* `HttpClient` s'executa en segon pla i, d'aquesta manera, s'evita bloquejar l'aplicació durant l'estona que triga en arribar la resposta (cal pensar que les crides `http` acostumen a ser crides a servidors externs). Així doncs, aquests *service* i els seus mètodes implementen al patró `Observer`, de tal manera que, quan obtenen el resultat de la crida llencen un avís a tots els objectes que n'estaven pendents (l'estaven observant). Per poder gestionar aquesta arribada de la informació i, per tant, el seu tractament, cal aplicar el mètode `subscription`, el qual defineix 3 accions:
+Qualsevol mètode del *service* `HttpClient` s'executa en segon pla i, d'aquesta manera, s'evita bloquejar l'aplicació durant l'estona que triga en arribar la resposta (cal pensar que les crides `http` acostumen a ser crides a servidors externs). Així doncs, aquests *service* i els seus mètodes implementen al patró `Observer`, de tal manera que, quan obtenen el resultat de la crida llencen un avís a tots els objectes que n'estaven pendents (l'estaven observant). Per poder gestionar aquesta arribada de la informació i, per tant, el seu tractament, cal aplicar el mètode `subscribe`, el qual defineix 3 accions:
  1. `next`: acció a realitzar si tot ha anat bé i la informació ha arribat correctament
  2. `complete`: acció a realitzar quan s'ha acabat el tractament de la informació
  3. `error`: acció a realitzar si s'ha produït algun error i la informació no ha arribat correctament.
 
-Així doncs, el tractament de la crida `http` té aquesta estructura bàsica
+Aquest mètode, a més a més, retorna l'objecte `Observable` per tal de gestionar el tancament de la subscripció en cas que calgui. 
+
+Resumint, el tractament de la crida `http` té aquesta estructura bàsica
 
 ```typescript
 this._http.get("path_to_file or url").subscribe({
@@ -134,6 +136,22 @@ this._http.get("path_to_file or url").subscribe({
 ```
 
 on `next`, `complete` i `error` es defineixen com a 3 funcions *lambda* (anònimes).
+
+Tenint en compte que s'està utilitzant el *service* `HttpClient` per llegir un document `JSON` i, per tant, un cop llegit, ja no hi haurà cap canvi, es pot realitzar un tancament de la subscripció i, d'aquesta manera, alliberar recursos. En aquest cas, el codi quedaria de la manera següent:
+
+```typescript
+let subscription = this._http.get("path_to_file or url").subscribe({
+    next: (param) => {code},
+    complete: () => {
+      //code
+      subscription.unsubscribe();
+    },
+    error: (param) => {
+      //code
+      subscription.unsubscribe();
+    }
+});
+```
 
 Si es realitza el codi per l'exemple d'aquest capítol, el codi del `CarService` quedaria de la següent manera:
 
@@ -152,15 +170,17 @@ export class CarService {
   constructor(private _http: HttpClient) {}
 
   retrieveData(): void {
-    this._http.get("../assets/data/garage.json").subscribe({
+    let subscription = this._http.get("../assets/data/garage.json").subscribe({
       next: (cars: any) => {
         this._garage = cars;
       },
       complete: () => {
         console.log(this._garage);
+        subscription.unsubscribe();
       },
       error: (msg: string) => {
         console.log("Error: " + msg);
+        subscription.unsubscribe();
       },
     });
   }
