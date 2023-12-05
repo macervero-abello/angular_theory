@@ -370,7 +370,7 @@ Fent aquests petits canvis, totes les pàgines es carreguen al contenidor *route
 
 ![Visualització del resultat al navegador](img/subrouting_2.png)
 
-#### Subrutes parametritzades
+### Subrutes parametritzades
 Són aquelles rutes que tenen una `URL` variable, és a dir, els segments estan parametritzats i, per tant, són capaces de canviar el contingut mostrat depenent d'aquests paràmetres.
 
 Per exemplificar-ho, suposem que afegim una pàgina que mostra un llistat d'elements. Cada cop que l'usuari premi un d'aquests elements es mostrarà una nova ruta amb totes les seves dades detallades.La `URL` de la llista serà `localhost:4200/list` i la que mostrarà els detalls de cadascun dels elements `localhost:4200/home/0.`, on `0` és el paràmetre i serà un identificador o un valor que estigui enllaçat a l'element que volem visualitzar.
@@ -496,9 +496,126 @@ El resultat final en pantalla mostra el següent:
 
 ![Visualització del resultat al navegador](img/subrouting_3.png)
 
+##### Subrutes parametritzades que són pàgines diferents
+Tal com hem vist abans, per fer subrutes parametritzades que siguin pàgines diferents només cal canviar la configuració de l'`app.module.ts` i el fitxer `HTML` del component pare, en aquest cas, el `ListComponent`.
+
+Per tant, el fitxer `app.module.ts` queda de la manera següent:
+
+```typescript
+...
+const routes: Routes = [
+  { path: 'home', component: HomeComponent, children: [
+      {path: 'contact', component: ContactComponent}
+    ]
+  },
+  { path: 'about', component: AboutComponent },
+  { path: 'list', children: [
+      {path: '', component: ListComponent},
+      {path: ':id', component: DetailsComponent}
+    ]
+  }
+  ...
+];
+
+@NgModule({
+  ...
+  imports: [
+    BrowserModule,
+    RouterModule.forRoot(routes)
+  ],
+  ...
+})
+export class AppModule { }
+```
+
+La ruta `list` té dues subrutes:
+ - una ruta per defecte que és l'encarregada de carregar el `ListComponent` i
+ - una ruta amb el nou segment parametritzat `id` que s'encarrega de carregar el `DetailComponent`.
+
+Finalment, el codi del component `ListComponent` ha de ser el següent, tenint en compte que la navegació es fa amb enllaços i que el fitxer `TS` del component no canvia:
+
+{% tabs %}
+{% tab title="Codi list.component.html" %}
+```html
+<div class="list_content">
+  <ul>
+    <li *ngFor="let elem of elems; let idx=index" [routerLink]="[idx]">
+      {{ elem }}
+    </li>
+  </ul>
+</div>
+```
+{% endtab %}
+
+{% tab title="Codi list.component.ts" %}
+```typescript
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-list',
+  templateUrl: './list.component.html',
+  styleUrls: ['./list.component.css']
+})
+export class ListComponent {
+
+  public elems: string[] = ['Element 1', 'Element 2', 'Element 3'];
+
+}
+```
+{% endtab %}
+{% endtabs %}
+
+Amb aquests petits canvis, el resultat final en pantalla mostra el següent:
+
+![Visualització del resultat al navegador](img/subrouting_4.png)
+
 ## *Lazy routing*
 El *lazy routing* es caracteritza pel fet que les rutes i, per tant, els components associats, no es carreguen fins que l'usuari hi entra per primer cop (no hi ha cap precàrrega)
 
 Això significa que cada cop que l'usuari entra per primer cop a una pàgina, hi ha un petit lapsus de temps durant el qual el sistema de *routing* fa la càrrega de la nova ruta. Aquest temps d'espera, però, és molt ràpid i, per tant, no és apreciable per l'usuari
 
 Aquest tipus de *routing* és el més addient, especialment en aplicacions web molt grans.
+
+## Remarcar l'enllaç del menú corresponent a la ruta activa
+En els menús de les nostres pàgines i aplicacions web és molt útil deixar remarcat el botó o l'enllaç corresponent a la ruta que hi ha activa en cada moment. Per fer-ho podem utilitzar l'atribut `routerLinkActive`, proporcionat per Angular. Aplicant un *property binding* a aquest atribut es pot definir l'estil que cal aplicar quan es detecti que la `URL` conté la ruta a la qual fa referència.
+
+Seguint amb l'exemple d'aquest capítol, afegim el `HeaderComponent` per fer un menú comú a totes les pàgines (quedarà incrustat a l'`HTML` de l'`AppComponent`), de tal manera que en definim el seu codi `HTML` i `CSS` de la manera següent:
+
+{% tabs %}
+{% tab title="Codi header.component.html" %}
+```html
+<header>
+    <h3>Capçalera</h3>
+
+    <a [routerLink]="['/home']" [routerLinkActive]="['activatedLink']">Home</a>
+    <a [routerLink]="['/about']" [routerLinkActive]="['activatedLink']">About</a>
+    <a [routerLink]="['/list']" [routerLinkActive]="['activatedLink']">List</a>
+</header>
+```
+{% endtab %}
+
+{% tab title="Codi header.component.css" %}
+```css
+header {
+    border: #AAAAAA 5px solid;
+    margin-bottom: 32px;
+}
+
+h3 {
+    text-align: center;
+}
+
+a{
+    margin-right: 100px;
+}
+
+.activatedLink {
+    color: #AAAAAA;
+}
+```
+{% endtab %}
+{% endtabs %}
+
+A la següent imatge podem veure com, cada cop que es canvia de pàgina, l'enllaç del menú ressaltat en gris correspon a la ruta activada.
+
+![Visualització del resultat al navegador](img/activeLink.png)
