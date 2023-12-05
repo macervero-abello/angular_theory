@@ -90,6 +90,42 @@ Aquesta metodologia és la més genuïna i autènticament Angular. Consisteix en
 **Atenció:** en cas que el servidor Angular `ng serve` estigués actiu, caldrà aturar-lo i tornar-lo a iniciar cada cop que es modifiqui el fitxer `angular.json`
 {% endhint %}
 
+## Llibreria CSS Bootstrap (*framework*)
+El *framework* [Bootstrap](https://getbootstrap.com/) es pot instal·lar amb el gestor de paquets `npm` de `NodeJS`. Així doncs, per aplicar Bootstrap a un projecte Angular només fa falta fer 3 passos:
+ 1. Obrir una consola dins de la carpeta del projecte
+ 2. Instal·lar el *framework*
+  ```bash
+  npm install bootstrap@latest
+  ```
+ 3. Configurar les rutes als fitxers CSS i JS dins de l'`angular.json`,
+  ```json
+  {
+    //...
+    "projects": {
+      "Project": {
+        //...
+        "architect": {
+          "build": {
+            //...
+            "options": {
+              //...
+              "styles": [
+                "src/styles.css",
+                "node_modules/bootstrap/dist/css/bootstrap.min.css"
+              ],
+              "scripts": [
+                "node_modules/bootstrap/dist/js/bootstrap.min.js"
+              ]
+            },
+            //...
+          },
+          //...
+        }
+      }
+    }
+  }
+  ```
+
 ## Llibreria FontAwesome (icones)
 La llibreria [FontAwesome](https://fontawesome.com/) conté un conjunt d'icones, algunes de pagament però moltes de lliures.
 
