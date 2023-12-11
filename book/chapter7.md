@@ -45,6 +45,14 @@ Fet això, tornarem al *dashboard* del nostre projecte de Firebase per crear i c
  2. Crear la nova base de dades
  ![Creació de la BD Firestore](img/firebase_create_db.png)
     1. Configurar el servidor on s'allotjarà la base de dades (busqueu un que sigui europeu)
+    ![Localització de la BD Firestore](img/firestore_db_location.png)
+    2. Configuració del mode *producció* o *desenvolupador* (proves). Per defecte, admetrem el mode de *producció*, el qual haurà de ser modificat posteriorment per permetre les operacions de lectura i escriptura a la base de dades
+    ![Mode de la BD Firestore](img/firestore_db_mode.png)
+ 3. Un cop creada la base de dades, l'aplicatiu fa una redirecció a la pàgina inicial del gestor de dades on, el primer que cal fer, és els permisos (regles) d'accés per tal que tots els usuaris de l'aplicació puguin escriure i llegir dades.
+ ![Permisos de la BD Firestore](img/firestore_db_rules.png)
+
+Un cop finalitzats tots aquests passos, ja es pot començar a poblar la base de dades.
+
 
 ## Aplicació CRUD bàsica
 
