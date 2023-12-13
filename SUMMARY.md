@@ -7,3 +7,4 @@
 * [Capítol 4. *Routing*](book/chapter4.md)
 * [Capítol 5. Patró *MVC*](book/chapter5.md)
 * [Capítol 6. Lectura d'un fitxer JSON](book/chapter6.md)
+* [Capítol 7. Firebase](book/chapter7.md)

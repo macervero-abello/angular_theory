@@ -36,13 +36,14 @@ Així doncs, en aquest punt cal accedir a la nostra aplicació Angular i seguir 
  ```bash
     firebase login
  ```
- 3. Instal·lar el paquet `@angular/fire`. Durant aquesta instal·lació
+ 3. Instal·lar els paquets `firebase` i `@angular/fire`. Durant aquesta instal·lació
     * no heu de configurar cap servei de Firebase,
     * heu d'escollir el compte Google del desenvolupador,
     * heu d'escollir el projecte Firebase que heu creat recentment per poder fer el vincle i
     * heu de seleccionar un *hosting* pel projecte (el que indica per defecte)
  ```bash
-    ng add @angular/fire
+   ng install firebase
+   ng add @angular/fire
  ```
  ![Configuració del paquet `@angular/fire`](img/install_angular_fire.png)
 
@@ -75,7 +76,7 @@ Fet això apareixen els dos fitxers següents:
 En aquest punt cal recuperar la configuració de les variables de la *suit* Firebase entrant al *dashboard* per accedir a la configuració del nou projecte creat, tal com indica la següent imatge:
 ![Configuració de les constants de la *suit* de Firebase](img/firebase_sdk.png)
 
-De totes aquestes dades només ens interessa la constant `firebaseConfig`, la qual s'ha de traspassar al fitxer `src/environments/environment.ts` de la següent manera:
+De totes aquestes dades només ens interessa la constant `firebaseConfig`, la qual s'ha de traspassar als fitxers `src/environments/environment.ts` i `src/environments/environment.development.ts` de la següent manera:
 ```typescript
 export const environment = {
     production: false,
@@ -132,5 +133,50 @@ Accedint de nou al *dasboard* de *Firestore* podeu crear una nova col·lecció (
  ![Resultat final](img/firestore_new_collection_4.png)
 
 ## Aplicació CRUD bàsica
+
+> **ATENCIÓ:** les últimes versions d'Angular (15.2.0), Firebase (10.7.1) i Angular-Fire (7.6.1) no acaben de ser comptabiles i, mentre els desenvolupadors no ho arreglin, cal els retocs que es mostren a continuació al fitxer `node-modules/@angular/fire/compat/firestore/interfaces.d.ts`
+```typescript
+//Versió instal·lada
+...
+export interface DocumentSnapshotExists<T> extends firebase.firestore.DocumentSnapshot {...}
+...
+export interface QueryDocumentSnapshot<T> extends firebase.firestore.QueryDocumentSnapshot {...}
+export interface QuerySnapshot<T> extends firebase.firestore.QuerySnapshot {...}
+export interface DocumentChange<T> extends firebase.firestore.DocumentChange {...}
+...
+```
+
+```typescript
+//Modificacions que cal fer
+...
+export interface DocumentSnapshotExists<T> extends firebase.firestore.DocumentSnapshot<T> {...}
+...
+export interface QueryDocumentSnapshot<T> extends firebase.firestore.QueryDocumentSnapshot<T> {...}
+export interface QuerySnapshot<T> extends firebase.firestore.QuerySnapshot<T> {...}
+export interface DocumentChange<T> extends firebase.firestore.DocumentChange<T> {...}
+...
+```
+
+Una aplicació CRUD és tot aquell programari que permet treballar amb bases de dades (siguin fitxers, SQL, NoSQL, etc.) per
+ * **C**: crear noves dades (*create*),
+ * **R**: consultar dades (*read*),
+ * **U**: modificar dades (*update*) i
+ * **D**: esborrar dades (*delete*).
+
+El servei *Firestore* de Firebase permet treballar amb una base de dades NoSQL per fer-ne una gestió senzilla. A continuació s'explica com integrar l'API de *Firestore* a Angular.
+
+### Primers passos
+Suposarem que estem creant una aplicació de plats de cuina i, per tant, la nostra base de dades emmagatzemarà documents que tenen dos atributs: `name` (nom del plat) i `ingredients` (els ingredients que fan falta per cuinar-lo), tal com mostren les imatges de creació de la col·lecció (vegeu apartat anterior).
+
+El primer que cal fer és dissenyar l'aplicació modularment, aplicant el patró MVC. Per tant, s'haurà de crear un *model* (`Dish`) que repliqui el contingut dels documents de la base de dades, és a dir, que tingui els mateixos atributs que els camps del document i un *service* (`DishesService`) que gestioni l'accés a la base de dades i totes les consultes que s'hi poden fer.
+
+Per a definir el model, com que és molt simple, crearem la *interface* `Dish`, la qual tindrà els mateixos 2 atributs que tenen els documents de la base de dades: `name` i `ingredients`:
+```typescript
+export interface Dish {
+    name: string;
+    ingredients: string[];
+}
+```
+
 
 ## Autenticació
