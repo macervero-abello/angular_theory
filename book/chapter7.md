@@ -42,7 +42,7 @@ Així doncs, en aquest punt cal accedir a la nostra aplicació Angular i seguir 
     * heu d'escollir el projecte Firebase que heu creat recentment per poder fer el vincle i
     * heu de seleccionar un *hosting* pel projecte (el que indica per defecte)
  ```bash
-   ng install firebase
+   npm install firebase
    ng add @angular/fire
  ```
  ![Configuració del paquet `@angular/fire`](img/install_angular_fire.png)
@@ -126,10 +126,15 @@ Per una banda, les dades s'emmagatzemen com a objectes JSON dins de col·leccion
 Accedint de nou al *dasboard* de *Firestore* podeu crear una nova col·lecció (per exemple `dishes`) i plenar-la de dades per tenir un exemple de base.
 
  1. Creació de la nova col·lecció
+
  ![Creació d'una nova col·lecció a *Firestore*](img/firestore_new_collection.png)
+
  2. Creació d'un nou document dins de la col·lecció
+
  ![Creació d'un nou document dins de la col·lecció](img/firestore_new_collection_3.png)
+ 
  3. Resultat final
+
  ![Resultat final](img/firestore_new_collection_4.png)
 
 ## Aplicació CRUD bàsica
@@ -178,5 +183,87 @@ export interface Dish {
 }
 ```
 
+A continuació caldrà generar el *service* `DishesService` que serà l'encarregat de gestionar totes les instruccions **CRUD** contra la base de dades *Firestore*.
+
+Abans de fer aquest pas, però, cal explicar una mica les funcions bàsiques de l'API de *Firestore*.
+
+#### Mètodes bàsics de l'API de *Firestore*
+Per tal de poder connectar amb una col·lecció de la base de dades, l'API de *Firestore* defineix el *service* `AngularFirestore` i la classe `AngularFirestoreCollection<T>`, la qual té tots els mètodes que permeten llegir i modificar els registres (els documents) de la col·lecció.
+
+El codi necessari per crear una instància d'aquesta classe i enllaçar-la a la col·lecció que es desitja consultar és el següent:
+```typescript
+import { AngularFirestoreCollection, AngularFirestore } from '@angular/fire/compat/firestore';
+
+class ManageFirestore {
+   private _collection: AngularFirestoreCollection<MyType>;
+
+   construct(private _firestoreService: AngularFirestore) {
+      this._collection = this._firestore.collection<MyType>('collection_name');
+   }
+}
+```
+Així doncs, cal demanar al *service* `AngularFirestore` la collecció `collection_name` mitjançant el mètode `collection()`, el qual retorna, justament, una instància de la classe `AngularFirestoreCollection`.
+
+Vegeu que la classe `AngularFirestoreCollection` és genèrica i s'ha de declarar utilitzant el tipus correcte, és a dir, la *interface* o la classe que s'hagi definit per tal de representar els documents de la col·lecció dins de la nostra aplicació.
+
+Un cop obtinguta la instància que representa la col·lecció de la base de dades ja s'hi pot començar a operar.
+
+##### Consulta de dades (*query*)
+Per poder consultar els documents d'una col·lecció hi ha diversos mètodes, depenent del tipus de *query* que es desitja realitzar.
+
+**Mètode `valueChanges()`**
+Aquest mètode permet fer consultes equivalents a la sentència `SELECT * FROM` SQL, és a dir, retorna tots els documents d'una col·lecció. A més a més, implementa el patró `Observer` i, per tant, per obtenir les dades caldrà fer la subscripció a la crida:
+```typescript
+   this._collection.valueChanges().subscribe({
+      next: (data: MyType[]) => {
+         //Tractament de les dades
+      },
+      complete: () => {}
+      error: (msg: string) => {
+         console.log(msg);
+      }
+   });
+```
+Mentre es mantingui la subscripció activa, cada cop que hi hagi un canvi a la col·lecció de la base de dades, aquesta funció el captarà i el retornarà per tal que pugui ser tractat, mostrat per pantalla, etc.
+
+Vegeu que el mètode `next` rep, com a paràmetre, un *array* del tipus amb què s'ha declarat l'objecte col·lecció `AngularFirestoreCollection`, és a dir, `MyType`.
+
+En cas que es desitgi recuperar l'identificador (equivalent a la *primary key* SQL) dels documents, el mètode `valueChanges()` ha de rebre un paràmetre de tipus `JSON` on s'especifiqui el nom de l'atribut identificador al tipus `MyType`. Així doncs, si `MyType` té un atribut `id: string`, la crida al mètode `valueChanges()` és la següent:
+```typescript
+   this._collection.valueChanges({'idField': 'id'}).subscribe({
+      next: (data: MyType[]) => {
+         //Tractament de les dades
+      },
+      complete: () => {}
+      error: (msg: string) => {
+         console.log(msg);
+      }
+   });
+```
+
+Per a consultes més complexes també s'utilitza el mètode `valueChanges()` però, aquest cop, combinada amb funcions lamda anònimes per poder fer les sentències:
+* `where`
+* `orderBy`
+* `limit`
+* `startAt`
+* `startAfter`
+* `endAt`
+* `endBefore`
+
+Per exemple, imaginem que tenim un document que representa el conjunt de la població de la província de Lleida i només volem consultar aquelles persones que són menors d'edat. Per fer-ho, la crida seria similar a la següent:
+```typescript
+   this._firestore.collection<Person>('person', (ref) => {
+      return ref.where('age', '<', 18)
+      .where('city', '!=', 'Lleida');
+   }).valueChanges({'idField': 'id'}).subscribe({
+      next: (data: Person[]) => {
+         //Tractament de les dades
+      },
+      complete: () => {}
+      error: (msg: string) => {
+         console.log(msg);
+      }
+   });
+```
 
 ## Autenticació
