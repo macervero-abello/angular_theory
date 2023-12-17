@@ -209,7 +209,7 @@ Vegeu que la classe `AngularFirestoreCollection` és genèrica i s'ha de declara
 Un cop obtinguta la instància que representa la col·lecció de la base de dades ja s'hi pot començar a operar.
 
 ##### Consulta de dades (*query*)
-Per poder consultar els documents d'una col·lecció hi ha diversos mètodes, depenent del tipus de *query* que es desitja realitzar.
+Per poder consultar els documents d'una col·lecció hi ha diversos mètodes, depenent del tipus de *query* que es desitja realitzar. El més senzill d'aplicar, però, és el mètode `valueChanges()`.
 
 **Mètode `valueChanges()`**
 Aquest mètode permet fer consultes equivalents a la sentència `SELECT * FROM` SQL, és a dir, retorna tots els documents d'una col·lecció. A més a més, implementa el patró `Observer` i, per tant, per obtenir les dades caldrà fer la subscripció a la crida:
@@ -253,17 +253,40 @@ Per a consultes més complexes també s'utilitza el mètode `valueChanges()` per
 Per exemple, imaginem que tenim un document que representa el conjunt de la població de la província de Lleida i només volem consultar aquelles persones que són menors d'edat. Per fer-ho, la crida seria similar a la següent:
 ```typescript
    this._firestore.collection<Person>('person', (ref) => {
-      return ref.where('age', '<', 18)
-      .where('city', '!=', 'Lleida');
+      return ref.where('age', '<', 18);
    }).valueChanges({'idField': 'id'}).subscribe({
       next: (data: Person[]) => {
          //Tractament de les dades
       },
-      complete: () => {}
+      complete: () => {},
       error: (msg: string) => {
          console.log(msg);
       }
    });
+```
+Ara però, les consultes complexes de *Firestore* tenen força limitacions i una d'elles és que no és poden concatenar dues condicions de desigualtat sobre camps diferents. Per tant, la consulta que ens permetria trobar tots els menors d'edat que no són de Lleida no es pot fer directament amb la sentència `WHERE` i l'estratègia per aconseguir els resultats és aplicar un filtre:
+```typescript
+   this._firestore.collection<Person>('person', (ref) => {
+      return ref.where('age', '<', 18);
+   }).valueChanges().subscribe(
+      next: (data: Person[]) => {
+         data.filter(
+            (person: Person) => return person.city != "Lleida";
+         );
+      },
+      complete: () => {};
+      error: (msg: string) => {
+         console.log(msg);
+      }
+   );
+```
+
+Per analitzar totes les possibilitats de les diverses sentències es pot consultar la pàgina [Angular Firebase](https://github.com/angular/angularfire/blob/master/docs/compat/firestore/querying-collections.md)
+
+##### Inserció de dades
+Per fer la inserció d'un nou document en una col·lecció s'utilitza el mètode `add`. Així doncs, donada la instància de la col·lecció (`this._collection`) i l'objecte amb les dades que es volen inserir (`my_data`), el codi per fer la inserció és el següent:
+```typescript
+   this._collection.add(my_data);
 ```
 
 ## Autenticació
