@@ -289,4 +289,39 @@ Per fer la inserció d'un nou document en una col·lecció s'utilitza el mètode
    this._collection.add(my_data);
 ```
 
+##### Eliminació de dades
+Per fer l'eliminació d'un document d'una col·lecció s'utilitzen els mètodes `doc` i `delete`. El primer mètode permet seleccionar el document a través del seu identificador (equivalent a la `primary key` en el cas d'SQL) i, un cop seleccionat, el mètode `delete` l'esborra. Així doncs, donada la instància de la col·lecció (`this._collection`) i l'identificador de l'objecte que volem esborrar (`my_data.id`), el codi per fer la inserció és el següent:
+```typescript
+   this._collection.add(my_data.id).delete();
+```
+
+##### Actualització de dades
+Per fer l'actualització d'un document d'una col·lecció s'utilitzen els mètodes `doc` i `update` o `set`. Així doncs, en aquest cas tenim diverses opcions:
+ 1. Utilitzar el mètode `set` l'objecte sencer que volen actualitzar (encara que hi hagi camps que no faci falta canviar)
+ 2. Utilitzar el mètode `set` amb només els camps que es volen actualitzar
+ 3. Utilitzar el mètode `update`, el qual només treballa amb els camps que es volen actualitzar (equival al `set` del 2n punt).
+
+Suposant que tenim la instància de la col·lecció (`this._collection`), l'identificador de l'objecte que volem actualitzar (`my_data.id`) i que aquest objecte té 2 camps (`title` i `url`), els següents apartats mostren el codi de cadascuna de les opcions indicades a sobre.
+
+**Mètode `set` complet**
+```typescript
+   let new_data: any = {
+      "title": "My title",
+      "url": "My URL"
+   };
+
+   this._collection.doc(my_data.id).set(new_data);
+```
+El mètode `set` utilitzat d'aquesta manera actualitza el document, si aquest ja existia a la col·lecció, o el crea de nou, si no existia, és a dir, si el document amb identificador `my_data.id` no existeix, el mètode `set` equival al mètode `add`.
+
+**Mètode `set` que actualitza camps de manera independent**
+```typescript
+   this._collection.doc(my_data.id).set({"title": "My title"}, {"merge": true});
+```
+
+**Mètode `update` (actualitza camps de manera independent)**
+```typescript
+   this._collection.doc(my_data.id).update({"title": "My title"});
+```
+
 ## Autenticació
