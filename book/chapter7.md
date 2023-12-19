@@ -83,6 +83,7 @@ Fet això apareixen els dos fitxers següents:
  - `src/environments/environment.ts`: entorn de *producció*
 
 En aquest punt cal recuperar la configuració de les variables de la *suit* Firebase entrant al *dashboard* per accedir a la configuració del nou projecte creat, tal com indica la següent imatge:
+
 ![Configuració de les constants de la *suit* de Firebase](img/firebase_sdk.png)
 
 De totes aquestes dades només ens interessa la constant `firebaseConfig`, la qual s'ha de traspassar als fitxers `src/environments/environment.ts` i `src/environments/environment.development.ts` de la següent manera:
