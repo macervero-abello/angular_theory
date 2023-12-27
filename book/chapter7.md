@@ -3,8 +3,8 @@ Firebase és una *suit* de Google que ofereix tot un conjunt d'eines per ajudar 
 
 En el nostre cas utilitzarem la seva base de dades NoSQL (*Firestore*) per tal de tenir un petit servidor de dades per a les nostres aplicacions.
 
-## Configuració de la BD Firebase
-Per configurar la base de dades de Firebase i, de fet, qualsevol dels seus serveis, cal fer dos grans passos:
+## Configuració dels serveis de Firebase
+Per configurar qualsevol dels serveus de Firebase cal fer dos grans passos:
  1. Enllaçar la vostra aplicació Angular a la *suit* Firebase
  2. Enllaçar l'SDK de la suit de Firebase a la vostra aplicació Angular
 
@@ -124,9 +124,9 @@ import { AppComponent } from './app.component';
 export class AppModule { }
 ```
 
-Seguint tots aquests passos s'aconsegueix tenir preparat tant la *suit* Firebase com l'aplicació Angular per a poder utilitzar la base de dades *Firestore*.
+Seguint tots aquests passos s'aconsegueix tenir preparat tant la *suit* Firebase com l'aplicació Angular per a poder utilitzar la base de dades *Firestore* i l'autenticació.
 
-### Base de dades *Firestore*
+## Base de dades *Firestore*
 Tal com ja s'ha dit al principi del capítol, aquesta base de dades és del tipus NoSQL, per tant, la manera d'emmagatzemar les dades i de fer-hi consultes canvia significativament.
 
 Per una banda, les dades s'emmagatzemen com a objectes JSON dins de col·leccions. Així doncs, per tal que us feu una idea, i sabent que **no són el mateix**, podeu fer les següents associacions:
@@ -147,7 +147,7 @@ Accedint de nou al *dasboard* de *Firestore* podeu crear una nova col·lecció (
 
  ![Resultat final](img/firestore_new_collection_4.png)
 
-## Aplicació CRUD bàsica
+### Aplicació CRUD bàsica
 
 > **ATENCIÓ:** les últimes versions d'Angular (15.2.0), Firebase (10.7.1) i Angular-Fire (7.6.1) no acaben de ser comptabiles i, mentre els desenvolupadors no ho arreglin, cal els retocs que es mostren a continuació al fitxer `node-modules/@angular/fire/compat/firestore/interfaces.d.ts`
 ```typescript
@@ -180,7 +180,7 @@ Una aplicació CRUD és tot aquell programari que permet treballar amb bases de 
 
 El servei *Firestore* de Firebase permet treballar amb una base de dades NoSQL per fer-ne una gestió senzilla. A continuació s'explica com integrar l'API de *Firestore* a Angular.
 
-### Primers passos
+#### Primers passos
 Suposarem que estem creant una aplicació de plats de cuina i, per tant, la nostra base de dades emmagatzemarà documents que tenen dos atributs: `name` (nom del plat) i `ingredients` (els ingredients que fan falta per cuinar-lo), tal com mostren les imatges de creació de la col·lecció (vegeu apartat anterior).
 
 El primer que cal fer és dissenyar l'aplicació modularment, aplicant el patró MVC. Per tant, s'haurà de crear un *model* (`Dish`) que repliqui el contingut dels documents de la base de dades, és a dir, que tingui els mateixos atributs que els camps del document i un *service* (`DishesService`) que gestioni l'accés a la base de dades i totes les consultes que s'hi poden fer.
@@ -197,7 +197,7 @@ A continuació caldrà generar el *service* `DishesService` que serà l'encarreg
 
 Abans de fer aquest pas, però, cal explicar una mica les funcions bàsiques de l'API de *Firestore*.
 
-#### Mètodes bàsics de l'API de *Firestore*
+##### Mètodes bàsics de l'API de *Firestore*
 Per tal de poder connectar amb una col·lecció de la base de dades, l'API de *Firestore* defineix el *service* `AngularFirestore` i la classe `AngularFirestoreCollection<T>`, la qual té tots els mètodes que permeten llegir i modificar els registres (els documents) de la col·lecció.
 
 El codi necessari per crear una instància d'aquesta classe i enllaçar-la a la col·lecció que es desitja consultar és el següent:
@@ -218,7 +218,7 @@ Vegeu que la classe `AngularFirestoreCollection` és genèrica i s'ha de declara
 
 Un cop obtinguta la instància que representa la col·lecció de la base de dades ja s'hi pot començar a operar.
 
-##### Consulta de dades (*query*)
+###### Consulta de dades (*query*)
 Per poder consultar els documents d'una col·lecció hi ha diversos mètodes, depenent del tipus de *query* que es desitja realitzar. El més senzill d'aplicar, però, és el mètode `valueChanges()`.
 
 **Mètode `valueChanges()`**
@@ -293,19 +293,19 @@ Ara però, les consultes complexes de *Firestore* tenen força limitacions i una
 
 Per analitzar totes les possibilitats de les diverses sentències es pot consultar la pàgina [Angular Firebase](https://github.com/angular/angularfire/blob/master/docs/compat/firestore/querying-collections.md)
 
-##### Inserció de dades
+###### Inserció de dades
 Per fer la inserció d'un nou document en una col·lecció s'utilitza el mètode `add`. Així doncs, donada la instància de la col·lecció (`this._collection`) i l'objecte amb les dades que es volen inserir (`my_data`), el codi per fer la inserció és el següent:
 ```typescript
    this._collection.add(my_data);
 ```
 
-##### Eliminació de dades
+###### Eliminació de dades
 Per fer l'eliminació d'un document d'una col·lecció s'utilitzen els mètodes `doc` i `delete`. El primer mètode permet seleccionar el document a través del seu identificador (equivalent a la `primary key` en el cas d'SQL) i, un cop seleccionat, el mètode `delete` l'esborra. Així doncs, donada la instància de la col·lecció (`this._collection`) i l'identificador de l'objecte que volem esborrar (`my_data.id`), el codi per fer la inserció és el següent:
 ```typescript
    this._collection.add(my_data.id).delete();
 ```
 
-##### Actualització de dades
+###### Actualització de dades
 Per fer l'actualització d'un document d'una col·lecció s'utilitzen els mètodes `doc` i `update` o `set`. Així doncs, en aquest cas tenim diverses opcions:
  1. Utilitzar el mètode `set` l'objecte sencer que volen actualitzar (encara que hi hagi camps que no faci falta canviar)
  2. Utilitzar el mètode `set` amb només els camps que es volen actualitzar
@@ -335,3 +335,24 @@ El mètode `set` utilitzat d'aquesta manera actualitza el document, si aquest ja
 ```
 
 ## Autenticació
+El primer que cal fer és configurar el serveu d'autenticació des del *dashboard* de *Firebase* seguint els passos següents:
+
+ 1. Activació del servei d'autenticació
+
+ ![Activació del servei d'autenticació](img/firebase_auth.png)
+
+ 2. Configuració dels mètodes d'accés (serveis d'autenticació)
+
+ ![Configuració dels mètodes d'accés](img/firebase_auth_services.png)
+ 
+ 3. Configuració del servei d'autenticació de Google: cal indicar el nom de l'aplicació per la qual es permet l'autenticació de Goole i un correu d'assistència (el correu de l'administrador, normalment).
+
+ ![Configuració del servei d'autenticació de Google](img/firebase_auth_google.png)
+
+ 4. Configuració de l'autentiació amb correu i contrasenya
+
+ ![Configuració de l'autenticació amb correu i contrasenya](img/firebase_auth_email.png)
+
+Un cop seguits tots aquests passos, el *dashboard* del servei d'autenticació mostrarà la següent informació:
+
+![Resultat final](img/firebase_auth_final.png)
