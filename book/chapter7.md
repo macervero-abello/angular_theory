@@ -48,25 +48,25 @@ Així doncs, en aquest punt cal accedir a la nostra aplicació Angular i seguir 
  ![Configuració del paquet `@angular/fire`](img/install_angular_fire.png)
 
 Fet això, tornarem al *dashboard* del nostre projecte de Firebase per crear i configurar la base de dades, servei que s'anomena *Firestore*.
- 1. Activar Firestore dins del *dashboard*
+1. Activar Firestore dins del *dashboard*
 
- ![Activació de Firestore](img/firestore_activation.png)
+![Activació de Firestore](img/firestore_activation.png)
  
- 2. Crear la nova base de dades
+2. Crear la nova base de dades
  
- ![Creació de la BD Firestore](img/firebase_create_db.png)
+![Creació de la BD Firestore](img/firebase_create_db.png)
  
-    1. Configurar el servidor on s'allotjarà la base de dades (busqueu un que sigui europeu)
+ 1. Configurar el servidor on s'allotjarà la base de dades (busqueu un que sigui europeu)
  
-    ![Localització de la BD Firestore](img/firestore_db_location.png)
+ ![Localització de la BD Firestore](img/firestore_db_location.png)
  
-    2. Configuració del mode *producció* o *desenvolupador* (proves). Per defecte, admetrem el mode de *producció*, el qual haurà de ser modificat posteriorment per permetre les operacions de lectura i escriptura a la base de dades
+ 2. Configuració del mode *producció* o *desenvolupador* (proves). Per defecte, admetrem el mode de *producció*, el qual haurà de ser modificat posteriorment per permetre les operacions de lectura i escriptura a la base de dades
  
-    ![Mode de la BD Firestore](img/firestore_db_mode.png)
+ ![Mode de la BD Firestore](img/firestore_db_mode.png)
  
- 3. Un cop creada la base de dades, l'aplicatiu fa una redirecció a la pàgina inicial del gestor de dades on, el primer que cal fer, és els permisos (regles) d'accés per tal que tots els usuaris de l'aplicació puguin escriure i llegir dades.
+3. Un cop creada la base de dades, l'aplicatiu fa una redirecció a la pàgina inicial del gestor de dades on, el primer que cal fer, és els permisos (regles) d'accés per tal que tots els usuaris de l'aplicació puguin escriure i llegir dades.
  
- ![Permisos de la BD Firestore](img/firestore_db_rules.png)
+![Permisos de la BD Firestore](img/firestore_db_rules.png)
 
 Un cop finalitzats tots aquests passos, ja es pot començar a poblar la base de dades. Prèviament, però, encara cal enllaçar l'SDK de Firebase a l'aplicació Angular.
 
@@ -116,7 +116,6 @@ import { AppComponent } from './app.component';
    ...
    AngularFireModule.initializeApp(environment.firebaseConfig),
    AngularFirestoreModule
-
   ],
   providers: [],
   bootstrap: [AppComponent]
@@ -356,3 +355,128 @@ El primer que cal fer és configurar el serveu d'autenticació des del *dashboar
 Un cop seguits tots aquests passos, el *dashboard* del servei d'autenticació mostrarà la següent informació:
 
 ![Resultat final](img/firebase_auth_final.png)
+
+### Aplicació amb gestió de sessió bàsica
+Tota aplicació que hagi d'autenticar usuaris ha de fer una gestió de la sessió bàsica que permeti
+ 1. registrar nous usuaris,
+ 2. iniciar sessió amb comptes ja existents,
+ 3. tancar sessió i
+ 4. obtenir la informació de l'estat de la sessió.
+
+Per aconseguir-ho, el primer que cal fer és activar l'`AngularFireAuthModule` dins del fitxer `app.module.ts`.
+
+```typescript
+...
+import { environment } from 'src/environments/environment';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+
+import { AppComponent } from './app.component';
+
+@NgModule({
+  declarations: [ AppComponent ],
+  imports: [
+   ...
+   AngularFireModule.initializeApp(environment.firebaseConfig),
+   AngularFireAuthModule
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+```
+
+A continuació també cal crear el servei `SessionService` (el nom del servei és a gust del desenvolupador) que permeti fer tota la gestió de la sessió. Aquest servei hauria d'injectar l'`AngularFireAuth`, que és el servei que proporciona la llibreria `@angular/fire` per gestionar l'autenticació d'usuaris.
+
+```typescript
+import { Injectable } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class LoginService {
+  constructor(private _auth: AngularFireAuth) {}
+}
+```
+
+#### Creació de nous usuaris (registre)
+Si l'aplicació que es desitja crear permet l'inici de sessió utilitzant un correu electrònic i una contrasenya, el primer que cal fer és crear els comptes d'usuaris, és a dir, fer-ne el registre.
+
+El servei `AngularFireAuth` ofereix el mètode `createUserWithEmailAndPassword()` per tal d'aconseguir-ho, el qual retorna un objecte de tipus `Promise<UserCredential>` si el procés de registre ha anat bé. Així doncs, el codi bàsic per poder crear un nou compte és el que es mostra a continuació.
+
+```typescript
+import { Injectable } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class LoginService {
+
+  constructor(private _auth: AngularFireAuth) {}
+
+  register(email: string, passwd: string) {
+    this._auth.createUserWithEmailAndPassword(email, passwd).then(
+      (userCredential: any) => {       
+         /*Aquest paràmetre hauria de ser de tipus UserCredential, de la llibreria firebase/auth, però per raons de compatibilitat, Angular no detecta bé el tipus i es canvia a 'any'*/
+        console.log(userCredential);
+      }
+    ).catch(
+      (msg: any) => {
+        console.log(msg);
+      }
+    ).finally(
+      () => {
+         console.log("Registre finalitzat");
+      }
+    );
+  }
+}
+```
+Com es pot comprovar en aquest codi, un objecte `Promise<UserCredential>` implica que el mètode que es llença en segon pla, en aquest cas `createUserWithEmailAndPassword`, promet retornar un objecte de tipus `UserCredential`. El tractament d'una `Promise` és força similar al d'un `Observer`, però, en aquest cas, les funcions anònimes que cal implementar són les següents:
+* `then`: codi que s'executa quan tot ha anat bé
+* `catch`: codi que s'executa quan s'ha produït un error
+* `finally`: codi que s'executa sempre, és a dir, després de `then` i de `catch`.
+
+Si s'executa el mètode `register()` del service `SessionService` amb l'usuari `mcerve44@xtec.cat` i la contrasenya `123456` es pot comprovar la creació del nou compte al *dashboard* d'autenticació de *Firebase*.
+
+![Resultat de registrar un nou compte](img/firebase_auth_register.png)
+
+#### Inici de sessió (login)
+L'inici de sessió difereix força depenent de si es vol fer a través de correu electrònic i contrasenya o a través d'un servei d'autenticació com, per exemple, el propi de Google.
+
+#### Inici de sessió amb correu electrònic i contrasenya
+Per assolir aquet tipus d'autenticació el servei `AngularFirebaseAuth` ofereix el mètode `signInWithEmailAndPassword()`, el qual també retorna un objecte de tipus `Promise<UserCredential>`. Per tant, el codi bàsic per fer l'inici de sessió és molt similar a l'anterior.
+```typescript
+import { Injectable } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class LoginService {
+
+  constructor(private _auth: AngularFireAuth) {}
+  register(email: string, passwd: string) {...}
+
+  loginWithEmail(email: string, passwd: string) {
+    this._auth.signInWithEmailAndPassword(email, passwd).then(
+      (user: any) => {
+        console.log(user);
+      }
+    ).catch(
+      (msg: any) => {
+        console.log(msg);
+      }
+    ).finally(
+      () => {
+        console.log("Inici de sessió finalitzat");
+      }
+    );
+  }
+}
+```
+
+
+#### Inici de sessió amb el servei d'autenticació de Google
