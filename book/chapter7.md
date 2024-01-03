@@ -284,39 +284,83 @@ Per fer la inserció d'un nou document en una col·lecció s'utilitza el mètode
 ```
 
 ###### Eliminació de dades
-Per fer l'eliminació d'un document d'una col·lecció s'utilitzen els mètodes `doc` i `delete`. El primer mètode permet seleccionar el document a través del seu identificador (equivalent a la `primary key` en el cas d'SQL) i, un cop seleccionat, el mètode `delete` l'esborra. Així doncs, donada la instància de la col·lecció (`this._collection`) i l'identificador de l'objecte que volem esborrar (`my_data.id`), el codi per fer la inserció és el següent:
+Per fer l'eliminació d'un document d'una col·lecció s'utilitzen els mètodes `doc` i `deleteDoc`. El primer mètode permet seleccionar el document a través del seu identificador (equivalent a la `primary key` en el cas d'SQL) i, un cop seleccionat, el mètode `deleteDoc` l'esborra. Així doncs, el servei Firestore (`this._firestore`), el nom de la col·lecció a la qual pertany l'element que volem eliminar (`collection_name`) i l'identificador de l'objecte que volem esborrar (`my_data.id`, on `my_data` és del tipus `MyType`), el codi per fer l'eliminació és el següent:
 ```typescript
-   this._collection.add(my_data.id).delete();
+   let documentRef: DocumentReference<MyType> = doc(this._firestore, 'collection_name', my_data.id) as DocumentReference<CMyTypehef>;
+   deleteDoc(documentRef).then(
+      () => {console.log("Doc deleted!");}
+   ).catch(
+      (error: any) => {console.log(error);}
+   ).finally(
+      () => {}
+   );
+```
+
+En cas que es vulgui eliminar més d'un document, es pot utilitzar el mètode `getDocs()` per seleccionar-los prèviament. Per exemple, en el codi que es mostra a continuació, s'elimina tots els xefs que tinguin més de 25 anys.
+```typescript
+   let queryCode: Query<Chef> = query(this._chefCollection, where('age', '>', 25));
+   getDocs(queryCode).then(
+      (chefsdb: QuerySnapshot<Chef>) => {
+         chefsdb.docs.forEach(
+            (doc: QueryDocumentSnapshot<Chef>) => {
+              deleteDoc(doc.ref);
+            }
+         );
+      }
+   ).catch(
+      (error: any) => {console.log(error);}
+   ).finally(
+      () => {}
+   );
 ```
 
 ###### Actualització de dades
-Per fer l'actualització d'un document d'una col·lecció s'utilitzen els mètodes `doc` i `update` o `set`. Així doncs, en aquest cas tenim diverses opcions:
- 1. Utilitzar el mètode `set` l'objecte sencer que volen actualitzar (encara que hi hagi camps que no faci falta canviar)
- 2. Utilitzar el mètode `set` amb només els camps que es volen actualitzar
- 3. Utilitzar el mètode `update`, el qual només treballa amb els camps que es volen actualitzar (equival al `set` del 2n punt).
+Per fer l'actualització d'un document d'una col·lecció s'utilitzen els mètodes `doc` i `update` o `setDoc`. Així doncs, en aquest cas tenim diverses opcions:
+ 1. Utilitzar el mètode `setDoc` amb l'objecte sencer que es vol actualitzar (encara que hi hagi camps que no faci falta canviar)
+ 2. Utilitzar el mètode `setDoc` amb només els camps que es volen actualitzar
+ 3. Utilitzar el mètode `update`, el qual només treballa amb els camps que es volen actualitzar (equival al `setDoc` del 2n punt).
 
-Suposant que tenim la instància de la col·lecció (`this._collection`), l'identificador de l'objecte que volem actualitzar (`my_data.id`) i que aquest objecte té 2 camps (`title` i `url`), els següents apartats mostren el codi de cadascuna de les opcions indicades a sobre.
+Suposant que tenim la instància de la col·lecció de xefs (`this._chefCollection`), l'identificador de l'objecte que volem actualitzar (`chef.id`) i sabent que aquest objecte té 3 camps (`name`, `age` i `city`), els següents apartats mostren el codi de cadascuna de les opcions indicades a sobre.
 
-**Mètode `set` complet**
+**Mètode `setDoc` complet**
 ```typescript
-   let new_data: any = {
-      "title": "My title",
-      "url": "My URL"
-   };
-
-   this._collection.doc(my_data.id).set(new_data);
+   let updatedChefData: Chef = {"name": "Íngrid", "age": 23, "city": "La Seu d'Urgell"};
+   let documentRef: DocumentReference<Chef> = doc(this._firestore, 'chefs', chef.id) as DocumentReference<Chef>;
+   setDoc(documentRef, updatedChefData).then(
+      () => {console.log("Updated done");}
+   ).catch(
+      (error: any) => {console.log(error);}
+   ).finally(
+      () => {}
+   );
 ```
-El mètode `set` utilitzat d'aquesta manera actualitza el document, si aquest ja existia a la col·lecció, o el crea de nou, si no existia, és a dir, si el document amb identificador `my_data.id` no existeix, el mètode `set` equival al mètode `add`.
+El mètode `set` utilitzat d'aquesta manera actualitza el document, si aquest ja existia a la col·lecció, o el crea de nou, si no existia, és a dir, si el document amb identificador `chef.id` no existeix, el mètode `set` equival al mètode `addDoc`.
 
-**Mètode `set` que actualitza camps de manera independent**
+**Mètode `setDoc` que actualitza camps de manera independent**
 ```typescript
-   this._collection.doc(my_data.id).set({"title": "My title"}, {"merge": true});
+   let documentRef: DocumentReference<Chef> = doc(this._firestore, 'chefs', chef.id) as DocumentReference<Chef>;
+   setDoc(documentRef, {"age": 21}, {"merge": true}).then(
+      () => {console.log("Updated done");}
+   ).catch(
+      (error: any) => {console.log(error);}
+   ).finally(
+      () => {}
+   );
 ```
 
-**Mètode `update` (actualitza camps de manera independent)**
+**Mètode `updateDoc` (actualitza camps de manera independent)**
 ```typescript
-   this._collection.doc(my_data.id).update({"title": "My title"});
+   let documentRef: DocumentReference<Chef> = doc(this._firestore, 'chefs', chef.id) as DocumentReference<Chef>;
+   updateDoc(documentRef, {"age":19}).then(
+      () => {console.log("Updated done");}
+   ).catch(
+      (error: any) => {console.log(error);}
+   ).finally(
+      () => {}
+   );
 ```
+
+En cas que, prèviament a l'actualització de les dades, no es tingui l'identificador de l'objecte que es vol modificar, es pot realitzar una selecció inicial mitjançant el mètode `query`.
 
 ## Autenticació
 El primer que cal fer és configurar el serveu d'autenticació des del *dashboard* de *Firebase* seguint els passos següents:
