@@ -416,7 +416,7 @@ export class LoginService {
 
   constructor(private _auth: AngularFireAuth) {}
 
-  register(email: string, passwd: string) {
+  register(email: string, passwd: string): void {
     this._auth.createUserWithEmailAndPassword(email, passwd).then(
       (userCredential: any) => {       
          /*Aquest paràmetre hauria de ser de tipus UserCredential, de la llibreria firebase/auth, però per raons de compatibilitat, Angular no detecta bé el tipus i es canvia a 'any'*/
@@ -458,9 +458,9 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 export class LoginService {
 
   constructor(private _auth: AngularFireAuth) {}
-  register(email: string, passwd: string) {...}
+  register(email: string, passwd: string): void {...}
 
-  loginWithEmail(email: string, passwd: string) {
+  loginWithEmail(email: string, passwd: string): void {
     this._auth.signInWithEmailAndPassword(email, passwd).then(
       (user: any) => {
         console.log(user);
