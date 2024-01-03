@@ -363,7 +363,7 @@ El mètode `set` utilitzat d'aquesta manera actualitza el document, si aquest ja
 En cas que, prèviament a l'actualització de les dades, no es tingui l'identificador de l'objecte que es vol modificar, es pot realitzar una selecció inicial mitjançant el mètode `query`.
 
 ## Autenticació
-El primer que cal fer és configurar el serveu d'autenticació des del *dashboard* de *Firebase* seguint els passos següents:
+El primer que cal fer és configurar el servei d'autenticació des del *dashboard* de *Firebase* seguint els passos següents:
 
  1. Activació del servei d'autenticació
 
@@ -392,22 +392,22 @@ Tota aplicació que hagi d'autenticar usuaris ha de fer una gestió de la sessi�
  3. tancar sessió i
  4. obtenir la informació de l'estat de la sessió.
 
-Per aconseguir-ho, el primer que cal fer és activar l'`AngularFireAuthModule` dins del fitxer `app.module.ts`.
+Per aconseguir-ho, el primer que cal fer és activar la dependència del servei d'autenticació dins del fitxer `app.module.ts`.
 
 ```typescript
 ...
 import { environment } from 'src/environments/environment';
-import { AngularFireModule } from '@angular/fire/compat';
-import { AngularFireAuthModule } from '@angular/fire/compat/auth';
-
-import { AppComponent } from './app.component';
+import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
+import { provideFirestore, getFirestore } from '@angular/fire/firestore';
+import { getAuth, provideAuth } from '@angular/fire/auth';
 
 @NgModule({
-  declarations: [ AppComponent ],
+  declarations: [AppComponent],
   imports: [
-   ...
-   AngularFireModule.initializeApp(environment.firebaseConfig),
-   AngularFireAuthModule
+    ...
+    provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
+    provideFirestore(() => getFirestore()),
+    provideAuth(() => getAuth())
   ],
   providers: [],
   bootstrap: [AppComponent]
@@ -415,60 +415,53 @@ import { AppComponent } from './app.component';
 export class AppModule { }
 ```
 
-A continuació també cal crear el servei `SessionService` (el nom del servei és a gust del desenvolupador) que permeti fer tota la gestió de la sessió. Aquest servei hauria d'injectar l'`AngularFireAuth`, que és el servei que proporciona la llibreria `@angular/fire` per gestionar l'autenticació d'usuaris.
+A continuació també cal crear el servei `AuthSessionService` (el nom del servei és a gust del desenvolupador) que permeti fer tota la gestió de la sessió. Aquest servei hauria d'injectar el serveu l'`Auth`, que és el servei que proporciona la llibreria `@angular/fire` per gestionar l'autenticació d'usuaris.
 
 ```typescript
 import { Injectable } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { Auth } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root'
 })
-export class LoginService {
-  constructor(private _auth: AngularFireAuth) {}
+export class AuthSessionService {
+  constructor(private _auth: Auth) {}
 }
 ```
 
 #### Creació de nous usuaris (registre)
 Si l'aplicació que es desitja crear permet l'inici de sessió utilitzant un correu electrònic i una contrasenya, el primer que cal fer és crear els comptes d'usuaris, és a dir, fer-ne el registre.
 
-El servei `AngularFireAuth` ofereix el mètode `createUserWithEmailAndPassword()` per tal d'aconseguir-ho, el qual retorna un objecte de tipus `Promise<UserCredential>` si el procés de registre ha anat bé. Així doncs, el codi bàsic per poder crear un nou compte és el que es mostra a continuació.
+El servei `Auth` ofereix el mètode `createUserWithEmailAndPassword()` per tal d'aconseguir-ho, el qual retorna un objecte de tipus `Promise<UserCredential>` si el procés de registre ha anat bé. Així doncs, el codi bàsic per poder crear un nou compte és el que es mostra a continuació.
 
 ```typescript
 import { Injectable } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { Auth, UserCredential, createUserWithEmailAndPassword } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root'
 })
-export class LoginService {
-
-  constructor(private _auth: AngularFireAuth) {}
+export class AuthSessionService {
+  constructor(private _auth: Auth) {}
 
   register(email: string, passwd: string): void {
-    this._auth.createUserWithEmailAndPassword(email, passwd).then(
-      (userCredential: any) => {       
-         /*Aquest paràmetre hauria de ser de tipus UserCredential, de la llibreria firebase/auth, però per raons de compatibilitat, Angular no detecta bé el tipus i es canvia a 'any'*/
-        console.log(userCredential);
-      }
+    createUserWithEmailAndPassword(this._auth, email, passwd).then(
+      (userCredential: UserCredential) => {console.log(userCredential);}
     ).catch(
-      (msg: any) => {
-        console.log(msg);
-      }
+      (error: any) => {console.log(error);}
     ).finally(
-      () => {
-         console.log("Registre finalitzat");
-      }
+      () => {console.log("Registre finalitzat");}
     );
   }
 }
 ```
+
 Com es pot comprovar en aquest codi, un objecte `Promise<UserCredential>` implica que el mètode que es llença en segon pla, en aquest cas `createUserWithEmailAndPassword`, promet retornar un objecte de tipus `UserCredential`. El tractament d'una `Promise` és força similar al d'un `Observer`, però, en aquest cas, les funcions anònimes que cal implementar són les següents:
 * `then`: codi que s'executa quan tot ha anat bé
 * `catch`: codi que s'executa quan s'ha produït un error
 * `finally`: codi que s'executa sempre, és a dir, després de `then` i de `catch`.
 
-Si s'executa el mètode `register()` del service `SessionService` amb l'usuari `mcerve44@xtec.cat` i la contrasenya `123456` es pot comprovar la creació del nou compte al *dashboard* d'autenticació de *Firebase*.
+Si s'executa el mètode `register()` del service `AuthSessionService` amb l'usuari `mcerve44@xtec.cat` i la contrasenya `123456` es pot comprovar la creació del nou compte al *dashboard* d'autenticació de *Firebase*.
 
 ![Resultat de registrar un nou compte](img/firebase_auth_register.png)
 
@@ -476,36 +469,102 @@ Si s'executa el mètode `register()` del service `SessionService` amb l'usuari `
 L'inici de sessió difereix força depenent de si es vol fer a través de correu electrònic i contrasenya o a través d'un servei d'autenticació com, per exemple, el propi de Google.
 
 #### Inici de sessió amb correu electrònic i contrasenya
-Per assolir aquet tipus d'autenticació el servei `AngularFirebaseAuth` ofereix el mètode `signInWithEmailAndPassword()`, el qual també retorna un objecte de tipus `Promise<UserCredential>`. Per tant, el codi bàsic per fer l'inici de sessió és molt similar a l'anterior.
+Per assolir aquet tipus d'autenticació el servei `Auth` ofereix el mètode `signInWithEmailAndPassword()`, el qual també retorna un objecte de tipus `Promise<UserCredential>`. Per tant, el codi bàsic per fer l'inici de sessió és molt similar a l'anterior.
 ```typescript
 import { Injectable } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { Auth, UserCredential, createUserWithEmailAndPassword, signInWithEmailAndPassword } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root'
 })
-export class LoginService {
-
-  constructor(private _auth: AngularFireAuth) {}
+export class AuthSessionService {
+  constructor(private _auth: Auth) {}
   register(email: string, passwd: string): void {...}
 
   loginWithEmail(email: string, passwd: string): void {
-    this._auth.signInWithEmailAndPassword(email, passwd).then(
-      (user: any) => {
-        console.log(user);
-      }
+    signInWithEmailAndPassword(this._auth, email, passwd).then(
+      (userCredential: UserCredential) => {console.log(userCredential);}
     ).catch(
-      (msg: any) => {
-        console.log(msg);
-      }
+      (error: any) => {console.log(error);}
     ).finally(
-      () => {
-        console.log("Inici de sessió finalitzat");
-      }
+      () => {console.log("Inici de sessió finalitzat");}
+    );
+  }
+}
+```
+
+#### Inici de sessió amb el servei d'autenticació de Google
+En cas que es vulgui utilitzar el servei (o proveïdor) d'autenticació de Google, el servei `Auth` proporciona el mètode `signInWithPopup()`, el qual necessita rebre un objecte del proveïdor desitjat, en aquest cas Google, i retorna, altre cop, un objecte de tipus `Promise<UserCredential>`.
+```typescript
+import { Injectable } from '@angular/core';
+import { Auth, GoogleAuthProvider, UserCredential, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup } from '@angular/fire/auth';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AuthSessionService {
+  constructor(private _auth: Auth) {}
+  register(email: string, passwd: string): void {...}
+  loginWithEmail(email: string, passwd: string): void {...}
+
+  loginWithGoogle(): void {
+    signInWithPopup(this._auth, new GoogleAuthProvider()).then(
+      (userCredential: UserCredential) => {console.log(userCredential);}
+    ).catch(
+      (error: any) => {console.log(error);}
+    ).finally(
+      () => {console.log("Inici de sessió finalitzat");}
     );
   }
 }
 ```
 
 
-#### Inici de sessió amb el servei d'autenticació de Google
+### Tancament de sessió (logout)
+El tancament de sessió, s'hagi iniciat aquesta com s'hagi iniciat, és molt senzill i només necessita utilitzar el mètode `signOut()` que ofereix el servei `Auth`.
+```typescript
+import { Injectable } from '@angular/core';
+import { Auth, GoogleAuthProvider, UserCredential, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup } from '@angular/fire/auth';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AuthSessionService {
+  constructor(private _auth: Auth) {}
+  register(email: string, passwd: string): void {...}
+  loginWithEmail(email: string, passwd: string): void {...}
+  loginWithGoogle(): void {...}
+
+  logout(): void {
+    signOut(this._auth).then(
+      () => {}
+    ).catch(
+      (error: any) => {console.log(error);}
+    ).finally(
+      () => {console.log("Sessió tancada")}
+    );
+  }
+}
+```
+
+### Obtenció de l'usuari autenticat
+Per tal d'obtenir les dades de l'usuari autenticat, el servei `Auth` té l'atribut `currentUser`, de tipus `User`.
+```typescript
+import { Injectable } from '@angular/core';
+import { Auth, GoogleAuthProvider, User, UserCredential, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, signOut } from '@angular/fire/auth';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AuthSessionService {
+   constructor(private _auth: Auth) {}
+   register(email: string, passwd: string): void {...}
+   loginWithEmail(email: string, passwd: string): void {...}
+   loginWithGoogle(): void {...}
+   logout(): void {...}
+
+   get currentUser(): User | null {
+      return this._auth.currentUser;
+   }
+}
+```
