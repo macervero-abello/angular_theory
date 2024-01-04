@@ -468,7 +468,7 @@ Si s'executa el mètode `register()` del service `AuthSessionService` amb l'usua
 #### Inici de sessió (login)
 L'inici de sessió difereix força depenent de si es vol fer a través de correu electrònic i contrasenya o a través d'un servei d'autenticació com, per exemple, el propi de Google.
 
-#### Inici de sessió amb correu electrònic i contrasenya
+##### Inici de sessió amb correu electrònic i contrasenya
 Per assolir aquet tipus d'autenticació el servei `Auth` ofereix el mètode `signInWithEmailAndPassword()`, el qual també retorna un objecte de tipus `Promise<UserCredential>`. Per tant, el codi bàsic per fer l'inici de sessió és molt similar a l'anterior.
 ```typescript
 import { Injectable } from '@angular/core';
@@ -493,7 +493,7 @@ export class AuthSessionService {
 }
 ```
 
-#### Inici de sessió amb el servei d'autenticació de Google
+##### Inici de sessió amb el servei d'autenticació de Google
 En cas que es vulgui utilitzar el servei (o proveïdor) d'autenticació de Google, el servei `Auth` proporciona el mètode `signInWithPopup()`, el qual necessita rebre un objecte del proveïdor desitjat, en aquest cas Google, i retorna, altre cop, un objecte de tipus `Promise<UserCredential>`.
 ```typescript
 import { Injectable } from '@angular/core';
@@ -520,7 +520,7 @@ export class AuthSessionService {
 ```
 
 
-### Tancament de sessió (logout)
+#### Tancament de sessió (logout)
 El tancament de sessió, s'hagi iniciat aquesta com s'hagi iniciat, és molt senzill i només necessita utilitzar el mètode `signOut()` que ofereix el servei `Auth`.
 ```typescript
 import { Injectable } from '@angular/core';
@@ -547,7 +547,7 @@ export class AuthSessionService {
 }
 ```
 
-### Obtenció de l'usuari autenticat
+#### Obtenció de l'usuari autenticat
 Per tal d'obtenir les dades de l'usuari autenticat, el servei `Auth` té l'atribut `currentUser`, de tipus `User`.
 ```typescript
 import { Injectable } from '@angular/core';
@@ -566,5 +566,28 @@ export class AuthSessionService {
    get currentUser(): User | null {
       return this._auth.currentUser;
    }
+}
+```
+
+#### Consulta per saber si la sessió s'ha iniciat o no
+Hi ha diverses maneres de saber si l'usuari ha iniciat sessió o no, però una de les més senzilles és aprofitar el valor de la propietat `currentUser`: si l'objecte és `null`, la sessió no s'ha iniciat; si l'objecte té valor, la sessió s'ha iniciat.
+```typescript
+import { Injectable } from '@angular/core';
+import { Auth, GoogleAuthProvider, User, UserCredential, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, signOut } from '@angular/fire/auth';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AuthSessionService {
+   constructor(private _auth: Auth) {}
+   register(email: string, passwd: string): void {...}
+   loginWithEmail(email: string, passwd: string): void {...}
+   loginWithGoogle(): void {...}
+   logout(): void {...}
+   get currentUser(): User | null {...}
+
+   isSessionActive(): boolean {
+    return this.currentUser != null;
+  }
 }
 ```
