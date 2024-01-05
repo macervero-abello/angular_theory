@@ -92,17 +92,19 @@ S'ha definit que a la ruta `/login` només s'hi podrà accedir en cas que l'usua
 
       if(route.url[0].path == "login") {
          if(authSessionService.isSessionActive()) {
-            console.log("LOGIN - AUTHENTICATED - REDIRECTO TO HOME")
+            //S'intenta accedir a "/login" un cop iniciada la sessió => Redirecció a "/home"
             router.navigate(["/home"]);
             return false;
          } else {
-            console.log("LOGIN - NOT AUTHENTICATED - ENTERING")
+            //S'intenta accedir a "/login" sense cap sessió iniciada => Accés permès
             return true;
          }
       } else {
-         if(authSessionService.isSessionActive()) return true;
-         else {
-            console.log("GENERAL - NOT AUTHENTICATED - REDIRECTO TO LOGIN")
+         if(authSessionService.isSessionActive()) {
+            //S'intenta accedir a "/dashboard" o a "/logout" amb la sessió iniciada => Accés permès
+            return true;
+         } else {
+            //S'intenta accedir a "/dashboard" o a "/logout" sense sessió iniciada => Redirecció a "/login"
             router.navigate(["/login"]);
             return false;
          }
@@ -110,4 +112,16 @@ S'ha definit que a la ruta `/login` només s'hi podrà accedir en cas que l'usua
    };
 ```
 
+## Protecció de les rutes
+Un cop definida la guarda cal aplicar-la a les rutes i, per tant, modificar el fitxer `app.module.ts` de la manera següent:
+```typescript
+   const routes: Routes = [
+      { path: 'home', component: HomeComponent },
+      { path: 'login', component: LoginComponent, canActivate: [authGuard] },
+      { path: 'logout', component: LogoutComponent, canActivate: [authGuard] },
+      { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard] },
+      { path: '', redirectTo: 'home', pathMatch: 'full' }
+   ];
+```
 
+Totes aquelles rutes que han de quedar protegides per la guarda necessiten definir la propietat `canActivate`, el valor de la qual és un `array` de totes aquelles guardes que es volen aplicar, en el cas de l'exemple, `authGuard`.
