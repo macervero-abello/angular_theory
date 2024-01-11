@@ -124,4 +124,4 @@ Un cop definida la guarda cal aplicar-la a les rutes i, per tant, modificar el f
    ];
 ```
 
-Totes aquelles rutes que han de quedar protegides per la guarda necessiten definir la propietat `canActivate`, el valor de la qual és un `array` de totes aquelles guardes que es volen aplicar, en el cas de l'exemple, `authGuard`.
+Totes aquelles rutes que han de quedar protegides per la guarda necessiten definir la propietat `canActivate`, el valor de la qual és un `array` que conté totes aquelles guardes que es volen aplicar, en el cas de l'exemple, només `authGuard`.
