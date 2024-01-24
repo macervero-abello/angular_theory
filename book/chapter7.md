@@ -493,7 +493,7 @@ La crida d'aquesta funció (en el component d'inici de sessió) es farà com mos
 
 ```typescript
   async register(email: string, passwd: string): Promise<void> {
-    let logged = await this._authSessionService.loginWithEmail(email, passwd);
+    let logged = await this._authSessionService.register(email, passwd);
   }
 ```
 
@@ -550,6 +550,15 @@ export class AuthSessionService {
 }
 ```
 
+La crida correspon al codi que es mostra a continuació, el qual aniria al component gestor de la funcionalitat de login:
+```typescript
+  async login(email: string, passwd: string): Promise<void> {
+    let logged = await this._authSessionService.loginWithEmail(email, passwd);
+    console.log("Logged: " + logged);
+  }
+```
+
+
 
 ##### Inici de sessió amb el servei d'autenticació de Google
 En cas que es vulgui utilitzar el servei (o proveïdor) d'autenticació de Google, el servei `Auth` proporciona el mètode `signInWithPopup()`, el qual necessita rebre un objecte del proveïdor desitjat, en aquest cas Google, i retorna, altre cop, un objecte de tipus `Promise<UserCredential>`.
@@ -576,7 +585,7 @@ export class AuthSessionService {
   }
 }
 ```
-<!--
+
 La versió bloquejant del codi és la següent:
 ```typescript
 import { Injectable } from '@angular/core';
@@ -591,19 +600,24 @@ export class AuthSessionService {
   async loginWithEmail(email: string, passwd: string): Promise<boolean> {...}
 
   async loginWithGoogle(): Promise<boolean> {
-   try {
-      signInWithPopup(this._auth, new GoogleAuthProvider()).then(
-        (userCredential: UserCredential) => {console.log(userCredential);}
-      ).catch(
-        (error: any) => {console.log(error);}
-      ).finally(
-        () => {console.log("Inici de sessió finalitzat");}
-      );
-   }
+    try {
+      let userCredential = signInWithPopup(this._auth, new GoogleAuthProvider());
+      return true;
+    } catch(error: any) {
+      console.log(error);
+      return false;
+    }
   }
 }
 ```
--->
+
+La crida és la següent:
+```typescript
+  async login(): Promise<void> {
+    let logged = await this._authSessionService.loginWithGoogle();
+    console.log("Logged: " + logged);
+  }
+```
 
 
 #### Tancament de sessió (logout)
@@ -632,6 +646,41 @@ export class AuthSessionService {
   }
 }
 ```
+
+Versió del codi bloquejant:
+```typescript
+import { Injectable } from '@angular/core';
+import { Auth, GoogleAuthProvider, UserCredential, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup } from '@angular/fire/auth';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AuthSessionService {
+  constructor(private _auth: Auth) {}
+  async register(email: string, passwd: string): Promise<boolean> {...}
+  async loginWithEmail(email: string, passwd: string): Promise<boolean> {...}
+  async loginWithGoogle(): Promise<boolean> {...}
+
+  async logout(): Promise<boolean> {
+    try {
+      await signOut(this._auth);
+      return true;
+    } catch(error: any) {
+      console.log(error);
+      return false;
+    }
+  }
+}
+```
+
+I la crida
+```typescript
+  async logout(): Promise<void> {
+    let logged_out = await this._authSessionService.logout();
+    console.log("Logged out: " + logged_out);
+  }
+```
+
 
 #### Obtenció de l'usuari autenticat
 Per tal d'obtenir les dades de l'usuari autenticat, el servei `Auth` té l'atribut `currentUser`, de tipus `User`.
