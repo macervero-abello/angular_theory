@@ -9,5 +9,5 @@
 * [Capítol 6. Lectura d'un fitxer JSON](book/chapter6.md)
 * [Capítol 7. Firebase](book/chapter7.md)
 * [Capítol 8. Guardes de ruta](book/chapter8.md)
-* [Capítol 9. Workspace: una aplicació, multiples GUI](book/chapter9.md)
+* [Capítol 9. Workspace: una aplicació, múltiples GUI](book/chapter9.md)
 * [Capítol 10. Creació d'un projecte Ionic](book/chapter10.md)
