@@ -33,3 +33,33 @@ Si el projecte Angular al qual es vol afegir el framework Ionic ja està creat, 
 Cal parar compte si el projecte Angular inicial no és independent, és a dir, pertany a un *workspace*. En aquest cas, després d'executar la comanda cal revisar que el fitxer `angular.json` conté la configuració correcta i que aquesta només afecta al projecte que ens interessa.
 
 Per tal d'obtenir més informació en el moment de treballar amb *Worspaces*, Angular i Ionic a la vegada, vegeu el següent [enllaç](https://javascript.plainenglish.io/multi-projects-setup-for-angular-and-ionic-applications-70bc1d918758).
+
+## Estructura d'un projecte Ionic
+Un cop creat el projecte, sigui per un mètode o per un altre, l'estructura que es genera és molt similar a la d'un projecte Angular, tal com mostra la figura següent:
+
+![Estructura d'un projecte Ionic](img/ionic_structure.png)
+
+Les diferencies que es poden apreciar respecte d'un projecte Angular són les següents:
+1. Els estils es defineixen mitjançant SCSS i el fitxer `styles.css` canvia el seu nom per `global.scss`
+2. S'afegeix la carpeta `theme` amb el fitxer `variables.scss`
+3. S'afegeix el fitxer ionic.config.json, que conté la configuració Ionic del projecte
+4. S'afegeix el fitxer capacitor.config.ts, el qual permetrà configurar les capacitats de `Capacitor` per tal de poder crear l'instal·lador de l'aplicació mòbil i també accedir a les funcionalitats de `hardware` dels dispositius (càmera, sistema de fitxers, etc.).
+5. S'afegeix el fitxer `karma.conf.js`, que permet configurar tests de les funcionalitats de l'aplicació.
+
+## Execució del servidor *on-the-fly*
+Tal com passa amb Angular, Ionic també ofereix un servidor *on-the-fly* que ens permet executar la nova aplicació al navegador a mesura que l'anem implementant. Per iniciar aquest servidor cal executar la comanda
+```bash
+    ionic serve
+```
+Fet això, el servidor per defecte s'obre sobre l'adreça `localhost:8100`
+
+## Correspondència de comandes entre Angular i Ionic
+Quan un projecte Angular també conté Ionic, les comandes de terminal que s'han d'utilitzar passen a ser les d'Ionic, de tal manera que la correspondència és la següent
+
+|                      | Angular               | Ionic                      |
+| -------------------- | --------------------- | -------------------------- |
+| Crear el projecte    | `ng new project_name` | `ionic start project_name` |
+| Iniciar el servidor  | `ng serve`            | `ionic serve`              |
+| Compilar l'aplicació | `ng build`            | `ionic build`              |
+| Generar un component | `ng generate ...`     | `ng generate ...`          |
+
