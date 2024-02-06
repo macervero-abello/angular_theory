@@ -10,4 +10,6 @@
 * [Capítol 7. Firebase](book/chapter7.md)
 * [Capítol 8. Guardes de ruta](book/chapter8.md)
 * [Capítol 9. Workspace: una aplicació, múltiples GUI](book/chapter9.md)
-* [Capítol 10. Creació d'un projecte Ionic](book/chapter10.md)
+* [Capítol 10. Publicació d'una aplicació Angular a GitHub Pages](book/chapter10.md)
+* [Capítol 11. Creació d'un projecte Ionic](book/chapter11.md)
+* [Capítol 12. *Routing* i components de navegació amb Ionic](book/chapter12.md)
