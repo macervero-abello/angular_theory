@@ -20,5 +20,11 @@ Per crear un nou projecte Ionic des de zero cal executar la comanda
 ```
 
 ### Afegir Ionic a un projecte Angular ja existent
+Si el projecte Angular al qual es vol afegir el framework Ionic ja està creat, la comanda a executar és la següent:
+```bash
+    ng add @ionic/angular
+```
 
-https://javascript.plainenglish.io/multi-projects-setup-for-angular-and-ionic-applications-70bc1d918758
+Cal parar compte si el projecte Angular inicial no és independent, és a dir, pertany a un *workspace*. En aquest cas, després d'executar la comanda cal revisar que el fitxer `angular.json` conté la configuració correcta i que aquesta només afecta al projecte que ens interessa.
+
+Per tal d'obtenir més informació en el moment de treballar amb *Worspaces*, Angular i Ionic a la vegada, vegeu el següent [enllaç](https://javascript.plainenglish.io/multi-projects-setup-for-angular-and-ionic-applications-70bc1d918758).
