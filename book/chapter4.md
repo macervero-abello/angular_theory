@@ -576,6 +576,43 @@ Això significa que cada cop que l'usuari entra per primer cop a una pàgina, hi
 
 Aquest tipus de *routing* és el més addient, especialment en aplicacions web molt grans.
 
+### Passos inicials per poder configurar el *lazy routing*
+Per tal de poder configurar el *lazy routing*, cada pàgina de la nostra aplicació, és a dir, cada component que pugui ser enrutat, ha de tenir associats dos fitxers:
+1. `component_name-routing.module.ts` i 
+2. `component_name.module.ts`.
+
+En el cas dep component inicial (`AppComponent`), aquests dos fitxers són l'`app-routing.module.ts` i l'`app.module.ts`.
+
+Si en el moment de crear el nou projecte Angular ja indiquem que volem gestionar el routing mitjançant la comanda
+```bash
+  ng new project_name --routing true
+```
+ja es creen els dos fitxers. En canvi, si volem afegir *lazy routing* a un projecte Angular ja existent, el primer que caldrà fer és crear el fitxer `app-routing.module.ts`. Per fer-ho, només cal executar la següent comanda:
+```bash
+  ng generate module app-routing --module app --flat
+```
+Això és crearà el fitxer que falta i actualitzarà els `imports` de l'`app.module.ts` correctament:
+```typescript:highlight={5,13}:title="Actualització app.module.ts"
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+
+import { AppComponent } from './app.component';
+import { AppRoutingModule } from './app-routing.module';
+
+@NgModule({
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+```
+
 ## Remarcar l'enllaç del menú corresponent a la ruta activa
 En els menús de les nostres pàgines i aplicacions web és molt útil deixar remarcat el botó o l'enllaç corresponent a la ruta que hi ha activa en cada moment. Per fer-ho podem utilitzar l'atribut `routerLinkActive`, proporcionat per Angular. Aplicant un *property binding* a aquest atribut es pot definir l'estil que cal aplicar quan es detecti que la `URL` conté la ruta a la qual fa referència.
 
