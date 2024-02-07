@@ -19,10 +19,14 @@ Per crear un nou projecte Ionic des de zero cal executar la comanda
 ```
 
 Aquesta comanda iniciarà un procés de configuració bàsic on es demanarà que s'escullin les opcions següents:
-1. Framework &rarr; Angular
-2. Starter template &rarr; blank
-3. Components &rarr; NgModules
+1. Framework &rarr; `Angular`
+2. Starter template &rarr; `blank`
+3. Components &rarr; `NgModules`
 4. Ionic account &rarr; No
+
+> [!WARNING]
+>
+> Quan es crea un projecte Ionic v7, la versió d'Angular que s'utilitza és la versió 17, per tant, per evitar més d'un mal de cap amb les modificacions que s'han fet a la versió 17, és molt important que indiqueu que voleu crear una aplicació amb els components basats en `NgModules` (punt 3 del llistat anterior)
 
 ### Afegir Ionic a un projecte Angular ja existent
 Si el projecte Angular al qual es vol afegir el framework Ionic ja està creat, la comanda a executar és la següent:

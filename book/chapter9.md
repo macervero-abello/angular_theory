@@ -46,6 +46,12 @@ La carpeta `lib`, corresponent a la llibreria `Lib` té el següent contingut:
 
 El nostre codi anirà dins del directori `src/lib`. A més a més, el fitxer `public-api.ts` ens permetrà indicar els fitxers als quals es podrà accedir des de les aplicacions externes.
 
+> [!IMPORTANT]
+>
+> Si utilitzeu la versió 17 d'Angular (comprovar-ho al fitxer `package.json`), per evitar problemes amb les novetats d'aquesta versió respecte de l'anterior, cal crear les noves aplicacions del *Workspace* amb la compnda següent:
+>
+> `ng generate application --standalone false application_name`
+
 ## Distribució del codi entre la llibreria i les aplicacions
 Cal tenir en compte que tant les llibreries com les aplicacions poden tenir tot tipus de codi: models, *services* i components entre altres. Ara però, si el que desitgem és externalitzar el codi comú de múltiples aplicacions en una única llibreria que puguin utilitzar totes elles, tenint en compte que estem aplicant el patró de disseny de *software* **Model-View-Controller** (MVC), el que cal fer és el següent:
  1. la llibreria contindrà tot el codi del nucli (*core*) de les aplicacions, és a dir, el codi corresponent als *Controllers* (*services*) i als *Models*
