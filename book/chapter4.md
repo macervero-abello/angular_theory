@@ -613,6 +613,14 @@ import { AppRoutingModule } from './app-routing.module';
 export class AppModule { }
 ```
 
+Addicionalment, però, cal modificar el mòdul `app-routing.module.ts` per tal de configurar-lo per acceptar les rutes
+
+#### Contextualització d'un exemple
+Per fer l'explicació seguirem el mateix exemple que s'ha utilitzat en l'explicació del *routing* tradicional, dues pàgines: la pàgina `home`, definida al `HomeComponent`, i la pàgina `about`, definida a l'`AboutComponent`.
+
+#### Configuració dels fragments de les rutes i activació del servei de routing
+
+
 ## Remarcar l'enllaç del menú corresponent a la ruta activa
 En els menús de les nostres pàgines i aplicacions web és molt útil deixar remarcat el botó o l'enllaç corresponent a la ruta que hi ha activa en cada moment. Per fer-ho podem utilitzar l'atribut `routerLinkActive`, proporcionat per Angular. Aplicant un *property binding* a aquest atribut es pot definir l'estil que cal aplicar quan es detecti que la `URL` conté la ruta a la qual fa referència.
 
