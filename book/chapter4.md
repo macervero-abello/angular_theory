@@ -792,38 +792,16 @@ En el *lazy routing* tenim, exactament, la mateixa casuística de tipus de subru
 L'únic que canvia respecte del *routing* tradicional és la manera com configurem els `routing.module` corresponents; la resta (etiquetes `<router-outlet>`, navegació, captació dels paràmetres amb el *service* `ActivatedRoute`) funciona exactament igual.
 
 #### Subrutes estàtiques
-
-##### Subrutes estàtiques que són pàgines diferents (independents)
-Seguint el mateix exemple que en el cas del *routing* tradicional, si volem crear una pàgina `contact` subruta de la pàgina `home` caldrà crear el nou component a partir de la següent comanda
-```bash
-ng generate module view/pages/home/contact  --route contact --module view/pages/home/home.module
-```
-Fixeu-vos que aquesta comanda indica que el component i la ruta `contact` depenen del mòdul `home.module.ts`, per tant, ja no és una ruta principal, sinó una ruta niada (`/home/contact`). Així doncs, el mòdul `home-routing.module.ts` queda de la manera següent:
-```typescript
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './home.component';
-
-const routes: Routes = [
-  { path: '', component: HomeComponent },
-  { path: 'contact', loadChildren: () => import('./contact/contact.module').then(m => m.ContactModule) }
-];
-
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
-})
-export class HomeRoutingModule { }
-```
-Fet això, ja queda activa la ruta `/home/contact`, essent `home` i `contact` dues pàgines independents visualment.
+Per fer l'explicació seguirem el mateix exemple que en el cas del *routing* tradicional i crearem una pàgina `contact` que pengi de la pàgina `home`.
 
 ##### Subrutes estàtiques que formen part d'una altra pàgina (dependents)
-Per fer que la ruta `contact` formi part de la pàgina `home` cal seguir els passos següents:
+Si volem crear una pàgina `contact` subruta de la pàgina `home` (`contact` formarà part de la pàgina `home`) caldrà seguir els passos següents:
 1. El fitxer `home.component.html` haurà d'incloure l'etiqueta `<router-outlet>`
 2. El nou component es crearà a partir de la mateixa comanda que en el cas anterior
 ```bash
 ng generate module view/pages/home/contact  --route contact --module view/pages/home/home.module
 ```
+Fixeu-vos que aquesta comanda indica que el component i la ruta `contact` depenen del mòdul `home.module.ts`, per tant, ja no és una ruta principal (les principals són les que apareixen a `app-routing.module.ts`), sinó una ruta niada (`/home/contact`).
 3. Cal modificar el fitxer `home-routing.module.ts` per tal que les rutes siguin dependents l'una de l'altra mitjançant la propietat `children` i, a més a més, aconseguir que tots dos components es mostrin en pantalla en cas que l'usuari activi la ruta `/home/contact`:
 ```typescript
 import { NgModule } from '@angular/core';
@@ -841,7 +819,90 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class HomeRoutingModule { }
+```
 
+##### Subrutes estàtiques que són pàgines diferents (independents)
+Seguint el mateix exemple, si volem crear una pàgina `contact` subruta de la pàgina `home`, però essent pàgines independents, caldrà crear el nou component a partir de la següent comanda
+```bash
+ng generate module view/pages/home/contact  --route contact --module view/pages/home/home.module
+```
+Fet això, el mòdul `home-routing.module.ts` queda de la manera següent:
+```typescript
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { HomeComponent } from './home.component';
+
+const routes: Routes = [
+  { path: '', component: HomeComponent },
+  { path: 'contact', loadChildren: () => import('./contact/contact.module').then(m => m.ContactModule) }
+];
+
+@NgModule({
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
+})
+export class HomeRoutingModule { }
+```
+Aquest codi activa la ruta `/home/contact`, essent `home` i `contact` dues pàgines independents visualment.
+
+Una altra manera vàlida d'activar la mateixa ruta i que depèn de l'estil del programador (a uns els agradarà més d'una manera i a altres d'una altra) s'aconsegueix modificant el `home-routing.module.ts` de la manera següent:
+```typescript
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { HomeComponent } from './home.component';
+
+const routes: Routes = [
+  { path: '', children: [
+    { path: '', component: HomeComponent }, 
+    { path: 'contact', loadChildren: () => import('./contact/contact.module').then(m => m.ContactModule) }
+  ]},
+];
+
+@NgModule({
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
+})
+export class HomeRoutingModule { }
+```
+Totes dues opcions funcionen correctament; la segona, però, s'assembla més a la versió del *routing* tradicional.
+
+### Subrutes parametritzades
+Per seguir l'explicació d'aquest apartat, també seguirem el mateix exemple que en el cas de *routing* tradicional i, per tant, suposarem que tenim una pàgina que mostra un llistat d'elements. Cada cop que l'usuari premi un d'aquests elements es mostrarà una nova ruta amb totes les seves dades detallades. La URL de la llista serà `localhost:4200/list` i la que mostrarà els detalls de cadascun dels elements `localhost:4200/home/0`, on 0 és el paràmetre i serà un identificador o un valor que estigui enllaçat a l'element que volem visualitzar.
+
+Per crear la ruta `list` haurem executat la comanda:
+```bash
+ng generate module view/pages/list  --route list --module app.module
+```
+la qual haurà generat el component `ListComponent` amb el seus mòduls (`list.module.ts` i `list-routing.module.ts`) i també haurà modificat el mòdul `app-routing.module.ts` de la manera següent:
+```typescript
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+
+const routes: Routes = [
+  { path: 'home', loadChildren: () => import('./view/pages/home/home.module').then(m => m.HomeModule) },
+  { path: 'about', loadChildren: () => import('./view/pages/about/about.module').then(m => m.AboutModule) },
+  { path: 'list', loadChildren: () => import('./view/pages/list/list.module').then(m => m.ListModule) },
+  { path: '', redirectTo: 'home', pathMatch: 'full'},
+  { path: '**', loadChildren: () => import('./view/pages/page-not-found/page-not-found.module').then(m => m.PageNotFoundModule) }
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
+```
+
+##### Subrutes parametritzades que formen part d'una altra pàgina
+Per configurar la ruta s'han de seguir els mateixos passos que en el cas de les rutes estàtiques que formen part d'una altra pàgina. Ara però, en aquest cas, la comanda a executar serà la següent:
+```bash
+ng generate module view/pages/list/details  --route ':id' --module view/pages/list/list.module
+```
+
+##### Subrutes parametritzades que són pàgines diferents
+Per configurar la ruta s'han de seguir els mateixos passos que en el cas de les rutes estàtiques que són pàgines diferents. Ara però, en aquest cas, la comanda a executar serà la següent:
+```bash
+ng generate module view/pages/list/details  --route ':id' --module view/pages/list/list.module
 ```
 
 ## Remarcar l'enllaç del menú corresponent a la ruta activa
