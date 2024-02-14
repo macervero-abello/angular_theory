@@ -10,7 +10,7 @@ A continuació s'expliquen les diverses metodologies
 
 ## *Routing*
 Tal com passa amb qualsevol aplicació Angular, el component `AppComponent` fa de contenidor principal de les diverses pàgines que es mostren a través del sistema d'enrutament. Ara però, aquest cop, l'etiqueta encarregada de generar aquest contenidor no és la `<router-outlet></router-outlet>`, sinó que l'estructura `HTML` és la següent:
-```bash
+```html
     <ion-app>
         <ion-router-outlet></ion-router-outlet>
     </ion-app>
