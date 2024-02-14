@@ -12,5 +12,5 @@
 * [Capítol 9. Workspace: una aplicació, múltiples GUI](book/chapter9.md)
 * [Capítol 10. Publicació d'una aplicació Angular a GitHub Pages](book/chapter10.md)
 * [Capítol 11. Creació d'un projecte Ionic](book/chapter11.md)
-* [Capítol 12. Creació de components (*pages*) i configuració del *Routing* amb Ionic](book/chapter12.md)
+* [Capítol 12. Creació de pàgines (*pages*) i configuració del *Lazy Routing* amb Ionic](book/chapter12.md)
 * [Capítol 13. Components de navegació amb Ionic](book/chapter13.md)

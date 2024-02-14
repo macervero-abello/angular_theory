@@ -16,7 +16,7 @@ Els continguts d'aquesta guia estan basats en les versions Angular v15 (puntualm
 
 ## Part II - Ionic
 * [Capítol 11. Creació d'un projecte Ionic](chapter11.md)
-* [Capítol 12. Creació de components (*pages*) i configuració del *Routing* amb Ionic](chapter12.md)
+* [Capítol 12. Creació de pàgines (*pages*) i configuració del *Lazy Routing* amb Ionic](chapter12.md)
 * [Capítol 13. Components de navegació amb Ionic](chapter13.md)
 
 ## Llicència
