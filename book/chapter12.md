@@ -26,9 +26,9 @@ ionic generate page view/pages/home
 El procés implica el següent:
 1. Creació del component `HomeComponent`
 2. Configuració del *lazy routing*:
- * Configuració de la ruta principal `home` a `app-routing.module.ts`
- * Configuració del mòdul `home.module.ts`
- * Configuració del mòdul d'enrutament `home-routing.module.ts`
+    1. Configuració de la ruta principal `home` a `app-routing.module.ts`
+    2. Configuració del mòdul `home.module.ts`
+    3. Configuració del mòdul d'enrutament `home-routing.module.ts`
 3. Creació del codi `HTML` bàsic d'una pàgina Ionic
 ```html
 <ion-header [translucent]="true">
