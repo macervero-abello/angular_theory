@@ -24,7 +24,7 @@ Suposem, com a exemple, la creació de la pàgina inicial `home` mitjançant la 
 ionic generate page view/pages/home
 ```
 El procés implica el següent:
-1. Creació del component `HomeComponent`
+1. Creació la pàgina `HomePage`
 2. Configuració del *lazy routing*:
     1. Configuració de la ruta principal `home` a `app-routing.module.ts`
     2. Configuració del mòdul `home.module.ts`

@@ -18,13 +18,60 @@ Tal com passa amb qualsevol aplicació Angular, el component `AppComponent` fa d
 
 L'etiqueta `<ion-app>` s'encarrega d'iniciarlitzar la part gràfica de l'aplicació i l'etiqueta `<ion-router-outlet>` actua de contenidor de rutes.
 
-A part d'aquesta diferència, també cal tenir en compte dos aspectes addicionals:
+A part d'aquesta diferència, també cal tenir en compte dos aspectes addicionals que ja s'han comentat en el capítol anterior:
 1. l'enrutament per defecte que defineix Ionic és el *Lazy Routing* i
 2. per generar una nova pàgina no crearem un `component`, sinó una `page`. Al cap i a la fi, una `page` no és res més que un `component`, però Ionic diferencia el concepte pàgina (`page`), com tot l'`HTML` que es mostra per una ruta en concret, i element d'una pàgina (`component`), com l'`HTML` corresponent a una part de la pàgina (una llista, la capçalera, el peu de pàgina, etc.). La comanda que cal utilitzar és la de `ionic generate page path/page_name`
 
 ## Navegació amb botons (i enllaços)
+La navegació mitjançant botons i enllaços es fa exactament igual que en Angular, és a dir, mitjançant
+* la propietat `routerLink` o
+* programaticament utilitzant el *service* `Router`.
 
-TODO
+Així doncs, si tenim dues pàgines `HomePage` i `AboutPage` amb les rutes `/home` i `/about` definides respectivament per cadascuna d'elles, podem navegar d'una pàgina a l'altra de la manera que mostra el codi següent:
+
+{% tabs %}
+{% tab title="Codi home.page.html" %}
+```html
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Home</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+    <ion-button [routerLink]="['/about']">About</ion-button>
+</ion-content>
+```
+{% endtab %}
+
+{% tab title="Codi about.page.html" %}
+```html
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>About</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-button (click)="goToHome()">Home</ion-button>
+</ion-content>
+```
+{% endtab %}
+
+{% tab title="Codi about.page.html" %}
+```html
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>About</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-button [routerLink]="['/home']">Home</ion-button>
+</ion-content>
+```
+{% endtab %}
+{% endtabs %}
 
 ## Navegació amb menú
 
