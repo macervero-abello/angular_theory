@@ -85,3 +85,6 @@ Un cop creada la llibreria i les aplicacions, per tal de poder-ho executar cal
  ```bash
    ng serve
  ```
+
+## Creació de nous elements dins d'una aplicació del *Workspace*
+Per crear qualsevol nou element dins d'una aplicació del *Workspace* (un *component*, un *service*, un *model*, etc.) cal fer-ho des de dins de la carpeta `src/app` de l'aplicació. Si s'intenta fer des de qualsevol altre lloc, les comandes de creació no funcionaran.
