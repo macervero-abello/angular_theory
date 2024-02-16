@@ -362,6 +362,16 @@ El mètode `set` utilitzat d'aquesta manera actualitza el document, si aquest ja
 
 En cas que, prèviament a l'actualització de les dades, no es tingui l'identificador de l'objecte que es vol modificar, es pot realitzar una selecció inicial mitjançant el mètode `query`.
 
+### Necessitat d'executar una petició a base de dades de manera seqüencial
+Com s'ha pogut comprovar en tots els altres apartats, la rebuda de dades des de la base de dades es basa en el patró *Observable* i, per tant, s'utilitza el mètode *subscribe()* per fer el tractament de la informació en segon pla.
+
+Pot ser que, en algun punt del vostre codi, necessiteu esperar la rebuda de dades de la base de dades per fer alguna comprovació abans de permetre que l'execució de l'aplicació continui amb normalitat. Tot i que no és gens recomanable, es pot seqüenciar mitjançant el mètode *firstValueFrom()*. Imaginem que volem rebre les dades de la taula de *chefs* de manera seqüencial; el codi que cal fer és el següent:
+```typescript
+async getChefsFromDB() {
+    let chefs: Chef[] = await firstValueFrom(collectionData(this._chefCollection, {'idField': 'id'}));
+}
+```
+
 ## Autenticació
 El primer que cal fer és configurar el servei d'autenticació des del *dashboard* de *Firebase* seguint els passos següents:
 
@@ -497,7 +507,6 @@ La crida d'aquesta funció (en el component d'inici de sessió) es farà com mos
   }
 ```
 
-
 #### Inici de sessió (login)
 L'inici de sessió difereix força depenent de si es vol fer a través de correu electrònic i contrasenya o a través d'un servei d'autenticació com, per exemple, el propi de Google.
 
@@ -557,8 +566,6 @@ La crida correspon al codi que es mostra a continuació, el qual aniria al compo
     console.log("Logged: " + logged);
   }
 ```
-
-
 
 ##### Inici de sessió amb el servei d'autenticació de Google
 En cas que es vulgui utilitzar el servei (o proveïdor) d'autenticació de Google, el servei `Auth` proporciona el mètode `signInWithPopup()`, el qual necessita rebre un objecte del proveïdor desitjat, en aquest cas Google, i retorna, altre cop, un objecte de tipus `Promise<UserCredential>`.
