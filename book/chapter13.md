@@ -27,7 +27,12 @@ La navegació mitjançant botons i enllaços es fa exactament igual que en Angul
 * la propietat `routerLink` o
 * programaticament utilitzant el *service* `Router`.
 
-Així doncs, si tenim dues pàgines `HomePage` i `AboutPage` amb les rutes `/home` i `/about` definides respectivament per cadascuna d'elles, podem navegar d'una pàgina a l'altra de la manera que mostra el codi següent:
+Així doncs, suposem que tenim dues pàgines `HomePage` i `AboutPage` amb les rutes `/home` i `/about` definides respectivament i de manera automàtica per cadascuna d'elles en el moment d'executar les comenades següents:
+```bash
+ionic generate page view/pages/home
+ionic generage page view/pages/about
+```
+Podem navegar d'una pàgina a l'altra de la manera que mostra el codi següent:
 
 {% tabs %}
 {% tab title="Codi home.page.html" %}
@@ -86,7 +91,13 @@ export class AboutPage implements OnInit {
 ## Navegació amb menú
 Moltes aplicacions mòbils, per no dir la majoria, estan gestionades per un menú principal que permet navegar a través de totes les pàgines. Per tant, com que aquest menú ha d'estar present (i ha de ser visible) des de qualsevol punt de l'aplicació, el component encarregat de gestionar-lo és l'`AppComponent`.
 
-Si suposem que tenim tres pàgines, la `HomePage`, la `ListPage` i l'`AboutPage`, el fitxer `app.component.html`té l'aspecte següent:
+Suposem que tenim tres pàgines, la `HomePage`, la `ListPage` i l'`AboutPage`, amb les rutes `/home`, `/list` i `/about` definides respectivament i de manera automàtica per cadascuna d'elles en el moment d'executar les comenades següents:
+```bash
+ionic generate page view/pages/home
+ionic generate page view/pages/list
+ionic generage page view/pages/about
+```
+El fitxer `app.component.html`té l'aspecte següent:
 
 ```html
 <ion-app>
@@ -163,5 +174,91 @@ En cas que es vulgui crear múltiples menús per una mateixa aplicació, tot i q
 En cas que es vulgui crear un menú secundari, aquest menú, s'haurà de definir dins de l'`HTML` de la pàgina que s'encarregarà de fer-ne la gestió (ja no estarà definit a l'`app.component.html`).
 
 ## Navegació amb pestanyes
+La navegació per pestanyes és una mica més complexa que la resta perquè necessita la creació d'una pàgina que gestioni les pestanyes (aquesta funció no la fa l'`AppComponent`) i la modificació de la definició de les rutes per defecte que es generen per tal que tot funcioni correctament.
 
-TODO
+Així doncs, en cas que la navegació principal de la nostra aplicació estigui guiada per pestanyes, el fitxer `app.component.html` només contindrà les etiquetes `<ion-app>` i `<ion-router-outlet>`, com en el cas de navegació per botons:
+```typescript
+<ion-app>  
+  <ion-router-outlet></ion-router-outlet>
+</ion-app>
+```
+Suposant que volen tenir 3 pestanyes, una per al *Home*, una per a la pàgina *List* i una per a l'*About*, necessitarem crear la infraestructura següent:
+![Infraestructura per a la gestió de pestanyes](img/ionic_tabs_structure.png)
+Dins de la carpeta `view` hi crearem la pàgina `TabsPage`, la gestora de les pestanyes, i, com a filles de `TabsPage`, crearem les pàgies `HomePage`, `ListPage` i `AboutPage`.  De totes elles, la que cal modificar per crear tota l'estructura de pestanyes en el codi `HTML` és `TabsPage`, per tant, el fitxer `tabs.page.html` queda de la manera següent:
+```html
+<ion-tabs>
+  <ion-tab-bar slot="bottom">
+    <ion-tab-button tab="home">
+      <ion-icon name="home"></ion-icon>
+      Home
+    </ion-tab-button>
+    <ion-tab-button tab="list">
+      <ion-icon name="list-outline"></ion-icon>
+      List
+    </ion-tab-button>
+    <ion-tab-button tab="about">
+      <ion-icon name="information-outline"></ion-icon>
+      About
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-tabs>
+```
+Aquest codi crea una botonera a la part inferior de la pàgina (`<ion-tab-bar slot="bottom">`) amb tres pestanyes (`<ion-tab-button>`), les quals estan formades per una icona i un títol. L'atribut `tab` de l'etiqueta `<ion-tab-button>` és la que indica la ruta de la pàgina que volem obrir (en aquest cas no naveguem amb el `routerLink` sinó amb el `tab`). La següent imatge en mostra el resultat:
+![Visualització de les pestanyes](img/ionic_tabs.png)
+
+Fet tot això, caldrà modificar les rutes creades per defecte per adaptar-les a les nostres necessitats, tal com mostren els fragments de codi següents:
+{% tabs %}
+{% tab title="Codi app-routing.module.ts" %}
+```typescript
+import { NgModule } from '@angular/core';
+import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+
+const routes: Routes = [
+  { path: '', loadChildren: () => import('./view/tabs/tabs.module').then( m => m.TabsPageModule) },
+  { path: '**', loadChildren: () => import('./view/pages/page-not-found/page-not-found.module').then( m => m.PageNotFoundPageModule) }
+];
+
+@NgModule({
+  imports: [
+    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
+  ],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
+```
+{% endtab %}
+
+{% tab title="Codi tabs-routing.module.ts" %}
+```typescript
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+
+import { TabsPage } from './tabs.page';
+
+const routes: Routes = [
+  { path: '', component: TabsPage, children: [
+    { path: 'home', loadChildren: () => import('./home/home.module').then( m => m.HomePageModule) },
+    { path: 'list', loadChildren: () => import('./list/list.module').then( m => m.ListPageModule)  },
+    { path: 'about', loadChildren: () => import('./about/about.module').then( m => m.AboutPageModule) },
+    { path: '', redirectTo: '', pathMatch: 'full' }
+  ]}
+];
+
+@NgModule({
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule],
+})
+export class TabsPageRoutingModule {}
+```
+{% endtab %}
+{% endtabs %}
+Si analitzem aquest codi es pot veure que el flux d'enrutament és el següent:
+1. L'`app-routing.module.ts` té una ruta per defecte (`path: ''`) que carrega el mòdul `TabsPageModule` i, per tant, acaba carregant el fitxer `tabs-routing.module.ts`.
+2. A `tabs-routing.module.ts` es defineix una ruta per defecte que carrega la pàgina `TabsPage` (la que conté les pestanyes) i que, a més a més, té 3 filles:
+  1. `HomePage`, a la qual s'hi accedeix a través de la ruta `home`,
+  2. `ListPage`, a la qual s'hi accedeix a través de la ruta `list` i
+  3. `AboutPage`, a la qual s'hi accedeix a través de la ruta `about`.
+3. Finalment, a `tabs-routing.module.ts` també es defineix el control de *ruta per defecte* perquè si l'usuari no introdueix cap fragment de ruta la navegació es redirigeixi a `home`.
+
+### Pestanyes secundàries
+En cas que no es vulgui gestionar la navegació principal de l'aplicació mitjançant pestanyes, sinó que aquesta metodologia només es vulgui aplicar en un apartat concret de l'aplicació, l'estructura que caldrà crear és la mateixa però, en comptes de fer-la penjar directament de l'`AppComponent`, penjarà de la pàgina principal de l'apartat que es vol gestionar amb pestanyes.
