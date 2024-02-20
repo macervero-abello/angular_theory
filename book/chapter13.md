@@ -184,6 +184,7 @@ Així doncs, en cas que la navegació principal de la nostra aplicació estigui 
 ```
 Suposant que volen tenir 3 pestanyes, una per al *Home*, una per a la pàgina *List* i una per a l'*About*, necessitarem crear la infraestructura següent:
 ![Infraestructura per a la gestió de pestanyes](img/ionic_tabs_structure.png)
+
 Dins de la carpeta `view` hi crearem la pàgina `TabsPage`, la gestora de les pestanyes, i, com a filles de `TabsPage`, crearem les pàgies `HomePage`, `ListPage` i `AboutPage`.  De totes elles, la que cal modificar per crear tota l'estructura de pestanyes en el codi `HTML` és `TabsPage`, per tant, el fitxer `tabs.page.html` queda de la manera següent:
 ```html
 <ion-tabs>
