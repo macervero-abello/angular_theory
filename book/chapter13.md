@@ -146,6 +146,7 @@ Dins de l'etiqueta `<ion-app>` es defineix tant el menú `<ion-menu>` com el con
 on `--ion-colo-primary` és una variable CSS que ofereix Ionic per definir el seu color primary (blau) i per tal de poder-ne agafar el seu valor cal utiltizar el mètode `var()`.
 
 Aquest exemple crea el menú que es mostra en la següent imatge
+
 ![Visualització del menú creat en l'exemple d'aquest apartat](img/ionic_menu_example.png)
 
 Un cop fet el menú, cal modificar les capçaleres de les diverses pàgines per tal d'afegir-hi el botó que permeti obrir-lo i tancar-lo segons la necessitat de l'usuari. Així doncs, el codi `HTML` de `HomePage`, per exemple, queda de la següent manera:
@@ -164,6 +165,7 @@ Un cop fet el menú, cal modificar les capçaleres de les diverses pàgines per 
 </ion-content>
 ```
 Es pot veure que s'afegeix una botonera a la part esquerra de la capçalera (`slot="start"`) amb la típica icona del menú (les tres barres). Visualment queda de la manera següent:
+
 ![Visualització del botó de menú](img/ionic_menu_icon.png)
 
 ### Múltiples menús i menús secundaris
@@ -183,6 +185,7 @@ Així doncs, en cas que la navegació principal de la nostra aplicació estigui 
 </ion-app>
 ```
 Suposant que volen tenir 3 pestanyes, una per al *Home*, una per a la pàgina *List* i una per a l'*About*, necessitarem crear la infraestructura següent:
+
 ![Infraestructura per a la gestió de pestanyes](img/ionic_tabs_structure.png)
 
 Dins de la carpeta `view` hi crearem la pàgina `TabsPage`, la gestora de les pestanyes, i, com a filles de `TabsPage`, crearem les pàgies `HomePage`, `ListPage` i `AboutPage`.  De totes elles, la que cal modificar per crear tota l'estructura de pestanyes en el codi `HTML` és `TabsPage`, per tant, el fitxer `tabs.page.html` queda de la manera següent:
@@ -205,6 +208,7 @@ Dins de la carpeta `view` hi crearem la pàgina `TabsPage`, la gestora de les pe
 </ion-tabs>
 ```
 Aquest codi crea una botonera a la part inferior de la pàgina (`<ion-tab-bar slot="bottom">`) amb tres pestanyes (`<ion-tab-button>`), les quals estan formades per una icona i un títol. L'atribut `tab` de l'etiqueta `<ion-tab-button>` és la que indica la ruta de la pàgina que volem obrir (en aquest cas no naveguem amb el `routerLink` sinó amb el `tab`). La següent imatge en mostra el resultat:
+
 ![Visualització de les pestanyes](img/ionic_tabs.png)
 
 Fet tot això, caldrà modificar les rutes creades per defecte per adaptar-les a les nostres necessitats, tal com mostren els fragments de codi següents:
