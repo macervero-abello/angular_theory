@@ -120,7 +120,15 @@ Ionic facilita la personalització completa de l'estil de l'aplicació mitjança
 
 **Colors**
 
-L'estil per defecte d'ionic defineix una [gamma bàsica de 9 colors](https://ionicframework.com/docs/theming/basics#colors), descrits en les variables `CSS` corresponents dins del fitxer `theme/variables.scss`. Tots ells, però, són completament personalitzables i ampliables segons les necessitats de cadascuna de les aplicacions desenvolupades, tal com s'explica en pel següent [enllaç](https://ionicframework.com/docs/theming/colors)
+L'estil per defecte d'ionic defineix una gamma bàsica de 9 colors(https://ionicframework.com/docs/theming/basics#colors), descrits en les variables `CSS` corresponents dins del fitxer `theme/variables.scss`. Tots ells, però, són completament personalitzables i ampliables segons les necessitats de cadascuna de les aplicacions desenvolupades, tal com s'explica en pel següent [enllaç](https://ionicframework.com/docs/theming/colors)
+
+A més a més, Ionic ofereix diverses eines que poden ajudar a crear l'estil de colors de les aplicacions:
+* [Creador de nous colors](https://ionicframework.com/docs/theming/colors#new-color-creator)
+* [Creador de tot un tema nou](https://ionicframework.com/docs/theming/color-generator)
+	
+Addicionalment, Ionic també permet aplicar el mode *dark*, sigui per defecte, o canviant a voluntat segons les preferències de l'usuari. Per poder canviar de mode a voluntat cal seguir els passos següents:
+1. Amb la media quary que hi ha a variables.scss s'aconsegueix que, si l'usuari té el sistema en *dark*, Ionic apliqui les CSS dark
+2. Per fer-ho manualment, cal duplicar les variables *dark* fora del CSS, tot afegint-hi un atribut `[color-theme="dark"]` (també es pot fer amb una classe). Fet això, des del menú de l'aplicació o des de la pàgina de perfil, per exemple, caldrà fer un botó *toggle* que indiqui quin tipus de mode es desitja: `document.body.setAttribute('color-theme', 'dark');`
 
 **Plataformes**
 
@@ -133,54 +141,45 @@ Per especificar l'ús d'una plataforma o altra, la classe s'especifica a l'etiqu
 <html class="md"></html>
 ```
 
-
-===============================> M'HE QUEDAT AQUÍ!!!
-
 Per modificar un estil en una de les dues plataformes caldrà crear un fitxer `SCSS` dins d'`assets/css`. Allí hi podrem posar tot allò que nosaltres creguem necessari:
-	.ios ion-title {
-		//code
-	}
-	.md ion-title {
-		//code
-	}
+```scss
+.ios ion-title {
+	//code
+}
+.md ion-title {
+	//code
+}
+```
+
+També es poden sobreescriure les variables predefinides (a `theme/variables.scss`):
+```scss
+.ios {
+	--ion-background-color: #222;
+}
+```
+
+**Variables que ofereix Ionic**
+
+***Component variables***
+Per cada etiqueta, Ionic ofereix un conjunt de variables (propietats CSS) que es poden personalitzar a gust. Per exemple, en el cas de l'ion-button podem personalitzar totes les variables que es mostren en aquest [enllaç](https://ionicframework.com/docs/api/button#css-custom-properties).
+
+***Global variables***
+A part de les variables de component, hi ha tot un conjunt de variables relacionades amb la creació de la "marca" (tema, guia d'estil) de l'aplicació. Aquestes variables es troben dins del fitxer `theme/variables.scss`, el qual queda organitzat en diversos blocs. Els més importants:
+* Bloc "root": dins d'aquest selector s'especifiquen les variables que s'aplicaran a tots els modes (ios i md).
+* Bloc ".ios": dins d'aquesta classe s'especifiquen les variables per al mode ios
+* Bloc ".md": dins d'aquesta classe s'especifiquen les variables per al mode md.
 	
-	//Sobreescriptura de variables predefinides (això també es pot fer a theme/variables.scss)
-	.ios {
-  		--ion-background-color: #222;
-	}
-
-Variables que ofereix Ionic
-	COMPONENT VARIABLES
-	Per cada element (tag), Ionic ofereix un conjunt de variables (propietats CSS) que es poden personalitzar a gust. Per exemple, en el cas de l'ion-button podem personalitzar totes les variables que es mostren en aquest enllaç: https://ionicframework.com/docs/api/button#css-custom-properties.
-
-	GLOBAL VARIABLES
-	A part de les variables de component, hi ha tot un conjunt de variables relacionades amb la creació de la "marca" (tema, guia d'estil) de l'aplicació. Aquestes variables es troben dins del fitxer theme/variables.scss, el qual queda organitzat en diversos blocs. Els més importants:
-	* Bloc "root": dins d'aquest selector s'especifiquen les variables que s'aplicaran a tots els modes (ios i md).
-	* Bloc ".ios": dins d'aquesta classe s'especifiquen les variables per al mode ios
-	* Bloc ".md": dins d'aquesta classe s'especifiquen les variables per al mode md.
-	
-
-Per utilitzar aquestes variables en les nostres CSS:
-	h1 {
-		color: var(--ion-color-primary);
-	}
+Per utilitzar aquestes variables en les nostres CSS, tal com ja s'ha mostrat amb anterioritat, s'ha d'aplicar el codi següent:
+```scss
+h1 {
+	color: var(--ion-color-primary);
+}
+```
 
 Per canviar alguna variable de les predefinides en els elements d'Ionic:
-	ion-button {
-		--background: #FF0000;
-		--background: var(--ion-color-primary);
-	}
-	
-	-- COLORS --
-	https://ionicframework.com/docs/theming/colors
-	Ionic presenta una gamma bàsica de 9 colors, amb diferents capes, definits a variables.scss
-	Aquest esquema de colors es pot ampliar i canviar a voluntat
-	
-	Per crear un color nou: https://ionicframework.com/docs/theming/colors#new-color-creator
-	Per crear tot un tema nou: https://ionicframework.com/docs/theming/color-generator
-
-Per canviar al mode "dark" a voluntat:
-	1. Amb la media quary que hi ha a variables.scss s'aconsegueix que, si l'usuari té el sistema en dark, Ionic apliqui les CSS dark
-	2. Per fer-ho manualment, cal duplicar les variables "dark" fora del CSS, tot afegint-hi un atribut "[color-theme="dark"]" (també es pot fer amb una classe)
-	Fet això, des del menú, per exemple, caldrà fer un "toggle" que indiqui quin tipus de mode es desitja
-	"document.body.setAttribute('color-theme', 'dark');
+```scss
+ion-button {
+	--background: #FF0000;
+	--background: var(--ion-color-primary);
+}
+```
