@@ -14,3 +14,4 @@
 * [Capítol 11. Creació d'un projecte Ionic](book/chapter11.md)
 * [Capítol 12. Creació de pàgines (*pages*) i configuració del *Lazy Routing* amb Ionic](book/chapter12.md)
 * [Capítol 13. Components de navegació amb Ionic](book/chapter13.md)
+* [Capítol 14. Creació d'estils amb Ionic](book/chapter14.md)
