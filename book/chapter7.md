@@ -269,6 +269,29 @@ Ara però, les consultes complexes de *Firestore* tenen força limitacions i una
 
 Per analitzar totes les possibilitats de les diverses sentències es pot consultar la documentació de [Firebase](https://firebase.google.com/docs/firestore/query-data/queries)
 
+**Consulta de les dades d'un document (registre) a través de la seva ID**
+Quan volem consultar un document mitjançant la seva ID (equivalent a la *primary key*) no ho podem fer amb una consulta (*query*) normal, perquè la ID no forma part dels atributs (camps) del document, sinó que és un identificador extern.
+
+Així doncs, per tal de poder-ne llegir les dades, primer hem d'obtenir una referència al document i, posteriorment, accedir als seus camps ta, com mostra el codi següent, en el qual es consulta d'un document de la col·lecció (taula) *dishes*:
+```typescript
+    const docRef = doc(this._firestore, "dishes", id) as DocumentReference<Dish>;
+    getDoc(docRef).then(
+      (doc: DocumentSnapshot<Dish>) => {
+        console.log(doc.data());
+      }
+    ).catch(
+      (msg: any) => {
+        console.log(msg);
+      }
+    ).finally(
+      () => {
+        console.log("Ended");
+      }
+    );
+```
+
+La primera línia s'encarrega d'obtenir la referència al document mitjançant el mètode `doc()`, el qual necessita el server *Firestore*, el nom de la col·lecció a consultar i l'ID del document. Un cop obtinguda la referència, s'ha d'obtenir el document amb el mètode `getDoc()` i, finalment, accedir a les dades amb el mètode `data()`.
+
 ###### Inserció de dades
 Per fer la inserció d'un nou document en una col·lecció s'utilitza el mètode `addDoc`, el qual retorna una `Promise<DocumentData<MyType>`. Així doncs, donada la instància de la col·lecció (`this._collection`) i l'objecte amb les dades que es volen inserir (`my_data: MyType`), el codi complet per fer la inserció és el següent:
 ```typescript
