@@ -102,7 +102,6 @@ export class SongService {
   }
 
   get song(): Song | null { return this._song; }
-
   get hasError(): boolean { return this._error; }
 }
 ```
