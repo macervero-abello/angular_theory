@@ -83,6 +83,8 @@ export class SongService {
   constructor(private _http: HttpClient) {}
 
   retrieveSong(artistName: string, title: string): void {
+    this._error = false;
+
     const url = "https://api.lyrics.ovh/v1/" + artistName + "/" + title;
     this._http.get(url).subscribe({
       next: (value: any) => {
@@ -90,8 +92,6 @@ export class SongService {
         this._song.artistName = artistName;
         this._song.title = title;
         this._song.lyrics = value.lyrics.split("\n");
-
-        this._error = false;
       },
       error: (error: any) => {
         this._song = null;
