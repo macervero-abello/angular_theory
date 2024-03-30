@@ -17,7 +17,7 @@ Els passos que cal fer per consultar un servei web públic són els següents:
 
 Per mostrar un exemple a través de codi, utilitzen el Servei Web (lyrics.ovh)[https://lyricsovh.docs.apiary.io/], el qual permet obtenir la lletra d'una cançó a partir del seu títol i del nom del seu artista.
 
-Per assolir aquest objectiu ofereix el següent recurs web (URL del servei) a través del verg `HTTP GET`:
+Per assolir aquest objectiu ofereix el següent recurs web (URL del servei) a través del verb `HTTP GET`:
 
 ```url
 https://api.lyrics.ovh/v1/artist/title
@@ -168,3 +168,16 @@ export class AppComponent {
 ```
 {% endtab %}
 {% endtabs %}
+
+## Accés a un servei web autenticat amb *API Key*
+Per accedir a un servei web autenticat amb *API Key* cal seguir els mateixos passos que en el cas anterior. Cal posar molta atenció, però, a la documentació, per esbrinar com obtenir i utilitzar l'*API Key* necessària per autenticar les crides als recursos que ofereix.
+
+https://pixabay.com/api/docs
+L'exemple de codi que es mostra a continuació utilitza el Servei Web (Pixabay)[https://pixabay.com/api/docs], el qual permet, entre altres coses, cercar imatges seguint els criteris marcats per l'usuari.
+
+El recurs web que permet fer la cerca és un `HTTP GET` amb la url parametritzada següent:
+
+```url
+https://pixabay.com/api/?key={API_KEY}&q={QUERY}&image_type=photo
+```
+
