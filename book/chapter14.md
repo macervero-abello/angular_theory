@@ -1,185 +1,269 @@
-# Capítol 14. Creació d'estils amb Ionic
-Per crear els estils d'una aplicació Ionic cal tenir en compte 4 factors:
-1. La creació d'un *layout*
-2. La distribució del contingut dins de les pàgines
-3. Els estils que ofereix el propi *framework* Ionic
-4. La creació d'un tema propi (la guia d'estil o marca)
+# Capítol 14. Components de navegació amb Ionic
+Ionic ofereix una gran quantitat de components d'interfície gràfica i una [documentació](https://ionicframework.com/docs/components) molt similar a altres frameworks, com, per exemple, Bootstrap, que en facilita molt el seu ús. Tot i això, el primer que cal aprendre és a gestionar-ne el sistema de navegació.
 
-## Creació d'un *layout*
-Ionic ofereix 4 tipus de *layouts* diferents, els quals podeu trobar explicats en aquest [enllaç](https://ionicframework.com/docs/layout/structure)
-* *Single page*: formada per un  *header*, el contingut i un *footer*, tot i que el *header* i el *footer* són opcionals (aquest *layout* bàsic és el que s'ha presentat en el [Captíol 12](chapter12.md))
-* *Tabs*: la navegació està gestionada per un conjunt de pestanyes (analitzat en el [capítol anterior](chapter13.md))
-* Menú: la navegació està gestionada per un menú (analitzat en el [capítol anterior](chapter13.md))
-* *Split pane*: s'utilitza per crear pàgines web que tenen el menú fixat en una columna a l'esquerra (no estudiarem en profunditat aquest *layout* perquè no s'utilitza en aplicacions mòbils)
+En tota aplicació mòbil (i web) existeixen tres mètodes de navegació bàsics:
+1. Mitjançant botons (i enllaços)
+2. Mitjançant un menú
+3. Mitjançant pestanyes
 
-## Distribució del contingut
-Un cop escollit el layout, cal definir una bona distribució dels elements en pantalla per tal que l'aplicació sigui *responsive* (penseu que l'*APK* - executable de l'aplicació en la seva versió Android - s'ha de veure igual de bé en tablet i en mòbil). Per fer-ho, Ionic ofereix un sistema de [grid](https://ionicframework.com/docs/api/grid) molt similar al de Bootstrap i altres frameworks de CSS.
+A continuació s'expliquen les diverses metodologies
 
-Aquesta grid està basada en *flexbox* i, per crear-la, s'utilitzen tres etiquetes diferents:
-
+## *Routing*
+Tal com passa amb qualsevol aplicació Angular, el component `AppComponent` fa de contenidor principal de les diverses pàgines que es mostren a través del sistema d'enrutament. Ara però, aquest cop, l'etiqueta encarregada de generar aquest contenidor no és la `<router-outlet></router-outlet>`, sinó que l'estructura `HTML` és la següent:
 ```html
-<ion-grid>
-	<ion-row>
-		<ion-col> Contingut </ion-col>
-		<ion-col> Contingut </ion-col>
-		<ion-col> Contingut </ion-col>
-	</ion-row>
-</ion-grid>
+    <ion-app>
+        <ion-router-outlet></ion-router-outlet>
+    </ion-app>
 ```
 
-Tal com passa amb Boostrap, quan s'utilitza el sistema de grid, la pantalla queda dividida en 12 columnes. En cas que no especifiquem altra cosa, les columnes que definim dins d'una fila s'expandiran tant com puguin fins a omplir completament la pantalla (divint l'espai equitativament). Ara però, nosaltres podem modificar la seva mida a voluntat.
+L'etiqueta `<ion-app>` s'encarrega d'iniciarlitzar la part gràfica de l'aplicació i l'etiqueta `<ion-router-outlet>` actua de contenidor de rutes.
 
-### Especificació de les diferents mides
-**Grid**
+A part d'aquesta diferència, també cal tenir en compte dos aspectes addicionals que ja s'han comentat en el capítol anterior:
+1. l'enrutament per defecte que defineix Ionic és el *Lazy Routing* i
+2. per generar una nova pàgina no crearem un `component`, sinó una `page`. Al cap i a la fi, una `page` no és res més que un `component`, però Ionic diferencia el concepte pàgina (`page`), com tot l'`HTML` que es mostra per una ruta en concret, i element d'una pàgina (`component`), com l'`HTML` corresponent a una part de la pàgina (una llista, la capçalera, el peu de pàgina, etc.). La comanda que cal utilitzar és la de `ionic generate page path/page_name`
 
-Per defecte, la grid intentarà ocupar tota l'amplada disponible. Ara però, el desenvolupador pot decidir donar-li una mida fixa (segons el tipus de dispositiu on es trobi) utilitzant l'atribut "fixed": `<ion-grid [fixed]="true">`
+## Navegació amb botons (i enllaços)
+La navegació mitjançant botons i enllaços es fa exactament igual que en Angular, és a dir, mitjançant
+* la propietat `routerLink` o
+* programaticament utilitzant el *service* `Router`.
 
-Vegeu les mides possibles al següent [enllaç](https://ionicframework.com/docs/api/grid#fixed-grid).
-
-A través de variables CSS proporcionades per Ionic es pot personalitzar totes les característiques de la grid: nombre de columnes, padding, width i padding de columna (vegeu l'enllaços [1](https://ionicframework.com/docs/layout/grid#customizing-the-grid) i [2](https://ionicframework.com/docs/theming/advanced#grid-variables))
-
-**Columnes**
-
-Si no s'indica el contrari, les columnes s'estiren per intentar utilitzar tota l'amplada disponible. Ara però, podem fixar la mida d'una columna a voluntat a traves de l'atribut `size-{breakpoint}`. Exemples:
-* `<ion-col size="4">`: aquesta columna sempre ocuparà 4 columnes de les 12 que té la grid (sigui quina sigui la mida del dispositiu)
-* `<ion-col size-xs="4">`: ocuparà 4 columnes en pantalles de mida molt petita en amunt
-* `<ion-col size-sm="4">`: ocuparà 4 columnes en pantalles de mida petita en amunt (en pantalles molt petites, la columna s'expandirà tant com pugui)
-* `<ion-col size-md="4">`: ocuparà 4 columnes en pantalles mitjanes en amunt (en pantalles petites i molt petites, s'expandirà tant com pugui).
-* `<ion-col size-lg="4">`: ocuparà 4 columnes en pantalles grans en amunt (per la resta, la columna s'expandirà tant com pugui)
-* `<ion-col size-xl="4">`: només ocuparà 4 columnes en pantalles molt grans (per la resta, s'expandirà tant com pugui)
-
-Per defecte, les columnes tenen una mica de padding que les separa dels marges de la grid. En cas que es vulgui eliminar, s'ha d'aplicar la classe ion-no-padding a la grid:
-```html
-<ion-grid [ngClass]="['ion-no-padding']">
+Així doncs, suposem que tenim dues pàgines `HomePage` i `AboutPage` amb les rutes `/home` i `/about` definides respectivament i de manera automàtica per cadascuna d'elles en el moment d'executar les comenades següents:
+```bash
+ionic generate page view/pages/home
+ionic generage page view/pages/about
 ```
-Si només es vol eliminar d'una columna en concret, s'aplicarà l'estil sobre l'etiqueta `<ion-col>` corresponent.
+Podem navegar d'una pàgina a l'altra de la manera que mostra el codi següent:
 
-A part de la mida, a les columnes també se'ls pot especificar un *offset*, un *pull* i un *push*
-* *Offset*: desplaça la columna cap a la dreta 
-    * `<ion-col offset="4">`: la desplaça 4 columnes, independentment de la mida de pantalla
-    * `<ion-col offset-xs="4">`: la desplaça 4 columnes en pantalles molt petites en amunt
-    * `<ion-col offset-sm="4">`: la desplaça 4 columnes en pantalles petites en amunt
-    * `<ion-col offset-md="4">`: la desplaça 4 columnes en pantalles mitjanes en amunt
-    * `<ion-col offset-lg="4">`: la desplaça 4 columnes en pantalles grans en amunt
-    * `<ion-col offset-xl="4">`: la desplaça 4 columnes en pantalles molt grans
-* *Pull*: empeny la columna X columnes cap a la dreta (pot anar sol o acompanyat de les mides adients)
-* *Push*: estira la columna X columnes cap a l'esquerra (pot anar sol o acompanyat de les mides adients)
-
-Per alinear les columnes dins de la cel·la es pot utilitzar diferents classes proporcionades per Ionic.
-* Alineació vertical afectant a tota la fila
+{% tabs %}
+{% tab title="Codi home.page.html" %}
 ```html
-<ion-row class="ion-align-items-start">
-<ion-row class="ion-align-items-center">
-<ion-row class="ion-align-items-end">
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Home</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+    <ion-button [routerLink]="['/about']">About</ion-button>
+</ion-content>
 ```
-* Alineació vertical afectant a una columna en concret
+{% endtab %}
+
+{% tab title="Codi about.page.html" %}
 ```html
-<ion-col class="ion-align-self-start">
-<ion-col class="ion-align-self-center">
-<ion-col class="ion-align-self-end">
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>About</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-button (click)="goToHome()">Home</ion-button>
+</ion-content>
 ```
-* Alineació horitzontal
+{% endtab %}
+
+{% tab title="Codi about.page.ts" %}
+```typescript
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+
+@Component({
+  selector: 'app-about',
+  templateUrl: './about.page.html',
+  styleUrls: ['./about.page.scss'],
+})
+export class AboutPage implements OnInit {
+
+  constructor(private _router: Router) { }
+
+  ngOnInit() { }
+
+  goToHome(): void {
+    this._router.navigate(['/home']);
+  }
+
+}
+```
+{% endtab %}
+{% endtabs %}
+
+## Navegació amb menú
+Moltes aplicacions mòbils, per no dir la majoria, estan gestionades per un menú principal que permet navegar a través de totes les pàgines. Per tant, com que aquest menú ha d'estar present (i ha de ser visible) des de qualsevol punt de l'aplicació, el component encarregat de gestionar-lo és l'`AppComponent`.
+
+Suposem que tenim tres pàgines, la `HomePage`, la `ListPage` i l'`AboutPage`, amb les rutes `/home`, `/list` i `/about` definides respectivament i de manera automàtica per cadascuna d'elles en el moment d'executar les comenades següents:
+```bash
+ionic generate page view/pages/home
+ionic generate page view/pages/list
+ionic generage page view/pages/about
+```
+El fitxer `app.component.html`té l'aspecte següent:
+
 ```html
-<ion-row class="ion-justify-content-start">
-<ion-row class="ion-justify-content-center">
-<ion-row class="ion-justify-content-end">
-<ion-row class="ion-justify-content-around">
-<ion-row class="ion-justify-content-between">
+<ion-app>
+
+  <ion-menu contentId="main-content">
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Menú</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <ion-list>
+        <ion-menu-toggle>
+          <ion-item [routerLink]="['/home']" [routerLinkActive]="['activatedLink']">
+            <ion-label><ion-icon name="home"></ion-icon> Home</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+        <ion-menu-toggle>
+          <ion-item [routerLink]="['/list']" [routerLinkActive]="['activatedLink']">
+            <ion-label>List</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+        <ion-menu-toggle>
+          <ion-item [routerLink]="['/about']" [routerLinkActive]="['activatedLink']">
+            <ion-label>About</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+      </ion-list>
+    </ion-content>
+  </ion-menu>
+  
+  <ion-router-outlet id="main-content"></ion-router-outlet>
+</ion-app>
 ```
 
-En aquest [enllaç](https://ionicframework.com/docs/layout/css-utilities) trobareu altres estils que es poden aplicar a la grid i a les columnes.
-
-
-## Estils
-Ionic ofereix un conjunt de [variables css](https://ionicframework.com/docs/layout/css-utilities) i classes per tal de poder modificar els aspectes següents:
-
-**Text**
- * [Alineació del text](https://ionicframework.com/docs/layout/css-utilities#text-alignment)
- * [Transformació del text (majúscules, minúscules, camel case)](https://ionicframework.com/docs/layout/css-utilities#text-transformation)
-	
-Totes aquestes classes tenen la versió general i la versió *breakpoint* (xs, sm, md, lg i xl)
-
-**Distribució dels elements**
- * [Aplicació d'elements flotants](https://ionicframework.com/docs/layout/css-utilities#float-elements), en la seva versió general i també *breakpoint*
-
- **Ocultació d'elements**
-  * [Ocultació d'elements](https://ionicframework.com/docs/layout/css-utilities#element-display), en la seva versió general i també *breakpoint*
-
-**Espaïat** 
- * [Padding](https://ionicframework.com/docs/layout/css-utilities#element-padding)
- * [Margin](https://ionicframework.com/docs/layout/css-utilities#element-margin)
- * [Propietats flex (alineació elements)](https://ionicframework.com/docs/layout/css-utilities#element-margin)
-	
-***BORDER***
- * [*Border*](https://ionicframework.com/docs/layout/css-utilities#border-display)
-
-Addicionalment a tots els estils que ofereix pròpiament Ionic, cada desenvolupador pot definir estils propis, sigui al fitxer `SCSS` de cada pàgina, sigui de manera general al fitxer `global.scss`.
-
-## Creació d'un tema (guia d'estil o marca)
-Ionic facilita la personalització completa de l'estil de l'aplicació mitjançant la [creació d'un tema](https://ionicframework.com/docs/theming/basics) al fitxer `theme/variables.scss`.
-
-**Colors**
-
-L'estil per defecte d'ionic defineix una gamma bàsica de 9 colors(https://ionicframework.com/docs/theming/basics#colors), descrits en les variables `CSS` corresponents dins del fitxer `theme/variables.scss`. Tots ells, però, són completament personalitzables i ampliables segons les necessitats de cadascuna de les aplicacions desenvolupades, tal com s'explica en pel següent [enllaç](https://ionicframework.com/docs/theming/colors)
-
-A més a més, Ionic ofereix diverses eines que poden ajudar a crear l'estil de colors de les aplicacions:
-* [Creador de nous colors](https://ionicframework.com/docs/theming/colors#new-color-creator)
-* [Creador de tot un tema nou](https://ionicframework.com/docs/theming/color-generator)
-	
-Addicionalment, Ionic també permet aplicar el mode *dark*, sigui per defecte, o canviant a voluntat segons les preferències de l'usuari. Per poder canviar de mode a voluntat cal seguir els passos següents:
-1. Amb la media quary que hi ha a variables.scss s'aconsegueix que, si l'usuari té el sistema en *dark*, Ionic apliqui les CSS dark
-2. Per fer-ho manualment, cal duplicar les variables *dark* fora del CSS, tot afegint-hi un atribut `[color-theme="dark"]` (també es pot fer amb una classe). Fet això, des del menú de l'aplicació o des de la pàgina de perfil, per exemple, caldrà fer un botó *toggle* que indiqui quin tipus de mode es desitja: `document.body.setAttribute('color-theme', 'dark');`
-
-**Plataformes**
-
-A part dels colors, Ionic defineix dos estils diferents, depenent de la plataforma sobre la qual s'hagi d'executar l'aplicació
- * La classe `CSS` `ios` defineix els estils que cal aplicar a la plataforma d'Apple
- * La classe `CSS` `md` defineix els estils que cal aplicar a la plataforma Android (o qualsevol altra)
-
-Per especificar l'ús d'una plataforma o altra, la classe s'especifica a l'etiqueta `html`:
-```html
-<html class="md"></html>
-```
-
-Per modificar un estil en una de les dues plataformes caldrà crear un fitxer `SCSS` dins d'`assets/css`. Allí hi podrem posar tot allò que nosaltres creguem necessari:
+Dins de l'etiqueta `<ion-app>` es defineix tant el menú `<ion-menu>` com el contenidor de rutes `<ion-router-outlet>`, de tal manera que cal entendre els següents aspectes:
+1. L'etiqueta `<ion-menu>` sempre ha de definir la propietat `contentId`, el valor de la qual ha de ser igual a la propietat `id` de la l'etiqueta `<div>` o del contenidor de rutes `<ion-router-outlet>` on es vol carregar la pàgina que l'usuari vol navegar.
+2. Un menú no és res més que una "mini pàgina" i, per tant, està format per les etiquetes `<ion-header>` i `<ion-content>`.
+3. Normalment, dins de l'`<ion-content>` es crea un llistat amb totes les pàgines on es vol poder navegar. Aquest llistat està definit per l'etiqueta `<ion-list>`, la qual conté un conjunt d'`<ion-menu-toggle>` amb un `<ion-item>` en el seu interior. El contingut dels `<ion-item>` pot ser més o menys complex (només text, només icones, text i icones, etc.). L'etiqueta `<ion-menu-toggle>` és la que permet tancar el menú automàticament tan aviat com l'usuari a premut una de les opcions per canviar de pàgina.
+4. Sempre cal tenir present que tota la navegació es farà a través de la propietat `routerLink` i mai mitjançant un `href`. A més a més, per augmentar la usabilitat i l'accessibilitat de l'aplicació es pot utilitzar la propietat `routerLinkActive` per ressaltar la pàgina on es troba, actualment, l'usuari. En el cas de l'exemple, la classe `activatedLink` està definida al fitxer `app.component.scss` de la manera següent:
 ```scss
-.ios ion-title {
-	//code
-}
-.md ion-title {
-	//code
+.activatedLink {
+    color: var(--ion-color-primary)
 }
 ```
+on `--ion-colo-primary` és una variable CSS que ofereix Ionic per definir el seu color primary (blau) i per tal de poder-ne agafar el seu valor cal utiltizar el mètode `var()`.
 
-També es poden sobreescriure les variables predefinides (a `theme/variables.scss`):
-```scss
-.ios {
-	--ion-background-color: #222;
-}
+Aquest exemple crea el menú que es mostra en la següent imatge
+
+![Visualització del menú creat en l'exemple d'aquest apartat](img/ionic_menu_example.png)
+
+Un cop fet el menú, cal modificar les capçaleres de les diverses pàgines per tal d'afegir-hi el botó que permeti obrir-lo i tancar-lo segons la necessitat de l'usuari. Així doncs, el codi `HTML` de `HomePage`, per exemple, queda de la següent manera:
+```html
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Home</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-button [routerLink]="['/about']">About</ion-button>
+</ion-content>
 ```
+Es pot veure que s'afegeix una botonera a la part esquerra de la capçalera (`slot="start"`) amb la típica icona del menú (les tres barres). Visualment queda de la manera següent:
 
-**Variables que ofereix Ionic**
+![Visualització del botó de menú](img/ionic_menu_icon.png)
 
-***Component variables***
-Per cada etiqueta, Ionic ofereix un conjunt de variables (propietats CSS) que es poden personalitzar a gust. Per exemple, en el cas de l'ion-button podem personalitzar totes les variables que es mostren en aquest [enllaç](https://ionicframework.com/docs/api/button#css-custom-properties).
+### Múltiples menús i menús secundaris
+Ionic preveu que una aplicació pugui tenir múltiples menús o que, fins i tot, en pugui tenir un de secundari, és a dir, que no gestioni la navegació principal, sinó només un petita part o un apartat de tota l'aplicació.
 
-***Global variables***
-A part de les variables de component, hi ha tot un conjunt de variables relacionades amb la creació de la "marca" (tema, guia d'estil) de l'aplicació. Aquestes variables es troben dins del fitxer `theme/variables.scss`, el qual queda organitzat en diversos blocs. Els més importants:
-* Bloc "root": dins d'aquest selector s'especifiquen les variables que s'aplicaran a tots els modes (ios i md).
-* Bloc ".ios": dins d'aquesta classe s'especifiquen les variables per al mode ios
-* Bloc ".md": dins d'aquesta classe s'especifiquen les variables per al mode md.
-	
-Per utilitzar aquestes variables en les nostres CSS, tal com ja s'ha mostrat amb anterioritat, s'ha d'aplicar el codi següent:
-```scss
-h1 {
-	color: var(--ion-color-primary);
-}
+En cas que es vulgui crear múltiples menús per una mateixa aplicació, tot i que no és massa aconsellable, caldrà jugar amb diversos `contentId` i diversos `<ion-router-outlet>` per poder carregar les diferents vistes.
+
+En cas que es vulgui crear un menú secundari, aquest menú, s'haurà de definir dins de l'`HTML` de la pàgina que s'encarregarà de fer-ne la gestió (ja no estarà definit a l'`app.component.html`).
+
+## Navegació amb pestanyes
+La navegació per pestanyes és una mica més complexa que la resta perquè necessita la creació d'una pàgina que gestioni les pestanyes (aquesta funció no la fa l'`AppComponent`) i la modificació de la definició de les rutes per defecte que es generen per tal que tot funcioni correctament.
+
+Així doncs, en cas que la navegació principal de la nostra aplicació estigui guiada per pestanyes, el fitxer `app.component.html` només contindrà les etiquetes `<ion-app>` i `<ion-router-outlet>`, com en el cas de navegació per botons:
+```typescript
+<ion-app>  
+  <ion-router-outlet></ion-router-outlet>
+</ion-app>
 ```
+Suposant que volen tenir 3 pestanyes, una per al *Home*, una per a la pàgina *List* i una per a l'*About*, necessitarem crear la infraestructura següent:
 
-Per canviar alguna variable de les predefinides en els elements d'Ionic:
-```scss
-ion-button {
-	--background: #FF0000;
-	--background: var(--ion-color-primary);
-}
+![Infraestructura per a la gestió de pestanyes](img/ionic_tabs_structure.png)
+
+Dins de la carpeta `view` hi crearem la pàgina `TabsPage`, la gestora de les pestanyes, i, com a filles de `TabsPage`, crearem les pàgies `HomePage`, `ListPage` i `AboutPage`.  De totes elles, la que cal modificar per crear tota l'estructura de pestanyes en el codi `HTML` és `TabsPage`, per tant, el fitxer `tabs.page.html` queda de la manera següent:
+```html
+<ion-tabs>
+  <ion-tab-bar slot="bottom">
+    <ion-tab-button tab="home">
+      <ion-icon name="home"></ion-icon>
+      Home
+    </ion-tab-button>
+    <ion-tab-button tab="list">
+      <ion-icon name="list-outline"></ion-icon>
+      List
+    </ion-tab-button>
+    <ion-tab-button tab="about">
+      <ion-icon name="information-outline"></ion-icon>
+      About
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-tabs>
 ```
+Aquest codi crea una botonera a la part inferior de la pàgina (`<ion-tab-bar slot="bottom">`) amb tres pestanyes (`<ion-tab-button>`), les quals estan formades per una icona i un títol. L'atribut `tab` de l'etiqueta `<ion-tab-button>` és la que indica la ruta de la pàgina que volem obrir (en aquest cas no naveguem amb el `routerLink` sinó amb el `tab`). La següent imatge en mostra el resultat:
+
+![Visualització de les pestanyes](img/ionic_tabs.png)
+
+Fet tot això, caldrà modificar les rutes creades per defecte per adaptar-les a les nostres necessitats, tal com mostren els fragments de codi següents:
+{% tabs %}
+{% tab title="Codi app-routing.module.ts" %}
+```typescript
+import { NgModule } from '@angular/core';
+import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+
+const routes: Routes = [
+  { path: '', loadChildren: () => import('./view/tabs/tabs.module').then( m => m.TabsPageModule) },
+  { path: '**', loadChildren: () => import('./view/pages/page-not-found/page-not-found.module').then( m => m.PageNotFoundPageModule) }
+];
+
+@NgModule({
+  imports: [
+    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
+  ],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
+```
+{% endtab %}
+
+{% tab title="Codi tabs-routing.module.ts" %}
+```typescript
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+
+import { TabsPage } from './tabs.page';
+
+const routes: Routes = [
+  { path: '', component: TabsPage, children: [
+    { path: 'home', loadChildren: () => import('./home/home.module').then( m => m.HomePageModule) },
+    { path: 'list', loadChildren: () => import('./list/list.module').then( m => m.ListPageModule)  },
+    { path: 'about', loadChildren: () => import('./about/about.module').then( m => m.AboutPageModule) },
+    { path: '', redirectTo: '', pathMatch: 'full' }
+  ]}
+];
+
+@NgModule({
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule],
+})
+export class TabsPageRoutingModule {}
+```
+{% endtab %}
+{% endtabs %}
+Si analitzem aquest codi es pot veure que el flux d'enrutament és el següent:
+1. L'`app-routing.module.ts` té una ruta per defecte (`path: ''`) que carrega el mòdul `TabsPageModule` i, per tant, acaba carregant el fitxer `tabs-routing.module.ts`.
+2. A `tabs-routing.module.ts` es defineix una ruta per defecte que carrega la pàgina `TabsPage` (la que conté les pestanyes) i que, a més a més, té 3 filles:
+  1. `HomePage`, a la qual s'hi accedeix a través de la ruta `home`,
+  2. `ListPage`, a la qual s'hi accedeix a través de la ruta `list` i
+  3. `AboutPage`, a la qual s'hi accedeix a través de la ruta `about`.
+3. Finalment, a `tabs-routing.module.ts` també es defineix el control de *ruta per defecte* perquè si l'usuari no introdueix cap fragment de ruta la navegació es redirigeixi a `home`.
+
+### Pestanyes secundàries
+En cas que no es vulgui gestionar la navegació principal de l'aplicació mitjançant pestanyes, sinó que aquesta metodologia només es vulgui aplicar en un apartat concret de l'aplicació, l'estructura que caldrà crear és la mateixa però, en comptes de fer-la penjar directament de l'`AppComponent`, penjarà de la pàgina principal de l'apartat que es vol gestionar amb pestanyes.

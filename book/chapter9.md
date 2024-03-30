@@ -1,90 +1,127 @@
-# Capítol 9. Workspace: una aplicació, múltiples GUI
-Moltes vegades ens trobarem amb la necessitat d'adaptar una mateixa aplicació a diferents interfícies gràfiques per fer-ne, per exemple, la versió web i la versió mòbil. Si aquesta adaptació la volem fer mitjançant `CSS` personalitzades o, si menys no, utilitzant el mateix *framework* `CSS` per a totes les versions, no tindrem cap altre problema fent-ho com ho hem fet fins ara. Malauradament, si volem utilitzar un *framework* `CSS` per cada versió, els nostres *components* seran totalment diferents i, per tant, haurem de fer, sí o sí, dues aplicacions.
+# Capítol 9. Guardes de ruta
+Angular ofereix un sistema de protecció de rutes per evitar que l'usuari pugui navegar lliurement per l'aplicació web (o mòbil) sense tenir en compte autenticació i permisos. Aquesta protecció es fa a traves de les *guardes de ruta*.
 
-Podem veure, però, que fer dues aplicacions que tenen la mateixa lògica (la mateixa funcionalitat, el mateix nucli - *core*) només perquè la interfície gràfica canvia, no té massa sentit, ja que qualsevol canvi en les funcionalitats s'haurà d'implementar 2 vegades. Per evitar aquesta duplicació de codi podem utilitzar els [*Workspaces*](https://angular.io/guide/file-structure) d'Angular.
+De *guardes de ruta* n'hi ha de 6 tipus, tal com es pot veure en aquest [enllaç](https://angular.io/guide/router#preventing-unauthorized-access), però la que és més útil per gestionar sessió i permisos és la guarda `canActivate`, la qual indica si es pot accedir o no a una `URL` en concret.
 
-Un *workspace* permet gestionar múltiples aplicacions de manera simultània, així com també llibreries. Per tant, si volem crear una mateixa aplicació per a web i per a mòbil, podem crear un *workspace* que contingui
- 1. una lliberia Angular amb el *core* de l'aplicació (tot el codi de la lògica, és a dir, els *services* i els *models*),
- 2. una aplicació per a la versió web i
- 3. una aplicació per a la versió mòbil.
+Així doncs, per gestionar aquest tipus de guardes cal tenir present que, prèviament, s'ha hagut de crear un sistema de rutes ([Captíol 4](chapter4.md)) i un sistema d'autenticació i de gestió de la sessió, per exemple, amb Firebase ([Capítol 8](chapter8.md)).
 
-Les aplicacions web i mòbil només hauran d'implementar la part de la interfície gràfica (GUI) i utilitzar la llibreria per tenir la lògica de programa. D'aquesta manera, si canvia alguna de les funcionalitats o se n'afegeixen de noves, només cal que modifiquem el codi de la llibreria una única vegada i totes les aplicacions se'n veuran beneficiades directament.
-
-## Creació d'un *Workspace*
-Per crear un *workspace* cal executar la comanda següent
-```bash
-   ng new worskspace_name --no-create-application
-```
-Aquesta comanda crearà una estructura idèntica a la d'un projecte Angular a excepció de la carpeta `src`, que no hi és. Aquesta carpeta serà substituïda pel directori `projects`, que és on es definirà el codi de cadascuna de les aplicacions i llibreries del *workspace*.
-
-Un cop creat el *workspace* podem afegir-hi aplicacions amb la comanda
-```bash
-   ng generate application application_name
-```
-i llibreries amb la comanda
-```bash
-   ng generate library lib_name
-```
-
-Això crearà les carpetes `application_name` i `lib_name` dins del directori `projects` i hi instal·larà tots els fitxers de configuració necessaris.
-
-Si suposem que hem creat el *workspace* `WSProva` amb l'aplicació `App1` i la llibreria `Lib`, l'estructura de fitxers serà la següent:
-
-![Estructura de fitxers d'un *workspace* amb una lliberia i una aplicació](img/workspace_file_directory.png)
-
-Cal adonar-se que la carpeta `node_modules` i el fitxer `package.json` pertanyen al *workspace* i, per tant, totes les aplicacions s'alimenten de les mateixes dependències. Les llibreries també tenen un fitxer propi `package.json` per tal que puguin afegir dependències que només necessiten elles i no la resta d'aplicacions del *workspace*.
-
-La carpeta `app1`, corresponent a l'aplicació `App1` té el següent contingut:
-
-![Estructura de fitxers d'una aplicació dins del *workspace*](img/workspace_app_file_directory.png)
-
-El nostre codi, com fins ara, anirà dins del directori `src`.
-
-La carpeta `lib`, corresponent a la llibreria `Lib` té el següent contingut:
-
-![Estructura de fitxers d'una llibreria dins del *workspace*](img/workspace_lib_file_directory.png)
-
-El nostre codi anirà dins del directori `src/lib`. A més a més, el fitxer `public-api.ts` ens permetrà indicar els fitxers als quals es podrà accedir des de les aplicacions externes.
-
-> [!IMPORTANT]
->
-> Si utilitzeu la versió 17 d'Angular (comprovar-ho al fitxer `package.json`), per evitar problemes amb les novetats d'aquesta versió respecte de l'anterior, cal crear les noves aplicacions del *Workspace* amb la compnda següent:
->
-> `ng generate application --standalone false application_name`
-
-## Distribució del codi entre la llibreria i les aplicacions
-Cal tenir en compte que tant les llibreries com les aplicacions poden tenir tot tipus de codi: models, *services* i components entre altres. Ara però, si el que desitgem és externalitzar el codi comú de múltiples aplicacions en una única llibreria que puguin utilitzar totes elles, tenint en compte que estem aplicant el patró de disseny de *software* **Model-View-Controller** (MVC), el que cal fer és el següent:
- 1. la llibreria contindrà tot el codi del nucli (*core*) de les aplicacions, és a dir, el codi corresponent als *Controllers* (*services*) i als *Models*
- 2. les diverses aplicacions definiran les diferents *Views* i, per tant, s'encarregaran de crear els *components*.
-
-A banda d'això, cal tenir en compte que qualsevol *asset* o variable d'entorn definida als fitxers *environment* només es pot incloure dins de les aplicacions, no de les llibreries.
-
-## Visibilitat i reutilització del codi de la llibreria
-Per tal que el codi de la llibreria pugui ser accessible des de qualsevol aplicació i, per tant, es pugui utilitzar o consumir, cal definir una API pública amb tot allò que volem que sigui visible des de l'exterior.
-
-Aquesta API es defineix al fitxer `public-api.ts`, que es troba dins de la carpeta `src` de la llibreria i el seu objectiu és exportar (fer visible) tot aquell codi que vulguem que sigui públic.
-
-Imaginem que tenim llibreria `lib_name` que defineix el seu propi mòdul de dependències al fitxer `lib_name.module.ts`, el model `User` al fitxer `models/user.model.ts` i el *service* `UserService` al fitxer `services/user.service.ts`. Sabent que volem accedir a tots tres fitxers des de qualsevol aplicació, l'API pública de la llibreria és la següent:
+Suposem que tenim una aplicació amb les següents rutes
 ```typescript
-/*
- * Public API Surface of lib
- */
+   const routes: Routes = [
+      { path: 'home', component: HomeComponent },
+      { path: 'login', component: LoginComponent },
+      { path: 'logout', component: LogoutComponent },
+      { path: 'dashboard', component: DashboardComponent },
+      { path: '', redirectTo: 'home', pathMatch: 'full' }
+   ];
+```
+de tal manera que:
+ * la ruta `/home` és pública i, per tant, hi pot accedir tothom;
+ * la ruta `/dashboard` és privada i només s'hi pot accedir si s'ha iniciat sessió;
+ * la ruta `/login` només serà accessible en cas que la sessió no estigui iniciada i
+ * la ruta `/logout` només s'activarà si hi ha sessió oberta.
 
-   export * from './lib_name/services/user.service';
-   export * from './lib_name/models/user.model';
-   export * from './lib_name/lib_name.module';
+A més a més, aquesta aplicació també té el servei `AuthSessionService` tal com s'ha explicat en el [Captíol 8](chapter8.md).
+
+A partir de tota aquesta arquitectura ja es poden afegir les guardes desitjades.
+
+## Creació d'una guarda de ruta
+Per crear una nova guarda de ruta cal executar la comanda
+```bash
+   ng generate guard path/guard_name
+```
+i escollir el tipus de guarda desitjada, en aquest cas, `canActivate`. Recordeu que podeu afegir l'opció `--skip-test` a la comanda per tal d'evitar la generació del fitxer de proves unitàries `spec.ts`.
+
+Per exemple, si executem `ng generage guard --skip-tests guards/auth` per crear una guarda del tipus `canActivate`, tal com mostra la figura,
+
+![Creació d'una guarda de ruta de tipus `canActivate`](img/guard_creation.png)
+
+es generarà el fitxer `guards/auth.guard.ts`.
+```typescript
+   import { CanActivateFn } from '@angular/router';
+
+   export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
+      //Your code here
+      return true;
+   };
 ```
 
-## Compilació de la llibreria i execució de l'aplicació
-Un cop creada la llibreria i les aplicacions, per tal de poder-ho executar cal
- 1. compliar la llibreria (dins de la carpeta de la llibreria)
- ```bash
-   ng build lib_name
- ```
- 2. activar el servidor *on the fly* d'Angular (dins de la carpeta de l'aplicació)
- ```bash
-   ng serve
- ```
+Com es pot comprovar, una ruta del tipus `canActivate` no és res més que una funció que s'executa en el moment en què l'usuari intenta accedir a les rutes protegides. Segons el codi que s'hi implementi, la guarda permetra l'accés o, per contra, el denegarà i redigirà l'usuari a una altra pàgina.
 
-## Creació de nous elements dins d'una aplicació del *Workspace*
-Per crear qualsevol nou element dins d'una aplicació del *Workspace* (un *component*, un *service*, un *model*, etc.) cal fer-ho des de dins de la carpeta `src/app` de l'aplicació. Si s'intenta fer des de qualsevol altre lloc, les comandes de creació no funcionaran.
+## Implementació de la lògica de la guarda
+Un cop creada la ruta, ja hi podem definir el codi per discernir si l'usuari pot accedir o no a les diverses pàgines, segons les normes establertes a l'inici del capítol. En l'exemple que es mostrarà a continuació només es tindrà en compte si l'usuari ha iniciat sessió o no, però, evidentment, guardes més complexes també poden tenir en compte el seu rol i, per tant, els permisos que té associats.
+
+Per saber si l'usuari ha iniciat sessió o no caldrà utilitzar el mètode `isSessionActive()` del servei `AuthSessionService` (vegeu el [Capítol 7](chapter7.md)). Així doncs, cal injectar aquest servei a la funció de guarda però, com que és una funció, no es pot executar la injecció a través del constructor i s'ha de fer utilitzant el mètode `inject` que ofereix Angular:
+```typescript
+   import { inject } from '@angular/core';
+   import { ActivatedRouteSnapshot, CanActivateFn, RouterStateSnapshot } from '@angular/router';
+   import { AuthSessionService } from '../services/auth-session.service';
+
+   export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
+      const authSessionService: AuthSessionService = inject(AuthSessionService);
+      return true;
+   };
+```
+
+El paràmetre `route` que rep la funció de guarda té la propietat `url`, la qual és un `array` amb tots els fragments que formen l'`URL` a la qual s'intenta accedir. Per tant, aquest paràmetre permet discernir a quina pàgina s'està intentant entrar. Com que les rutes que cal protegir són `/login`, `/dashboard` i `/logout` (`/home` és pública!), només cal gestionar aquestes:
+```typescript
+   import { inject } from '@angular/core';
+   import { ActivatedRouteSnapshot, CanActivateFn, RouterStateSnapshot } from '@angular/router';
+   import { AuthSessionService } from '../services/auth-session.service';
+
+   export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
+      const authSessionService: AuthSessionService = inject(AuthSessionService);
+
+      if(route.url[0].path == "login") {
+         //Gestió de l'accés a la pàgina login
+      } else {
+         //Gestió de l'accés a la resta de pàgines (dasboard i logout)
+      }
+      return true;
+   };
+```
+
+S'ha definit que a la ruta `/login` només s'hi podrà accedir en cas que l'usuari no hagi iniciat sessió. En canvi, a les altres dues, només hi podrà entrar si ja ha estat autenticat, per tant:
+```typescript
+   import { inject } from '@angular/core';
+   import { ActivatedRouteSnapshot, CanActivateFn, RouterStateSnapshot } from '@angular/router';
+   import { AuthSessionService } from '../services/auth-session.service';
+
+   export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
+      const authSessionService: AuthSessionService = inject(AuthSessionService);
+
+      if(route.url[0].path == "login") {
+         if(authSessionService.isSessionActive()) {
+            //S'intenta accedir a "/login" un cop iniciada la sessió => Redirecció a "/home"
+            router.navigate(["/home"]);
+            return false;
+         } else {
+            //S'intenta accedir a "/login" sense cap sessió iniciada => Accés permès
+            return true;
+         }
+      } else {
+         if(authSessionService.isSessionActive()) {
+            //S'intenta accedir a "/dashboard" o a "/logout" amb la sessió iniciada => Accés permès
+            return true;
+         } else {
+            //S'intenta accedir a "/dashboard" o a "/logout" sense sessió iniciada => Redirecció a "/login"
+            router.navigate(["/login"]);
+            return false;
+         }
+      }
+   };
+```
+
+## Protecció de les rutes
+Un cop definida la guarda cal aplicar-la a les rutes i, per tant, modificar el fitxer `app.module.ts` de la manera següent:
+```typescript
+   const routes: Routes = [
+      { path: 'home', component: HomeComponent },
+      { path: 'login', component: LoginComponent, canActivate: [authGuard] },
+      { path: 'logout', component: LogoutComponent, canActivate: [authGuard] },
+      { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard] },
+      { path: '', redirectTo: 'home', pathMatch: 'full' }
+   ];
+```
+
+Totes aquelles rutes que han de quedar protegides per la guarda necessiten definir la propietat `canActivate`, el valor de la qual és un `array` que conté totes aquelles guardes que es volen aplicar, en el cas de l'exemple, només `authGuard`.
