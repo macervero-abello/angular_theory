@@ -172,8 +172,7 @@ export class AppComponent {
 ## Accés a un servei web autenticat amb *API Key*
 Per accedir a un servei web autenticat amb *API Key* cal seguir els mateixos passos que en el cas anterior. Cal posar molta atenció, però, a la documentació, per esbrinar com obtenir i utilitzar l'*API Key* necessària per autenticar les crides als recursos que ofereix.
 
-https://pixabay.com/api/docs
-L'exemple de codi que es mostra a continuació utilitza el Servei Web (Pixabay)[https://pixabay.com/api/docs], el qual permet, entre altres coses, cercar imatges seguint els criteris marcats per l'usuari.
+L'exemple de codi que es mostra a continuació utilitza el Servei Web (Pixabay)[https://pixabay.com/service/about/api/], el qual permet, entre altres coses, cercar imatges seguint els criteris marcats per l'usuari.
 
 El recurs web que permet fer la cerca és un `HTTP GET` amb la url parametritzada següent:
 
@@ -181,3 +180,199 @@ El recurs web que permet fer la cerca és un `HTTP GET` amb la url parametritzad
 https://pixabay.com/api/?key={API_KEY}&q={QUERY}&image_type=photo
 ```
 
+on `API_KEY` és el *token* d'autenticació i `QUERY` els criteris de cerca que es volen utilitzar per trobar imatges d'un cert tipus.
+
+Segons la documentació, i si tot ha anat bé, aquest recurs retorna un codi 200 i un JSON amb la següent estructura:
+
+```json
+{
+	"total": 4692,
+	"totalHits": 500,
+	"hits": [
+	    {
+	        "id": 195893,
+	        "pageURL": "https://pixabay.com/en/blossom-bloom-flower-195893/",
+	        "type": "photo",
+	        "tags": "blossom, bloom, flower",
+	        "previewURL": "https://cdn.pixabay.com/photo/2013/10/15/09/12/flower-195893_150.jpg"
+	        "previewWidth": 150,
+	        "previewHeight": 84,
+	        "webformatURL": "https://pixabay.com/get/35bbf209e13e39d2_640.jpg",
+	        "webformatWidth": 640,
+	        "webformatHeight": 360,
+	        "largeImageURL": "https://pixabay.com/get/ed6a99fd0a76647_1280.jpg",
+	        "fullHDURL": "https://pixabay.com/get/ed6a9369fd0a76647_1920.jpg",
+	        "imageURL": "https://pixabay.com/get/ed6a9364a9fd0a76647.jpg",
+	        "imageWidth": 4000,
+	        "imageHeight": 2250,
+	        "imageSize": 4731420,
+	        "views": 7671,
+	        "downloads": 6439,
+	        "likes": 5,
+	        "comments": 2,
+	        "user_id": 48777,
+	        "user": "Josch13",
+	        "userImageURL": "https://cdn.pixabay.com/user/2013/11/05/02-10-23-764_250x250.jpg",
+	    },
+	    {
+	        "id": 73424,
+	        ...
+	    },
+	    ...
+	]
+}
+```
+
+on la propietat `hints` és l'*array* que conté les imatges la descripció de les quals, d'una manera o altra, encaixa amb la cerca realitzada.
+
+En canvi, si s'ha produït un error, retorna el codi d'error més apropiat segons el problema que ha esdevingut conjuntament amb un text descriptiu.
+
+Per tal de poder obtenir la votra `API_KEY` cal que inicieu sessió a Pixabay. D'aquesta manera, la pàgina de la documentació de l'API us mostrarà el vostre *token* directament.
+
+Un cop obtinguda l'`API_KEY` ja es pot començar a crear l'aplicació seguint el patró MVC i creant el model `Image` i el service `PixabayService`.
+
+Com sempre, per crear el model, s'utilitzarà la comanda `ng generate classe model/image --skip-tests` i tindrà l'aspecte següent:
+
+```typescript
+export class Image {
+    private _id: number;
+    private _tags: string[];
+    private _url: string;
+    private _width: number;
+    private _height: number;
+
+    constructor() {
+      this._id = -1;
+      this._tags = [];
+      this._url = "";
+      this._width = -1;
+      this._height = -1;
+    }
+
+    get id(): number { return this._id; }
+    get tags(): string[] { return this._tags; }
+    get url(): string { return this._url; }
+    get width(): number { return this._width }
+    get height(): number { return this._height; }
+
+    set id(id: number) { this._id = id; }
+    set tags(tags: string[]) { this._tags = tags; }
+    set url(url: string) { this._url = url; }
+    set width(width: number) { this._width = width; }
+    set height(height: number) { this._height = height; }
+}
+```
+
+Cal veure que el model no ha de reproduir al 100% el contingut del JSON que retorna el servei web, sinó que només ha de tenir els camps que interessen al desenvolupador.
+
+Fet el model, ja es pot passar a implementar el *service*, que es crearà utilitzant la comanda `ng generate service service/pixabay --skip-tests`.
+
+```typescript
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Image } from '../model/image.model';
+
+
+@Injectable({
+  providedIn: 'root'
+})
+export class PixabayService {
+  
+  private API_KEY: string = " ... ";
+  private _images: Image[];
+
+  constructor(private _http: HttpClient) {
+    this._images = [];
+  }
+
+  retrieveImageSearch(searchTags: string[]) {
+    let searchParam: string = "";
+    for(let i=0; i<searchTags.length; i++) {
+      searchParam += searchTags[i];
+      if(i < searchParam.length - 1) searchParam += "+";
+    }
+
+    const url = "https://pixabay.com/api/?key=" + this.API_KEY + "&q=" + searchParam + "&image_type=photo";
+
+    this._images = [];
+    this._http.get(url).subscribe({
+      next: (value: any) => {
+        value.hits.forEach((element: any) => {
+          let image: Image = new Image();
+          image.id = element.id;
+          image.tags = element.tags.split(", ");
+          image.url = element.largeImageURL;
+          image.width = element.imageWidth;
+          image.height = element.imageHeight;
+
+          this._images.push(image);
+        });
+      },
+      error: (error: any) => {},
+      complete: () => {}
+    });
+  }
+
+  get images(): Image[] { return this._images; }
+}
+```
+
+Finalment, l'`AppComponent` s'adapta a les necessitats de l'aplicació tal com mostra el tros de codi següent.
+
+{% tabs %}
+{% tab title="Codi HTML: app.component.html" %}
+```html
+<div class="m-3">
+  <input type="text" class="form-control" placeholder="Paràmetres de cerca: 'dog, puppy, water dog'" aria-label="Paràmetres de cerca, separats per comes" [(ngModel)]="searchParams">
+</div>
+<div class="clearfix">
+  <button type="button" class="btn btn-success float-end m-3" (click)="retrieveSearch()">Consultar</button>
+  <button type="button" class="btn btn-danger float-end mt-3" (click)="clearForm()">Cancel·lar</button>
+</div>
+
+<div class="row row-cols-1 row-cols-md-4">
+  <div class="col" *ngFor="let image of images; let idx = index">
+    <div class="card mx-auto" style="width: 18rem;">
+      <img [src]="image.url" class="card-img-top" >
+      <div class="card-body">
+        <h5 class="card-title">Resultat {{ idx + 1 }} - {{ image.id }}</h5>
+        <p class="card-text">
+          Amplada: {{ image.width }}
+          <br/>
+          Alçada: {{ image.height }}
+        </p>
+        <a [href]=image.url target="_blank">Enllaç a la imatge</a>
+      </div>
+    </div>
+  </div>
+</div>
+```
+{% endtab %}
+
+{% tab title="Codi TS: app.component.ts" %}
+```typescript
+import { Component } from '@angular/core';
+import { Image } from './model/image.model';
+import { PixabayService } from './service/pixabay.service';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrl: './app.component.css'
+})
+export class AppComponent {
+
+  public searchParams: string;
+
+  constructor(private _pixabayService: PixabayService) { this.searchParams = ""; }
+
+  retrieveSearch() {
+    let params: string[] = this.searchParams.replace(", ", ",").split(",");
+    this._pixabayService.retrieveImageSearch(params);
+  }
+  clearForm() { this.searchParams = ""; }
+  get images(): Image[] { return this._pixabayService.images; }
+}
+```
+{% endtab %}
+{% endtabs %}
