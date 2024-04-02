@@ -3,7 +3,7 @@ Moltes aplicacions web obtenen les seves dades i les seves funcionalitats a part
 - Autenticació mitjançant una *API Key*
 - Autenticació mitjançant el protocol OAuth v2
 
-L'(enllaç)[https://github.com/public-apis/public-apis] següent conté un recull de serveis web que permeten fer proves i, fins i tot, aplicacions que es poden posar en producció. Addicionalment, fent diverses cerques a internet, es poden trobar múltiples serveis web que cobreixen moltes necessitats.
+L'[enllaç](https://github.com/public-apis/public-apis) següent conté un recull de serveis web que permeten fer proves i, fins i tot, aplicacions que es poden posar en producció. Addicionalment, fent diverses cerques a internet, es poden trobar múltiples serveis web que cobreixen moltes necessitats.
 
 ## Accés a un servei web públic (sense autenticació)
 L'accés a un servei web públic es fa utiltizant la llibreria `HttpClient`, la qual permet llegir a recurs en línia.
@@ -15,7 +15,7 @@ Els passos que cal fer per consultar un servei web públic són els següents:
 2. Analitzar-ne la documentació per saber quines funcionalitats ofereix i si aquestes són `GET`, `POST`, etc.
 3. Crear l'aplicació per fer la consulta
 
-Per mostrar un exemple a través de codi, utilitzen el Servei Web (lyrics.ovh)[https://lyricsovh.docs.apiary.io/], el qual permet obtenir la lletra d'una cançó a partir del seu títol i del nom del seu artista.
+Per mostrar un exemple a través de codi, utilitzen el Servei Web [lyrics.ovh](https://lyricsovh.docs.apiary.io/), el qual permet obtenir la lletra d'una cançó a partir del seu títol i del nom del seu artista.
 
 Per assolir aquest objectiu ofereix el següent recurs web (URL del servei) a través del verb `HTTP GET`:
 
@@ -172,7 +172,7 @@ export class AppComponent {
 ## Accés a un servei web autenticat amb *API Key*
 Per accedir a un servei web autenticat amb *API Key* cal seguir els mateixos passos que en el cas anterior. Cal posar molta atenció, però, a la documentació, per esbrinar com obtenir i utilitzar l'*API Key* necessària per autenticar les crides als recursos que ofereix.
 
-L'exemple de codi que es mostra a continuació utilitza el Servei Web (Pixabay)[https://pixabay.com/service/about/api/], el qual permet, entre altres coses, cercar imatges seguint els criteris marcats per l'usuari.
+L'exemple de codi que es mostra a continuació utilitza el Servei Web [Pixabay](https://pixabay.com/service/about/api/), el qual permet, entre altres coses, cercar imatges seguint els criteris marcats per l'usuari.
 
 El recurs web que permet fer la cerca és un `HTTP GET` amb la url parametritzada següent:
 
@@ -376,3 +376,6 @@ export class AppComponent {
 ```
 {% endtab %}
 {% endtabs %}
+
+**Nota important**\
+En aquest exemple es mostra un servei web autenticat per *API Key* a través dels paràmetres de la URL del recurs. Ara però, sempre que es vulgui utilitzar un servei web amb *API Key* cal llegir atentament la seva documentació per esbrinar, exactament, com fer l'autenticació, ja que hi ha vegades que l'*API Key* pot anar dins dels *Headers* de la crida `HTTP`.
