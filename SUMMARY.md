@@ -16,3 +16,4 @@
 * [Capítol 13. Creació de pàgines (*pages*) i configuració del *Lazy Routing* amb Ionic](book/chapter13.md)
 * [Capítol 14. Components de navegació amb Ionic](book/chapter14.md)
 * [Capítol 15. Creació d'estils amb Ionic](book/chapter15.md)
+* [Capítol 16. *Live Reload* de l'aplicació mòbil](book/chapter16.md)
