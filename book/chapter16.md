@@ -153,7 +153,7 @@ Finalment, connecteu el mòbil a l'ordinador a través del cable USB i comproveu
 
 Aquesta comanda hauria de mostrar per pantalla dos dispositius: un de físic amb el nom del vostre mòbil Android i un simulador *Pixel 3* que genera, de manera automàtica, Android Studio.
 
-Si la comanda anterior no llista cap dispositiu, cal comprovar si la següent comanda sí funciona correctament:
+Si la comanda anterior no llista cap dispositiu, cal comprovar si la següent comanda sí funciona correctament (com a root):
 
 ```bash
     $ANDROID_SDK_ROOT/platform-tools/adb devices
