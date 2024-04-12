@@ -33,9 +33,12 @@ D'entre tots aquests mètodes, els més importants són els següents:
 3. [`scan()`](https://capawesome.io/plugins/mlkit/barcode-scanning/#scan): realitza la lectura del codi de barres tenint en compte un conjunt d'opcions de configuració ([`ScanOptions`](https://capawesome.io/plugins/mlkit/barcode-scanning/#scanoptions)) que especifiquen, bàsicament, els [formats de codi](https://capawesome.io/plugins/mlkit/barcode-scanning/#barcodeformat) que es poden llegir.
 
 El primer que caldrà fer és implementar el *BarcodeScannerService* per tal que ofereixi les funcions bàsiques per inicialitzar el lector (la càmera del sistema) i fer la captura del codi de barres:
+
 ```bash
 ionic generate service service/barcode-scanner --skip-tests
 ```
+
+Un cop implementat el *service*, només faltarà implementar la part de la *view* en una de les pàgines de l'aplicació.
 
 ### Comprovació del suport que ofereix el dispositiu per fer la lectura
 La primera funció necessària és la que comprova si el dispositiu suporta la funcionalitat:
@@ -52,7 +55,7 @@ export class BarcodeScannerService {
   private _suported: boolean;
 
   constructor() {
-    this._supported = false;
+    this._suported = false;
     this.isSuported();
   }
 
@@ -82,3 +85,98 @@ Un cop feta aquesta implementació només fa falta
 
 
 ### Comprovació de la configuració de permisos
+Un cop l'aplicació s'ha assegurat de què el dispositiu té capacitat per executar el lector de codi de barres, cal comprovar els permisos del sistema per tal de poder accedir a la càmera. Per tant, s'ha d'afegir el mètode `requestPermissions()` al `BarcodeScannerService`.
+
+```typescript
+import { Injectable } from '@angular/core';
+import { BarcodeScanner, IsSupportedResult, PermissionStatus } from '@capacitor-mlkit/barcode-scanning';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class BarcodeScannerService {
+
+  private _suported: boolean;
+
+  constructor() {...}
+  isSuported(): void {...}
+  get suported(): boolean {...}
+
+  async requestPermissions(): Promise<boolean> {
+    const permissions: PermissionStatus = await BarcodeScanner.requestPermissions();
+    return permissions.camera === 'granted' || permissions.camera === 'limited';
+  }
+}
+```
+
+Aquest mètode accedeix a la funcionalitat `requestPermission()` del *pluguin Capacitor ML Kit Barcode Scanning Plugin*, la qual retorna una [`Promise<PermissionStatus>`](https://capawesome.io/plugins/mlkit/barcode-scanning/#permissionstatus). L'objecte `PermissionStatus` té un únic atribut `camera` que pot tenir 4 estats diferents:
+* `'prompt'`
+* `'prompt-with-rationale'`
+* `'granted'`
+* `'denied'`
+* `'limited'`
+Només els estats `'granted'` i '`limited`' asseguren que l'aplicació pugui utilitzar la càmera, per tant, el mètode del *service* `BarcodeScannerService` només retornarà `true` en aquests casos i `false` en la resta.
+
+Cal tenir en compte que, com que no es pot fer anar el lector sense tenir els permisos necessaris, la `Promise<PermissionStatus>` que retorna el mètode `requestPermission()`  es tractarà de manera seqüèncial mitjançant un `async-await`.
+
+### Lectura del codi
+Finalment, un cop l'aplicació s'ha assegurat que té el suport i els permisos necessaris per poder executar el lector, ja pot implementar el mètode `scan()` per fer la captura del codi de barres.
+
+```typescript
+import { Injectable } from '@angular/core';
+import { BarcodeScanner, IsSupportedResult, PermissionStatus } from '@capacitor-mlkit/barcode-scanning';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class BarcodeScannerService {
+
+  private _suported: boolean;
+  private _barcodes: Barcode[];
+
+  constructor() {
+    this._suported = false;
+    this._barcodes = [];
+    this.isSuported();
+  }
+
+  isSuported(): void {...}
+  get suported(): boolean {...}
+  async requestPermissions(): Promise<boolean> {...}
+
+  async scan(): Promise<boolean> {
+    const granted = await this.requestPermissions();
+    if(granted) { 
+      const options: ScanOptions = {
+        formats: [BarcodeFormat.Ean13, BarcodeFormat.QrCode]
+      }
+
+      const result: ScanResult = await BarcodeScanner.scan(options);
+      this._barcodes = result.barcodes;
+
+      return true;
+    }
+    this._barcodes = [];
+    return false;
+  }
+
+  get barcodes(): Barcode[] {
+    return this._barcodes;
+  }
+}
+```
+
+Tal com passa en els casos anteriors, el mètode `scan()` del *service* `BarcodeScannerService` crida a la funció `scan()` del *pluguin Capacitor ML Kit Barcode Scanning Plugin*. Prèviament, però, s'ha assegurat que l'aplicació té els permisos necessaris invocant al mètode `requestPermissions()`.
+
+Pel que fa al mètode `scan()` del *plugin*, cal tenir en compte diversos aspectes:
+1. Pot rebre un paràmetre de tipus `ScanOptions`. Si el rep, aquest paràmetre especificarà quins formats de codi de barres serà capaç de llegir el lector fent que l'aplicació tinqui capacitats més limitades però, en canvi, sigui més eficient; si no el rep, el lector podrà llegir tots els [formats disponibles](https://capawesome.io/plugins/mlkit/barcode-scanning/#barcodeformat), la qual cosa farà que l'aplicació sigui molt adaptable però, en canvi, més ineficient.
+2. Retorna un objecte de tipus `Promise<ScanResult>`, el qual conté un *array* de codis de barres (les dades llegides).
+
+Per acabar d'arrodonir el codi, el *service* necessita tenir un atribut privat per guardar els `Barcode` que retorna l'`ScanResult` del mètode `scan()` i el mètode *getter* corresponent.
+
+### Implementació de la vista
+El lector de codi de barres es pot inserir en qualsevol de les pàgines de l'aplicació. En aquest exemple, però, es crearà una pàgina, conjuntament amb la ruta corresponent, específica mitjançant la comanda:
+
+```bash
+ionic generate page view/barcode-scanner
+```
