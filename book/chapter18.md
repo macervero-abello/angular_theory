@@ -124,7 +124,7 @@ Finalment, un cop l'aplicació s'ha assegurat que té el suport i els permisos n
 
 ```typescript
 import { Injectable } from '@angular/core';
-import { BarcodeScanner, IsSupportedResult, PermissionStatus } from '@capacitor-mlkit/barcode-scanning';
+import { Barcode, BarcodeFormat, BarcodeScanner, IsSupportedResult, PermissionStatus, ScanOptions, ScanResult } from '@capacitor-mlkit/barcode-scanning';
 
 @Injectable({
   providedIn: 'root'
