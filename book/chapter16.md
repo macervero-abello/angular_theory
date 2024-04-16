@@ -171,3 +171,9 @@ Per poder comprovar el funcionament de la vostra aplicació directament sobre el
 ```
 
 Si tot ha anat bé, aquesta instrucció activa el procés de compilació del codi i demana el dispositiu i la interfície de xarxa sobre el qual es vol activar el servidor. A partir d'aquí, qualsevol canvi que es faci al codi mentre el servidor estigui activat, serà directament llençat contra el dispositiu per poder ser provat i *debbugat* sense necessitat de crear l'instal·lador APK cada vegada.
+
+Addicionalment, si el mòbil està connectat per USB a l'ordinador, es pot fer la *debbugació* de l'aplicació a través dels navegadors *Firefox* i *Chrome* accedint a les adreces
+* `about:debugging` a *Firefox*
+* `chrome://inspect/#devices` a *Chrome*
+
+<!-- https://stackoverflow.com/questions/68346778/ionic-capacitor-how-to-see-console-when-running-on-android-emulator -->

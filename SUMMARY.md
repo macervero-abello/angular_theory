@@ -17,3 +17,5 @@
 * [Capítol 14. Components de navegació amb Ionic](book/chapter14.md)
 * [Capítol 15. Creació d'estils amb Ionic](book/chapter15.md)
 * [Capítol 16. *Live Reload* de l'aplicació mòbil](book/chapter16.md)
+* [Capítol 17. Creació i execució de l'APK (aplicació mòbil)](book/chapter17.md)
+* [Capítol 18. Lector de codis de barres](book/chapter18.md)

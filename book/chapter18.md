@@ -28,7 +28,7 @@ Fet això, ja es pot procedir a instal·lar el *pluguin* mitjançant la comanda 
 Un cop instal·lat el *pluguin* necessari, és important analitzar-ne la [documentació](https://capawesome.io/plugins/mlkit/barcode-scanning/) i, més especifícament, la seva [API] (https://capawesome.io/plugins/mlkit/barcode-scanning/#api), és a dir, totes les funcions que ofereix per tal de poder fer un lector de codi de barres.
 
 D'entre tots aquests mètodes, els més importants són els següents:
-1. [`isSuported()`](https://capawesome.io/plugins/mlkit/barcode-scanning/#issupported): indica si el dispositiu on es vol executar el lector suporta aquesta funcionalitat
+1. [`isSupported()`](https://capawesome.io/plugins/mlkit/barcode-scanning/#issupported): indica si el dispositiu on es vol executar el lector suporta aquesta funcionalitat
 2. [`requestPermission()`](https://capawesome.io/plugins/mlkit/barcode-scanning/#requestpermissions): demana permís per a utilitzar la càmera del dispositiu per poder fer la captura del codi de barres
 3. [`scan()`](https://capawesome.io/plugins/mlkit/barcode-scanning/#scan): realitza la lectura del codi de barres tenint en compte un conjunt d'opcions de configuració ([`ScanOptions`](https://capawesome.io/plugins/mlkit/barcode-scanning/#scanoptions)) que especifiquen, bàsicament, els [formats de codi](https://capawesome.io/plugins/mlkit/barcode-scanning/#barcodeformat) que es poden llegir.
 
@@ -52,36 +52,36 @@ import { BarcodeScanner, IsSupportedResult } from '@capacitor-mlkit/barcode-scan
 })
 export class BarcodeScannerService {
 
-  private _suported: boolean;
+  private _supported: boolean;
 
   constructor() {
-    this._suported = false;
-    this.isSuported();
+    this._supported = false;
+    this.isSupported();
   }
 
-  isSuported(): void {
+  isSupported(): void {
     BarcodeScanner.isSupported().then(
       (result: IsSupportedResult) => {
-        this._suported = result.supported;
+        this._supported = result.supported;
       }
     ).catch(
       (error: any) => {
-        this._suported = false;
+        this._supported = false;
       }
     ).finally(() => {});
   }
 
-  get suported(): boolean {
-    return this._suported
+  get supported(): boolean {
+    return this._supported
   }
 }
 ```
 
-Així doncs, el *service* `BarcodeScannerService` tindrà el mètode `isSuported()` que delegarà la comprovació al mètode `isSuported()` de la classe `BarcodeScanner` que ofereix el *pluguin Capacitor ML Kit Barcode Scanning Plugin*. Aquest mètode retorna una `Promise<IsSupportedResult>` que cal tractar per tal d'inicialitzar l'atribut private `_suported`.
+Així doncs, el *service* `BarcodeScannerService` tindrà el mètode `isSupported()` que delegarà la comprovació al mètode `isSupported()` de la classe `BarcodeScanner` que ofereix el *pluguin Capacitor ML Kit Barcode Scanning Plugin*. Aquest mètode retorna una `Promise<IsSupportedResult>` que cal tractar per tal d'inicialitzar l'atribut private `_supported`.
 
 Un cop feta aquesta implementació només fa falta
-1. cridar el mètode `isSuported()` des del constructor, d'aquesta manera, la comprovació es fa de manera immediata en el moment en què s'inicialitza l'aplicació, i
-2. crear un mètode *getter* per tal de poder consultar el valor de l'atribut privat `_suported`.
+1. cridar el mètode `isSupported()` des del constructor, d'aquesta manera, la comprovació es fa de manera immediata en el moment en què s'inicialitza l'aplicació, i
+2. crear un mètode *getter* per tal de poder consultar el valor de l'atribut privat `_supported`.
 
 
 ### Comprovació de la configuració de permisos
@@ -96,11 +96,11 @@ import { BarcodeScanner, IsSupportedResult, PermissionStatus } from '@capacitor-
 })
 export class BarcodeScannerService {
 
-  private _suported: boolean;
+  private _supported: boolean;
 
   constructor() {...}
-  isSuported(): void {...}
-  get suported(): boolean {...}
+  isSupported(): void {...}
+  get supported(): boolean {...}
 
   async requestPermissions(): Promise<boolean> {
     const permissions: PermissionStatus = await BarcodeScanner.requestPermissions();
@@ -131,17 +131,17 @@ import { Barcode, BarcodeFormat, BarcodeScanner, IsSupportedResult, PermissionSt
 })
 export class BarcodeScannerService {
 
-  private _suported: boolean;
+  private _supported: boolean;
   private _barcodes: Barcode[];
 
   constructor() {
-    this._suported = false;
+    this._supported = false;
     this._barcodes = [];
-    this.isSuported();
+    this.isSupported();
   }
 
-  isSuported(): void {...}
-  get suported(): boolean {...}
+  isSupported(): void {...}
+  get supported(): boolean {...}
   async requestPermissions(): Promise<boolean> {...}
 
   async scan(): Promise<boolean> {
@@ -178,5 +178,153 @@ Per acabar d'arrodonir el codi, el *service* necessita tenir un atribut privat p
 El lector de codi de barres es pot inserir en qualsevol de les pàgines de l'aplicació. En aquest exemple, però, es crearà una pàgina, conjuntament amb la ruta corresponent, específica mitjançant la comanda:
 
 ```bash
-ionic generate page view/barcode-scanner
+ionic generate page view/barcode-scanner --skip-tests
 ```
+
+Un cop fet això, només necessitem crear una pàgina que tingui un botó que activi la càmera per poder llegir el codi de barres desitjat i un llistat que mostri el contingut del codi llegit. Aquest botó només estarà actiu si el dispositiu suporta la funcionalitat.
+
+{% tabs %}
+{% tab title="Codi barcode-scanner.page.html" %}
+```html
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Lector de codis de barres
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-list>
+    <ion-item *ngFor="let barcode of barcodes">
+      <ion-label position="stacked">{{ barcode.format }}</ion-label>
+      <ion-input type="text" [value]="barcode.rawValue"></ion-input>
+    </ion-item>
+  </ion-list>
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button (click)="scan()" [disabled]="!isSupported">
+      <ion-icon name="scan"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>
+```
+{% endtab %}
+{% tab title="Codi barcode-scanner.page.ts" %}
+```typescript
+import { Component } from '@angular/core';
+import { Barcode } from '@capacitor-mlkit/barcode-scanning';
+import { BarcodeScannerService } from '../service/barcode-scanner.service';
+
+@Component({
+  selector: 'app-home',
+  templateUrl: 'home.page.html',
+  styleUrls: ['home.page.scss'],
+})
+export class BarcodeScannerPage {
+
+  constructor(private _barcodeScanner: BarcodeScannerService) {}
+
+  async scan(): Promise<boolean> {
+    let done: boolean = await this._barcodeScanner.scan();
+    return done;
+  }
+
+  get isSupported(): boolean {
+    return this._barcodeScanner.supported;
+  }
+
+  get barcodes(): Barcode[] {
+    return this._barcodeScanner.barcodes;
+  }
+}
+```
+{% endtab %}
+{% endtabs %}
+
+Com es pot comprovar, el codi d'aquesta pàgina injecta el service que s'ha implementat prèviament (`BarcodeScannerService`) i només té 3 mètodes:
+1. `isSupported()`: per comprovar si el dispositiu té capacitat per llegir el codi de barres
+2. `scan()`: activa la càmera i fa la lectora
+3. `barcodes()`: el *getter* que permet retornar els codis llegits (per accedir al contingut descodificat, s'ha de cridar a l'atribut rawValue de la interfície [`Barcode`](https://capawesome.io/plugins/mlkit/barcode-scanning/#barcode), tal com mostra el codi HTML).
+
+## Instal·lació de les plataformes de compilació desitjades (Android o IOS)
+Un cop el codi de l'aplicació ja està implementat, cal preparar tot el sistema per tal que pugui ser compilat i executat en les plataformes desitjades. 
+
+### Plataforma Android
+Si volem crear l'aplicació per a Android, caldrà executar la comanda:
+
+```bash
+  ionic capacitor add android
+  ionic capacitor sync
+```
+
+La primera instrucció crearà la carpeta `android`, preparada per a ser oberta des d'*AndroidStudio*, amb tots els fitxers necessaris per poder configurar i compilar l'aplicació per a dispositius Android. La segona actualitzarà els fitxers de la carpeta amb la última versió del nostre codi *Ionic/Anguar*.
+
+### Plataforma IOS
+Si es vol treballar sobre IOS, la comanda serà la següent:
+
+```bash
+  ionic capacitor add ios
+  ionic capacitor sync
+```
+
+La primera instrucció crearà la carpeta `ios`, preparada per a ser oberta des d'*XCode*, amb tots els fitxers necessaris per poder configurar i compilar l'aplicació per a dispositius IOS. La segona actualitzarà els fitxers de la carpeta amb la última versió del nostre codi *Ionic/Anguar*.
+
+## Configuració dels fitxers descriptius d'aquestes plataformes
+Després d'instal·lar la plataforma (o plataformes) desitjades, cal modificar-ne els fitxers de configuració per tal que les aplicacions finals tinguin els permisos necessaris per poder-se executar i fer anar la càmera del dispositiu.
+
+### Configuració de la plataforma Android
+Per configurar l'aplicació Android cal modificar el fitxer *AndroidManifest.xml*, el qual es troba dins de la carpeta `android/app/src/main`. Cal tenir en compte que qualsevol modificació d'aquest fitxer s'ha de fer amb el servidor *on-the-fly* tancat i que, per provar-ne els resultats, cal, prèviament, desinstal·lar l'aplicació del mòbil, en cas que ja hi estigués instal·lada.
+
+Les modificaions a fer-hi són les següents:
+1. Afegir meta dades dins de l'etiqueta `<application>`
+
+```html
+  <meta-data android:name="com.google.mlkit.vision.DEPENDENCIES" android:value="barcode_ui"/>
+```
+
+2. Afegir els permisos per a l'ús de la càmera i del flash
+
+```html
+  <uses-permission android:name="android.permission.CAMERA" />
+  <uses-permission android:name="android.permission.FLASHLIGHT"/>
+```
+
+Per tant, el fitxer final queda de la manera següent:
+
+```html
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+
+        ...
+
+        <meta-data android:name="com.google.mlkit.vision.DEPENDENCIES" android:value="barcode_ui"/>
+    </application>
+
+    <!-- Permissions -->
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.FLASHLIGHT"/>
+</manifest>
+```
+
+### Configuració de la plataforma IOS
+Per configurar l'aplicació IOS cal modificar el fitxer *Info.plist*, el qual es troba dins de la carpeta `ios/App/App`. Cal tenir en compte que qualsevol modificació d'aquest fitxer també s'ha de fer amb el servidor *on-the-fly* tancat i que, per provar-ne els resultats, cal, prèviament, desinstal·lar l'aplicació del mòbil, en cas que ja hi estigués instal·lada.
+
+En aquest cas, només fa falta afegir el permís d'ús de la càmera:
+
+```html
+  <key>NSCameraUsageDescription</key>
+  <string>The app enables the scanning of various barcodes.</string>
+```
+
+## Compliació, creació i execució de l'aplicació final
+Si ja s'han fet tots els passos anteriors, l'aplicació ja pot ser compilada, executada i provada. Per fer-ho, es poden seguir els passos del [Capítol 16](./chapter16.md) i, d'aquesta manera poder utilitzar la funcionalitat *Live Reload* sobre el mòbil o, en canvi, crear i instal·lar l'APK directament, tal com s'explica al [Capítol 17](./chapter17.md).
