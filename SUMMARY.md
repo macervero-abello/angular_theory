@@ -19,3 +19,4 @@
 * [Capítol 16. *Live Reload* de l'aplicació mòbil](book/chapter16.md)
 * [Capítol 17. Creació i execució de l'APK (aplicació mòbil)](book/chapter17.md)
 * [Capítol 18. Lector de codis de barres](book/chapter18.md)
+* [Capítol 19. Sistema de fitxers](book/chapter19.md)
