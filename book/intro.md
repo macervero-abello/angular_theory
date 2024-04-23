@@ -19,6 +19,7 @@ Els continguts d'aquesta guia estan basats en les versions Angular v15 (puntualm
 * [Capítol 12. Creació d'un projecte Ionic](chapter12.md)
 * [Capítol 13. Creació de pàgines (*pages*) i configuració del *Lazy Routing* amb Ionic](chapter13.md)
 * [Capítol 14. Components de navegació amb Ionic](chapter14.md)
+* [Capítol 15. *Infinite Scroll*](chapter14_.md)
 * [Capítol 15. Creació d'estils amb Ionic](chapter15.md)
 * [Capítol 16. *Live Reload* de l'aplicació mòbil](chapter16.md)
 * [Capítol 17. Creació i execució de l'APK (aplicació mòbil)](chapter17.md)
