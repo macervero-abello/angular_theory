@@ -1,264 +1,248 @@
-# Capítol 19. Sistema de fitxers
-<!-- 
-    https://ionicframework.com/docs/native/filesystem
-    https://capacitorjs.com/docs/apis/filesystem
--->
+# Capítol 19. Lector de codis de barres
+<!--https://ionic.io/blog/how-to-build-an-ionic-barcode-scanner-with-capacitor
 
-Un altre dels *plugins* que ofereix Capacitor, en aquest cas oficial o nadiu, és el que permet accedir al sistema de fitxers (*filesystem*) del dispositiu amb el que s'estigui treballant.
+https://github.com/robingenz/ionic-capacitor-barcode-scanner-->
 
-Els passos a seguir per aconseguir implementar una bona gestió dels fitxers generats per l'aplicació són els següents:
+Tal com s'ha dit en el [Capítol 17](chapter17.md), Capacitor és una eina de l'ecosistema Ionic que no només permet compilar codi Ionic i crear l'executable segons la plataforma per la qual s'estigui implementant, sinó que també ofereix un conjunt de [*pluguins*](https://capacitorjs.com/docs/plugins) que permeten l'accés directe al *hardware* del dispositiu. Aquests *pluguins* poden ser oficials (fets per l'equip desenvolupador de Capacitor) o de la comunitat (fets per desenvolupadors externs i validats per l'equip de l'ecosistema d'Ionic).
+
+En concret, dins dels *pluguins* de comunitat en trobem un que permet utilitzar la càmara del mòbil per crear un lector de codi de barres, sigui del tipus que sigui (EAN13, QR, ISBN, etc.): [Capacitor ML Kit Barcode Scanning Plugin](https://capawesome.io/plugins/mlkit/barcode-scanning/).
+
+Els passos a seguir per aconseguir implementar el lector són els següents:
 1. Instal·lació del plugin
 2. Creació del codi de l'aplicació
 3. Instal·lació de les plataformes de compilació desitjades (Android o IOS)
 4. Configuració dels fitxers descriptius d'aquestes plataformes
 5. Compliació, creació i execució de l'aplicació final
 
-## Instal·lació del *pluguin Filesystem*
-Per poder instal·lar aquest *pluguin* cal comprovar que el projecte Ionic té instal·lat Capacitor. Si aquest no és el cas, caldrà instal·lar-lo seguint els passos indicats al [primer apartat del Capítol 16](chapter16.md#installar-capacitor).
+## Instal·lació del *pluguin* Capacitor ML Kit Barcode Scanning Plugin
+Per poder instal·lar aquest *pluguin* cal comprovar que el projecte Ionic té instal·lat Capacitor. Si aquest no és el cas, caldrà instal·lar-lo seguint els passos indicats al [primer apartat del Capítol 17](chapter17.md#installar-capacitor).
 
 Fet això, ja es pot procedir a instal·lar el *pluguin* mitjançant la comanda següent:
 ```bash
-    npm install @capacitor/filesystem
+    npm install @capacitor-mlkit/barcode-scanning
 ```
 
 ## Creació del codi de l'aplicació
-Un cop instal·lat el *pluguin* necessari, és important analitzar-ne la [documentació](https://capawesome.io/plugins/mlkit/barcode-scanning/) i la seva [API](https://capacitorjs.com/docs/apis/filesystem#api) per saber totes les funcionalitats.
+Un cop instal·lat el *pluguin* necessari, és important analitzar-ne la [documentació](https://capawesome.io/plugins/mlkit/barcode-scanning/) i, més especifícament, la seva [API](https://capawesome.io/plugins/mlkit/barcode-scanning/#api), és a dir, totes les funcions que ofereix per tal de poder fer un lector de codi de barres.
 
-Els mètodes més importants són els següents:
-1. *CRUD* d'un fitxer:
-  * [`writeFile()`](https://capacitorjs.com/docs/apis/filesystem#writefile): escriu les dades a fitxer; en cas que el fitxer no existeixi dins del sistema, el crea.
-  * [`appendFile()`](https://capacitorjs.com/docs/apis/filesystem#appendfile): afegeix dades al final del fitxer
-  * [`readFile()`](https://capacitorjs.com/docs/apis/filesystem#readfile): llegeis les dades de fitxer
-  * [`deleteFile()`](https://capacitorjs.com/docs/apis/filesystem#deletefile): esborra el fitxer del sistema
-  * [`downloadFile()`](https://capacitorjs.com/docs/apis/filesystem#downloadfile): descarrega un fitxer des d'un servidor i l'emmagatzema dins del sistema
-2. *CRUD* d'un directori:
-  * [`mkdir()`](https://capacitorjs.com/docs/apis/filesystem#mkdir): crea un nou directori dins del sistema
-  * [`rmdir()`](https://capacitorjs.com/docs/apis/filesystem#rmdir): esborra el directori del sistema
-  * [`readdir()`](https://capacitorjs.com/docs/apis/filesystem#readdir): llista el contingut d'un directori
-3. Gestió general de fitxers i directoris:
-  * [`getUri()`](https://capacitorjs.com/docs/apis/filesystem#geturi): retorna l'adreça absoluta del fitxer o directori
-  * [`stat()`](https://capacitorjs.com/docs/apis/filesystem#stat): retorna les propietats del fitxer o directori
-  * [`rename()`](https://capacitorjs.com/docs/apis/filesystem#rename): canvia el nom (i la ubicació, si cal) del fitxer o directori
-  * [`copy()`](https://capacitorjs.com/docs/apis/filesystem#copy): copia el fitxer o directori a una altra ubicació
-4. Gestió de permisos:
-  * [`checkPermissions()`](https://capacitorjs.com/docs/apis/filesystem#checkpermissions): comprova si l'aplicació té els permisos necessaris per poder gestionar el sistema de fitxers (aquest mètode només s'ha d'invocar des d'Android si es vol accedir al directori `Documents` o a l'emmagatzematge extern - `ExternalStorage`)
-  * [`requestPermissions()`](hhttps://capacitorjs.com/docs/apis/filesystem#requestpermissions): delana els permisos necessaris per poder gestionar el sistema de fitxers (aquest mètode només s'ha d'invocar des d'Android si es vol accedir al directori `Documents` o a l'emmagatzematge extern - `ExternalStorage`)
+D'entre tots aquests mètodes, els més importants són els següents:
+1. [`isSupported()`](https://capawesome.io/plugins/mlkit/barcode-scanning/#issupported): indica si el dispositiu on es vol executar el lector suporta aquesta funcionalitat
+2. [`requestPermission()`](https://capawesome.io/plugins/mlkit/barcode-scanning/#requestpermissions): demana permís per a utilitzar la càmera del dispositiu per poder fer la captura del codi de barres
+3. [`scan()`](https://capawesome.io/plugins/mlkit/barcode-scanning/#scan): realitza la lectura del codi de barres tenint en compte un conjunt d'opcions de configuració ([`ScanOptions`](https://capawesome.io/plugins/mlkit/barcode-scanning/#scanoptions)) que especifiquen, bàsicament, els [formats de codi](https://capawesome.io/plugins/mlkit/barcode-scanning/#barcodeformat) que es poden llegir.
 
-El primer que caldrà fer és implementar el `FilesystemService` per tal que ofereixi les funcions bàsiques per gestionar el sistema de fitxers:
+El primer que caldrà fer és implementar el `BarcodeScannerService` per tal que ofereixi les funcions bàsiques per inicialitzar el lector (la càmera del sistema) i fer la captura del codi de barres:
 
 ```bash
-ionic generate service service/filesystem --skip-tests
+ionic generate service service/barcode-scanner --skip-tests
 ```
 
-Un cop ja s'hagi implementat el *service*, només faltarà implementar la part de la *view* en una de les pàgines de l'aplicació.
+Un cop implementat el *service*, només faltarà implementar la part de la *view* en una de les pàgines de l'aplicació.
 
-
-### Directoris que ofereix el *plugin Filesystem*
-El *plugin Filesystem* ofereix un conjunt de [directoris](https://capacitorjs.com/docs/apis/filesystem#directory) per tal que les aplicacions instal·lades al dispositiu puguin gestionar els seus propis fitxers.
-
-1. `Documents`
-    * En el sistema IOS correspon al directori *documents* de la pròpia aplicació
-    * En el sistema Android correspon a la carpeta pública *Documents* i l'aplicació només té accés als fitxers i carpetes que ha creat ella mateixa (per accedir-hi cal gestionar la configuració de permisos)
-2. `Data`
-    * En el sistema IOS equival al directori `Documents`
-    * En el sistema Android és el directori que conté els fitxers de l'aplicació (s'esborra quan l'aplicació es desinstal·la)
-3. `Library`
-    * En el sistema IOS correspon a la carpeta *library*
-    * En el sistema Android equival al directori `Data`
-4. `Cache`: correspon a la cache del sistema
-5. `External`
-    * En el sistema IOS equival al directori `Documents`
-    * En el sistema Android correspon al dispositiu (disc dur) d'emmagatzematge primari, sigui compartit o extern (els fitxers que s'hi creen s'esborren quan l'aplicació es desinstal·la)
-6. `ExternalStorage`
-    * En el sistema IOS equival al directori `Documents`
-    * En el sistema Android correspon al directori d'emmagatzematge primari, sigui compartit o extern (per accedir-hi des d'un Android 10 cal gestionar la configuració de permisos; Androids més nous ja no hi tenen accés)
-
-
-### Escriptura de dades a un fitxer
-La primera funció que es pot implementar és la d'escriptura a fitxer:
+### Comprovació del suport que ofereix el dispositiu per fer la lectura
+La primera funció necessària és la que comprova si el dispositiu suporta la funcionalitat:
 
 ```typescript
 import { Injectable } from '@angular/core';
-import { Directory, Encoding, Filesystem, WriteFileResult } from '@capacitor/filesystem';
+import { BarcodeScanner, IsSupportedResult } from '@capacitor-mlkit/barcode-scanning';
 
 @Injectable({
   providedIn: 'root'
 })
-export class FilesystemService {
+export class BarcodeScannerService {
 
-  private _path: string = "buy_list.txt"
-  private _idata: any = {
-    'greengrocer': ['enciam', 'tomàquets'],
-    'supermarket': ['pizza congelada', 'iogurts']
-  };
+  private _supported: boolean;
 
-  constructor() {}
+  constructor() {
+    this._supported = false;
+    this.isSupported();
+  }
 
-  async writeToFile(): Promise<boolean> {
-    let result: WriteFileResult = await Filesystem.writeFile({
-        path: this._path,
-        data: JSON.stringify(this._idata),
-        directory: Directory.Documents,
-        encoding: Encoding.UTF8
-    });
-    
-    if(result.uri && result.uri != '') return true;
-    else {
-        console.log("Error d'escriptura");
-        return false;
-    }
+  isSupported(): void {
+    BarcodeScanner.isSupported().then(
+      (result: IsSupportedResult) => {
+        this._supported = result.supported;
+      }
+    ).catch(
+      (error: any) => {
+        this._supported = false;
+      }
+    ).finally(() => {});
+  }
+
+  get supported(): boolean {
+    return this._supported
   }
 }
 ```
 
-El *service* `FilesystemService` tindrà el mètode `writeToFile()` que delegarà l'escriptura al mètode `writeFile()` de la classe `Filesystem` que ofereix el *pluguin Filesystem*. Aquest mètode retorna una `Promise<WriteFileResult>` que cal tractar per tal d'esbrinar si l'escriptura s'ha pogut dur a terme o no.
+Així doncs, el *service* `BarcodeScannerService` tindrà el mètode `isSupported()` que delegarà la comprovació al mètode `isSupported()` de la classe `BarcodeScanner` que ofereix el *pluguin Capacitor ML Kit Barcode Scanning Plugin*. Aquest mètode retorna una `Promise<IsSupportedResult>` que cal tractar per tal d'inicialitzar l'atribut private `_supported`.
 
-En aquesta implementació cal tenir en compte diverses coses:
-1. La ruta del fitxer (`this._path`) i/o les dades a escriure (`this._idata`) poden venir determinades per l'usuari, per tant, en comptes de ser atributs s'hauran de passar per paràmetre al mètode `writeToFile()`.
-2. Les dades que s'han d'escriure a fitxer han d'estar en format `string`, per tant, si cal escriure tot un objecte a fitxer, prèviament caldrà aplicar-li un `toString()` o un `JSON.stringify()`.
-3. Els directoris on es poden emmagatzemar les dades són els llistats en l'[apartat anterior](#directoris-que-ofereix-el-plugin-filesystem)
-4. La [codificació](https://capacitorjs.com/docs/apis/filesystem#encoding) del fitxer pot estar en `ASCII`, `UTF-8` o `UTF16`.
+Un cop feta aquesta implementació només fa falta
+1. cridar el mètode `isSupported()` des del constructor, d'aquesta manera, la comprovació es fa de manera immediata en el moment en què s'inicialitza l'aplicació, i
+2. crear un mètode *getter* per tal de poder consultar el valor de l'atribut privat `_supported`.
 
-### Lectura de dades d'un fitxer
-Un cop l'aplicació ja té implementada la funcionalitat per escriure dades a fitxer, també cal que les sàpiga llegir per poder-les recuperar:
+
+### Comprovació de la configuració de permisos
+Un cop l'aplicació s'ha assegurat de què el dispositiu té capacitat per executar el lector de codi de barres, cal comprovar els permisos del sistema per tal de poder accedir a la càmera. Per tant, s'ha d'afegir el mètode `requestPermissions()` al `BarcodeScannerService`.
 
 ```typescript
 import { Injectable } from '@angular/core';
-import { Directory, Encoding, Filesystem, ReadFileResult, WriteFileResult } from '@capacitor/filesystem';
+import { BarcodeScanner, IsSupportedResult, PermissionStatus } from '@capacitor-mlkit/barcode-scanning';
 
 @Injectable({
   providedIn: 'root'
 })
-export class FilesystemService {
+export class BarcodeScannerService {
 
-  private _path: string = "buy_list.txt"
-  private _idata: any = {
-    'greengrocer': ['enciam', 'tomàquets'],
-    'supermarket': ['pizza congelada', 'iogurts']
-  };
-  private _odata: any;
+  private _supported: boolean;
 
+  constructor() {...}
+  isSupported(): void {...}
+  get supported(): boolean {...}
 
-  constructor() {}
+  async requestPermissions(): Promise<boolean> {
+    const permissions: PermissionStatus = await BarcodeScanner.requestPermissions();
+    return permissions.camera === 'granted' || permissions.camera === 'limited';
+  }
+}
+```
 
-  async writeToFile(): Promise<boolean> {...}
+Aquest mètode accedeix a la funcionalitat `requestPermission()` del *pluguin Capacitor ML Kit Barcode Scanning Plugin*, la qual retorna una [`Promise<PermissionStatus>`](https://capawesome.io/plugins/mlkit/barcode-scanning/#permissionstatus). L'objecte `PermissionStatus` té un únic atribut `camera` que pot tenir 4 estats diferents:
+* `'prompt'`
+* `'prompt-with-rationale'`
+* `'granted'`
+* `'denied'`
+* `'limited'`
+Només els estats `'granted'` i '`limited`' asseguren que l'aplicació pugui utilitzar la càmera, per tant, el mètode del *service* `BarcodeScannerService` només retornarà `true` en aquests casos i `false` en la resta.
 
-  async readFromFile(): Promise<boolean> {
-    let result: ReadFileResult = await Filesystem.readFile({
-      path: this._path,
-      directory: Directory.Documents,
-      encoding: Encoding.UTF8
-    });
+Cal tenir en compte que, com que no es pot fer anar el lector sense tenir els permisos necessaris, la `Promise<PermissionStatus>` que retorna el mètode `requestPermission()`  es tractarà de manera seqüèncial mitjançant un `async-await`.
 
-    if(result.data) {
-      this._odata = result.data;
-      if(!(this._odata instanceof Blob)) this._odata = JSON.parse(this._odata);
+### Lectura del codi
+Finalment, un cop l'aplicació s'ha assegurat que té el suport i els permisos necessaris per poder executar el lector, ja pot implementar el mètode `scan()` per fer la captura del codi de barres.
+
+```typescript
+import { Injectable } from '@angular/core';
+import { Barcode, BarcodeFormat, BarcodeScanner, IsSupportedResult, PermissionStatus, ScanOptions, ScanResult } from '@capacitor-mlkit/barcode-scanning';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class BarcodeScannerService {
+
+  private _supported: boolean;
+  private _barcodes: Barcode[];
+
+  constructor() {
+    this._supported = false;
+    this._barcodes = [];
+    this.isSupported();
+  }
+
+  isSupported(): void {...}
+  get supported(): boolean {...}
+  async requestPermissions(): Promise<boolean> {...}
+
+  async scan(): Promise<boolean> {
+    const granted = await this.requestPermissions();
+    if(granted) { 
+      const options: ScanOptions = {
+        formats: [BarcodeFormat.Ean13, BarcodeFormat.QrCode]
+      }
+
+      const result: ScanResult = await BarcodeScanner.scan(options);
+      this._barcodes = result.barcodes;
+
       return true;
-    } else {
-      return false;
     }
+    this._barcodes = [];
+    return false;
   }
 
-  get data(): any {
-    return this._odata;
+  get barcodes(): Barcode[] {
+    return this._barcodes;
   }
 }
 ```
 
-En aquest cas, el *service* `FilesystemService` tindrà el mètode `readFromFile()` que delegarà l'escriptura al mètode `readFile()` de la classe `Filesystem` que ofereix el *pluguin Filesystem*. Aquest mètode retorna una `Promise<ReadFileResult>` que cal tractar per tal d'esbrinar si la lectura s'ha pogut dur a terme o no.
+Tal com passa en els casos anteriors, el mètode `scan()` del *service* `BarcodeScannerService` crida a la funció `scan()` del *pluguin Capacitor ML Kit Barcode Scanning Plugin*. Prèviament, però, s'ha assegurat que l'aplicació té els permisos necessaris invocant al mètode `requestPermissions()`.
 
-En aquesta implementació cal tenir en compte diverses coses:
-1. La ruta del fitxer (`this._path`) pet venir determinada per l'usuari, per tant, en comptes de ser un atribut s'haurà de passar per paràmetre al mètode `writeToFile()`.
-2. Les dades que que es llegeixen del fitxer poden estar en format `string` o en format `Blob` (només el en cas de plataforma web), per tant, un cop llegides caldrà aplicar-los-hi un `JSON.parse()`.
-3. Els directoris on es poden emmagatzemar les dades són els llistats en l'[apartat anterior](#directoris-que-ofereix-el-plugin-filesystem)
-4. La [codificació](https://capacitorjs.com/docs/apis/filesystem#encoding) del fitxer pot estar en `ASCII`, `UTF-8` o `UTF16`.
+Pel que fa al mètode `scan()` del *plugin*, cal tenir en compte diversos aspectes:
+1. Pot rebre un paràmetre de tipus `ScanOptions`. Si el rep, aquest paràmetre especificarà quins formats de codi de barres serà capaç de llegir el lector fent que l'aplicació tinqui capacitats més limitades però, en canvi, sigui més eficient; si no el rep, el lector podrà llegir tots els [formats disponibles](https://capawesome.io/plugins/mlkit/barcode-scanning/#barcodeformat), la qual cosa farà que l'aplicació sigui molt adaptable però, en canvi, més ineficient.
+2. Retorna un objecte de tipus `Promise<ScanResult>`, el qual conté un *array* de codis de barres (les dades llegides).
 
-A més a més de la implementació del mètode `readFromFile()` també és necessari crear un mètode *getter* per tal de poder consultar el valor de l'atribut privat `this._odata`.
-
+Per acabar d'arrodonir el codi, el *service* necessita tenir un atribut privat per guardar els `Barcode` que retorna l'`ScanResult` del mètode `scan()` i el mètode *getter* corresponent.
 
 ### Implementació de la vista
-La gestió del sistema de fitxers es pot fer des de qualsevol pàgina de l'aplicació. En aquest exemple, però, es crearà una pàgina, conjuntament amb la ruta corresponent, específica mitjançant la comanda:
+El lector de codi de barres es pot inserir en qualsevol de les pàgines de l'aplicació. En aquest exemple, però, es crearà una pàgina, conjuntament amb la ruta corresponent, específica mitjançant la comanda:
 
 ```bash
-ionic generate page view/list
+ionic generate page view/barcode-scanner --skip-tests
 ```
 
-Un cop fet això, només necessitem crear una pàgina que tingui un botó que activi l'escriptura de fitxer i un altre botó per a la lectura.
+Un cop fet això, només necessitem crear una pàgina que tingui un botó que activi la càmera per poder llegir el codi de barres desitjat i un llistat que mostri el contingut del codi llegit. Aquest botó només estarà actiu si el dispositiu suporta la funcionalitat.
 
 {% tabs %}
-{% tab title="Codi list.page.html" %}
+{% tab title="Codi barcode-scanner.page.html" %}
 ```html
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>list</ion-title>
+    <ion-title>
+      Lector de codis de barres
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-button (click)="saveFile()">Save File data</ion-button>
-  <ion-button (click)="readFile()">Show File data</ion-button>
-
-  <div *ngIf="error_msg != ''">{{ error_msg }}</div>
-
-  <ul *ngIf="data">
-    <li *ngFor="let elem of data.greengrocer">
-      {{ elem }}
-    </li>
-  </ul>
-  <ul *ngIf="data">
-    <li *ngFor="let elem of data.supermarket">
-      {{ elem }}
-    </li>
-  </ul>
+  <ion-list>
+    <ion-item *ngFor="let barcode of barcodes">
+      <ion-label position="stacked">{{ barcode.format }}</ion-label>
+      <ion-input type="text" [value]="barcode.rawValue"></ion-input>
+    </ion-item>
+  </ion-list>
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button (click)="scan()" [disabled]="!isSupported">
+      <ion-icon name="scan"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>
 ```
 {% endtab %}
-{% tab title="Codi list.page.ts" %}
+{% tab title="Codi barcode-scanner.page.ts" %}
 ```typescript
-import { Component, OnInit } from '@angular/core';
-import { FilesystemService } from 'src/app/service/filesystem.service';
+import { Component } from '@angular/core';
+import { Barcode } from '@capacitor-mlkit/barcode-scanning';
+import { BarcodeScannerService } from '../service/barcode-scanner.service';
 
 @Component({
-  selector: 'app-list',
-  templateUrl: './list.page.html',
-  styleUrls: ['./list.page.scss'],
+  selector: 'app-home',
+  templateUrl: 'home.page.html',
+  styleUrls: ['home.page.scss'],
 })
-export class ListPage implements OnInit {
+export class BarcodeScannerPage {
 
-  public error_msg: string = "";
+  constructor(private _barcodeScanner: BarcodeScannerService) {}
 
-  constructor(private _filesystemService: FilesystemService) {}
-
-  ngOnInit() {}
-
-  async saveFile() {
-    this.error_msg = "";
-
-    if(!await this._filesystemService.writeToFile()) {
-      this.error_msg = "No s'ha pogut fer l'escriptura a fitxer";
-    }
+  async scan(): Promise<boolean> {
+    let done: boolean = await this._barcodeScanner.scan();
+    return done;
   }
 
-  async readFile() {
-    this.error_msg = "";
-    if(!await this._filesystemService.readFromFile()) {
-      this.error_msg = "No s'ha pogut llegir el fitxer"
-    }
+  get isSupported(): boolean {
+    return this._barcodeScanner.supported;
   }
 
-  get data(): any {
-    return this._filesystemService.data;
+  get barcodes(): Barcode[] {
+    return this._barcodeScanner.barcodes;
   }
 }
 ```
 {% endtab %}
 {% endtabs %}
 
-Com es pot comprovar, el codi d'aquesta pàgina injecta el service que s'ha implementat prèviament (`FilesystemService`) i només té 3 mètodes:
-1. `saveFile()`: per guardar les dades a un fitxer
-2. `readFile()`: per llegir les dades de fitxer
-3. `data()`: el *getter* que permet retornar les dades llegides de fitxer
-
+Com es pot comprovar, el codi d'aquesta pàgina injecta el service que s'ha implementat prèviament (`BarcodeScannerService`) i només té 3 mètodes:
+1. `isSupported()`: per comprovar si el dispositiu té capacitat per llegir el codi de barres
+2. `scan()`: activa la càmera i fa la lectora
+3. `barcodes()`: el *getter* que permet retornar els codis llegits (per accedir al contingut descodificat, s'ha de cridar a l'atribut rawValue de la interfície [`Barcode`](https://capawesome.io/plugins/mlkit/barcode-scanning/#barcode), tal com mostra el codi HTML).
 
 ## Instal·lació de les plataformes de compilació desitjades (Android o IOS)
 Un cop el codi de l'aplicació ja està implementat, cal preparar tot el sistema per tal que pugui ser compilat i executat en les plataformes desitjades. 
@@ -283,18 +267,24 @@ Si es vol treballar sobre IOS, la comanda serà la següent:
 
 La primera instrucció crearà la carpeta `ios`, preparada per a ser oberta des d'*XCode*, amb tots els fitxers necessaris per poder configurar i compilar l'aplicació per a dispositius IOS. La segona actualitzarà els fitxers de la carpeta amb la última versió del nostre codi *Ionic/Anguar*.
 
-
 ## Configuració dels fitxers descriptius d'aquestes plataformes
 Després d'instal·lar la plataforma (o plataformes) desitjades, cal modificar-ne els fitxers de configuració per tal que les aplicacions finals tinguin els permisos necessaris per poder-se executar i fer anar la càmera del dispositiu.
 
 ### Configuració de la plataforma Android
-Per configurar l'aplicació Android, sempre que es vulguin utilitzar els directoris `Documents` i `ExternalStorage`, cal modificar el fitxer *AndroidManifest.xml*, el qual es troba dins de la carpeta `android/app/src/main`. Cal tenir en compte que qualsevol modificació d'aquest fitxer s'ha de fer amb el servidor *on-the-fly* tancat i que, per provar-ne els resultats, cal, prèviament, desinstal·lar l'aplicació del mòbil, en cas que ja hi estigués instal·lada.
+Per configurar l'aplicació Android cal modificar el fitxer *AndroidManifest.xml*, el qual es troba dins de la carpeta `android/app/src/main`. Cal tenir en compte que qualsevol modificació d'aquest fitxer s'ha de fer amb el servidor *on-the-fly* tancat i que, per provar-ne els resultats, cal, prèviament, desinstal·lar l'aplicació del mòbil, en cas que ja hi estigués instal·lada.
 
-La modificació a fer-hi només implica afegir permisos per a l'accès a l'emmagatzematge extern:
+Les modificaions a fer-hi són les següents:
+1. Afegir meta dades dins de l'etiqueta `<application>`
 
 ```html
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+  <meta-data android:name="com.google.mlkit.vision.DEPENDENCIES" android:value="barcode_ui"/>
+```
+
+2. Afegir els permisos per a l'ús de la càmera i del flash
+
+```html
+  <uses-permission android:name="android.permission.CAMERA" />
+  <uses-permission android:name="android.permission.FLASHLIGHT"/>
 ```
 
 Per tant, el fitxer final queda de la manera següent:
@@ -319,73 +309,20 @@ Per tant, el fitxer final queda de la manera següent:
     <!-- Permissions -->
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-</manifest>
-```
-
-En cas que faci falta treballar amb fitxers molt grans, també farà falta afegir l'atribut `android:largeHeap="true"` dins de l'etiqueta `application`:
-
-```html
-<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <application
-        android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:largeHeap="true">
-
-        ...
-
-        <meta-data android:name="com.google.mlkit.vision.DEPENDENCIES" android:value="barcode_ui"/>
-    </application>
-
-    <!-- Permissions -->
-
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.FLASHLIGHT"/>
 </manifest>
 ```
 
 ### Configuració de la plataforma IOS
-Per configurar l'aplicació IOS cal fer diversos passos:
-1. Crear el fitxer `PrivacyInfo.xcprivacy` dins de la carpeta `ios/App`
-```html
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-    <key>NSPrivacyAccessedAPITypes</key>
-    <array>
-    <!-- Add this dict entry to the array if the PrivacyInfo file already exists -->
-    <dict>
-        <key>NSPrivacyAccessedAPIType</key>
-        <string>NSPrivacyAccessedAPICategoryFileTimestamp</string>
-        <key>NSPrivacyAccessedAPITypeReasons</key>
-        <array>
-        <string>C617.1</string>
-        </array>
-    </dict>
-    </array>
-</dict>
-</plist>
-```
-2. Configurar els permisos dins del fitxer `Info.plist`, que es troba dins de la carpeta `ios/App/App`:
-    * Clau `UIFileSharingEnabled` (permís per compartir fitxers a través d'*iTunes*) amb valor `Yes`
-    * Clau `LSSupportsOpeningDocumentsInPlace` (permís per gestió de fitxers locals) amb valor `Yes`
+Per configurar l'aplicació IOS cal modificar el fitxer *Info.plist*, el qual es troba dins de la carpeta `ios/App/App`. Cal tenir en compte que qualsevol modificació d'aquest fitxer també s'ha de fer amb el servidor *on-the-fly* tancat i que, per provar-ne els resultats, cal, prèviament, desinstal·lar l'aplicació del mòbil, en cas que ja hi estigués instal·lada.
+
+En aquest cas, només fa falta afegir el permís d'ús de la càmera:
 
 ```html
-  <key>UIFileSharingEnabled</key>
-  <true/>
-  <key>LSSupportsOpeningDocumentsInPlace</key>
-  <true/>
+  <key>NSCameraUsageDescription</key>
+  <string>The app enables the scanning of various barcodes.</string>
 ```
-
 
 ## Compliació, creació i execució de l'aplicació final
-Si ja s'han fet tots els passos anteriors, l'aplicació ja pot ser compilada, executada i provada. Per fer-ho, es poden seguir els passos del [Capítol 16](./chapter16.md) i, d'aquesta manera poder utilitzar la funcionalitat *Live Reload* sobre el mòbil o, en canvi, crear i instal·lar l'APK directament, tal com s'explica al [Capítol 17](./chapter17.md).
+Si ja s'han fet tots els passos anteriors, l'aplicació ja pot ser compilada, executada i provada. Per fer-ho, es poden seguir els passos del [Capítol 17](./chapter17.md) i, d'aquesta manera poder utilitzar la funcionalitat *Live Reload* sobre el mòbil o, en canvi, crear i instal·lar l'APK directament, tal com s'explica al [Capítol 18](./chapter18.md).

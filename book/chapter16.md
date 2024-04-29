@@ -1,179 +1,185 @@
-# Capítol 16. *Live Reload* de l'aplicació mòbil
-La nova versió d'Ionic ofereix la possibilitat d'executar un servidor *on-the-fly* directament a un dispositiu mòbil, sigui físic o un emulador. D'aquesta manera, qualsevol canvi que es faci al codi es podrà provar, directament, sobre el hardware on ha de funcionar sense la necessitat de crear un executable (APK) i instal·lar-lo al dispositiu.
+# Capítol 16. Creació d'estils amb Ionic
+Per crear els estils d'una aplicació Ionic cal tenir en compte 4 factors:
+1. La creació d'un *layout*
+2. La distribució del contingut dins de les pàgines
+3. Els estils que ofereix el propi *framework* Ionic
+4. La creació d'un tema propi (la guia d'estil o marca)
 
-Per poder preparar el sistema per treballar amb aquesta mena de servidor *on-the-fly* cal, però, seguir uns quants passos:
-1. Instal·lar [Capacitor](https://capacitorjs.com/) dins del projecte Ionic (en les noves versions és possible que ja estigui instal·lat per defecte)
-2. Afegir la plataforma Android (o IOS, segons es desitgi)
-3. Instal·lar i configurar [Android Studio](https://developer.android.com/studio) (o [Xcode](https://apps.apple.com/es/app/xcode/id497799835?mt=12) en el cas d'IOS)
-4. Configurar totes les variables d'entorn relacionades amb Android Studio
-5. Instal·lar la [JDK 17 de JAVA](https://www.oracle.com/es/java/technologies/downloads/) i configurar la variable d'entorn `JAVA_HOME`
-6. Actiar les opcions de desenvolupador al mòbil de prova (en cas que no es tiguin mòbil, crear un simulador a Android Studio)
-7. Connectar el mòbil a l'ordinador amb el projecte a través del cable USB i, a més a més, connectar tots dos dispositius a la mateixa xarxa
+## Creació d'un *layout*
+Ionic ofereix 4 tipus de *layouts* diferents, els quals podeu trobar explicats en aquest [enllaç](https://ionicframework.com/docs/layout/structure)
+* *Single page*: formada per un  *header*, el contingut i un *footer*, tot i que el *header* i el *footer* són opcionals (aquest *layout* bàsic és el que s'ha presentat en el [Captíol 13](chapter13.md))
+* *Tabs*: la navegació està gestionada per un conjunt de pestanyes (analitzat en el [Capítol 14](chapter14.md))
+* Menú: la navegació està gestionada per un menú (analitzat en el [Capítol 14](chapter14.md))
+* *Split pane*: s'utilitza per crear pàgines web que tenen el menú fixat en una columna a l'esquerra (no estudiarem en profunditat aquest *layout* perquè no s'utilitza en aplicacions mòbils)
 
-Si tots aquests passos, que només s'han de fer 1 cop al principi de tot, s'han dut a terme exitosament, ja només caldrà activar el servidor *on-the-fly*.
+## Distribució del contingut
+Un cop escollit el layout, cal definir una bona distribució dels elements en pantalla per tal que l'aplicació sigui *responsive* (penseu que l'*APK* - executable de l'aplicació en la seva versió Android - s'ha de veure igual de bé en tablet i en mòbil). Per fer-ho, Ionic ofereix un sistema de [grid](https://ionicframework.com/docs/api/grid) molt similar al de Bootstrap i altres frameworks de CSS.
 
-## Instal·lar Capacitor
-Capacitor és una eina de l'ecosistema Ionic que permet compilar codi Ionic, amb la base que sigui (Angular, JS, React, Vue, etc), i crear l'executable segons la plataforma per la qual s'estigui implementant (Android o IOS). A part d'això, ofereix un conjunt de [*pluguins*](https://capacitorjs.com/docs/plugins) que permeten l'accés directe al *hardware* del dispositiu i, per tant, permete utilitzar la càmera de fotos, el GPS, el sistema de fitxers, etc.
+Aquesta grid està basada en *flexbox* i, per crear-la, s'utilitzen tres etiquetes diferents:
+
+```html
+<ion-grid>
+	<ion-row>
+		<ion-col> Contingut </ion-col>
+		<ion-col> Contingut </ion-col>
+		<ion-col> Contingut </ion-col>
+	</ion-row>
+</ion-grid>
+```
+
+Tal com passa amb Boostrap, quan s'utilitza el sistema de grid, la pantalla queda dividida en 12 columnes. En cas que no especifiquem altra cosa, les columnes que definim dins d'una fila s'expandiran tant com puguin fins a omplir completament la pantalla (divint l'espai equitativament). Ara però, nosaltres podem modificar la seva mida a voluntat.
+
+### Especificació de les diferents mides
+**Grid**
+
+Per defecte, la grid intentarà ocupar tota l'amplada disponible. Ara però, el desenvolupador pot decidir donar-li una mida fixa (segons el tipus de dispositiu on es trobi) utilitzant l'atribut "fixed": `<ion-grid [fixed]="true">`
+
+Vegeu les mides possibles al següent [enllaç](https://ionicframework.com/docs/api/grid#fixed-grid).
+
+A través de variables CSS proporcionades per Ionic es pot personalitzar totes les característiques de la grid: nombre de columnes, padding, width i padding de columna (vegeu l'enllaços [1](https://ionicframework.com/docs/layout/grid#customizing-the-grid) i [2](https://ionicframework.com/docs/theming/advanced#grid-variables))
+
+**Columnes**
+
+Si no s'indica el contrari, les columnes s'estiren per intentar utilitzar tota l'amplada disponible. Ara però, podem fixar la mida d'una columna a voluntat a traves de l'atribut `size-{breakpoint}`. Exemples:
+* `<ion-col size="4">`: aquesta columna sempre ocuparà 4 columnes de les 12 que té la grid (sigui quina sigui la mida del dispositiu)
+* `<ion-col size-xs="4">`: ocuparà 4 columnes en pantalles de mida molt petita en amunt
+* `<ion-col size-sm="4">`: ocuparà 4 columnes en pantalles de mida petita en amunt (en pantalles molt petites, la columna s'expandirà tant com pugui)
+* `<ion-col size-md="4">`: ocuparà 4 columnes en pantalles mitjanes en amunt (en pantalles petites i molt petites, s'expandirà tant com pugui).
+* `<ion-col size-lg="4">`: ocuparà 4 columnes en pantalles grans en amunt (per la resta, la columna s'expandirà tant com pugui)
+* `<ion-col size-xl="4">`: només ocuparà 4 columnes en pantalles molt grans (per la resta, s'expandirà tant com pugui)
+
+Per defecte, les columnes tenen una mica de padding que les separa dels marges de la grid. En cas que es vulgui eliminar, s'ha d'aplicar la classe ion-no-padding a la grid:
+```html
+<ion-grid [ngClass]="['ion-no-padding']">
+```
+Si només es vol eliminar d'una columna en concret, s'aplicarà l'estil sobre l'etiqueta `<ion-col>` corresponent.
+
+A part de la mida, a les columnes també se'ls pot especificar un *offset*, un *pull* i un *push*
+* *Offset*: desplaça la columna cap a la dreta 
+    * `<ion-col offset="4">`: la desplaça 4 columnes, independentment de la mida de pantalla
+    * `<ion-col offset-xs="4">`: la desplaça 4 columnes en pantalles molt petites en amunt
+    * `<ion-col offset-sm="4">`: la desplaça 4 columnes en pantalles petites en amunt
+    * `<ion-col offset-md="4">`: la desplaça 4 columnes en pantalles mitjanes en amunt
+    * `<ion-col offset-lg="4">`: la desplaça 4 columnes en pantalles grans en amunt
+    * `<ion-col offset-xl="4">`: la desplaça 4 columnes en pantalles molt grans
+* *Pull*: empeny la columna X columnes cap a la dreta (pot anar sol o acompanyat de les mides adients)
+* *Push*: estira la columna X columnes cap a l'esquerra (pot anar sol o acompanyat de les mides adients)
+
+Per alinear les columnes dins de la cel·la es pot utilitzar diferents classes proporcionades per Ionic.
+* Alineació vertical afectant a tota la fila
+```html
+<ion-row class="ion-align-items-start">
+<ion-row class="ion-align-items-center">
+<ion-row class="ion-align-items-end">
+```
+* Alineació vertical afectant a una columna en concret
+```html
+<ion-col class="ion-align-self-start">
+<ion-col class="ion-align-self-center">
+<ion-col class="ion-align-self-end">
+```
+* Alineació horitzontal
+```html
+<ion-row class="ion-justify-content-start">
+<ion-row class="ion-justify-content-center">
+<ion-row class="ion-justify-content-end">
+<ion-row class="ion-justify-content-around">
+<ion-row class="ion-justify-content-between">
+```
+
+En aquest [enllaç](https://ionicframework.com/docs/layout/css-utilities) trobareu altres estils que es poden aplicar a la grid i a les columnes.
 
 
-Per saber si un projecte Ionic té instal·lades les dependències de Capacitor només cal comprovar si estan llistades dins del fitxer `package.json`:
+## Estils
+Ionic ofereix un conjunt de [variables css](https://ionicframework.com/docs/layout/css-utilities) i classes per tal de poder modificar els aspectes següents:
 
-```json
-{
-  "name": "FirstIonicProject",
-  "version": "0.0.1",
-  "author": "Ionic Framework",
-  "homepage": "https://ionicframework.com/",
-  "scripts": {
-    ...
-  },
-  "private": true,
-  "dependencies": {
-    ...
-    "@capacitor/android": "5.6.0",
-    "@capacitor/app": "5.0.7",
-    "@capacitor/core": "5.6.0",
-    "@capacitor/haptics": "5.0.7",
-    "@capacitor/keyboard": "5.0.8",
-    "@capacitor/status-bar": "5.0.7",
-    "@ionic/angular": "^7.0.0",
-    "ionicons": "^7.0.0",
-    ...
-  },
-  "devDependencies": {
-    ...
-    "@capacitor/cli": "^5.6.0",
-    "@ionic/angular-toolkit": "^9.0.0",
-    ...
-  },
-  "description": "An Ionic project"
+**Text**
+ * [Alineació del text](https://ionicframework.com/docs/layout/css-utilities#text-alignment)
+ * [Transformació del text (majúscules, minúscules, camel case)](https://ionicframework.com/docs/layout/css-utilities#text-transformation)
+	
+Totes aquestes classes tenen la versió general i la versió *breakpoint* (xs, sm, md, lg i xl)
+
+**Distribució dels elements**
+ * [Aplicació d'elements flotants](https://ionicframework.com/docs/layout/css-utilities#float-elements), en la seva versió general i també *breakpoint*
+
+ **Ocultació d'elements**
+  * [Ocultació d'elements](https://ionicframework.com/docs/layout/css-utilities#element-display), en la seva versió general i també *breakpoint*
+
+**Espaïat** 
+ * [Padding](https://ionicframework.com/docs/layout/css-utilities#element-padding)
+ * [Margin](https://ionicframework.com/docs/layout/css-utilities#element-margin)
+ * [Propietats flex (alineació elements)](https://ionicframework.com/docs/layout/css-utilities#element-margin)
+	
+***BORDER***
+ * [*Border*](https://ionicframework.com/docs/layout/css-utilities#border-display)
+
+Addicionalment a tots els estils que ofereix pròpiament Ionic, cada desenvolupador pot definir estils propis, sigui al fitxer `SCSS` de cada pàgina, sigui de manera general al fitxer `global.scss`.
+
+## Creació d'un tema (guia d'estil o marca)
+Ionic facilita la personalització completa de l'estil de l'aplicació mitjançant la [creació d'un tema](https://ionicframework.com/docs/theming/basics) al fitxer `theme/variables.scss`.
+
+**Colors**
+
+L'estil per defecte d'ionic defineix una gamma bàsica de 9 colors(https://ionicframework.com/docs/theming/basics#colors), descrits en les variables `CSS` corresponents dins del fitxer `theme/variables.scss`. Tots ells, però, són completament personalitzables i ampliables segons les necessitats de cadascuna de les aplicacions desenvolupades, tal com s'explica en pel següent [enllaç](https://ionicframework.com/docs/theming/colors)
+
+A més a més, Ionic ofereix diverses eines que poden ajudar a crear l'estil de colors de les aplicacions:
+* [Creador de nous colors](https://ionicframework.com/docs/theming/colors#new-color-creator)
+* [Creador de tot un tema nou](https://ionicframework.com/docs/theming/color-generator)
+	
+Addicionalment, Ionic també permet aplicar el mode *dark*, sigui per defecte, o canviant a voluntat segons les preferències de l'usuari. Per poder canviar de mode a voluntat cal seguir els passos següents:
+1. Amb la media quary que hi ha a variables.scss s'aconsegueix que, si l'usuari té el sistema en *dark*, Ionic apliqui les CSS dark
+2. Per fer-ho manualment, cal duplicar les variables *dark* fora del CSS, tot afegint-hi un atribut `[color-theme="dark"]` (també es pot fer amb una classe). Fet això, des del menú de l'aplicació o des de la pàgina de perfil, per exemple, caldrà fer un botó *toggle* que indiqui quin tipus de mode es desitja: `document.body.setAttribute('color-theme', 'dark');`
+
+**Plataformes**
+
+A part dels colors, Ionic defineix dos estils diferents, depenent de la plataforma sobre la qual s'hagi d'executar l'aplicació
+ * La classe `CSS` `ios` defineix els estils que cal aplicar a la plataforma d'Apple
+ * La classe `CSS` `md` defineix els estils que cal aplicar a la plataforma Android (o qualsevol altra)
+
+Per especificar l'ús d'una plataforma o altra, la classe s'especifica a l'etiqueta `html`:
+```html
+<html class="md"></html>
+```
+
+Per modificar un estil en una de les dues plataformes caldrà crear un fitxer `SCSS` dins d'`assets/css`. Allí hi podrem posar tot allò que nosaltres creguem necessari:
+```scss
+.ios ion-title {
+	//code
+}
+.md ion-title {
+	//code
 }
 ```
 
-En cas que no hi siguin, les comandes per poder-les instal·lar localment dins de la carpeta del projecte són les següents:
-
-```bash
-    npm i @capacitor/core
-    npm i -D @capacitor/cli
+També es poden sobreescriure les variables predefinides (a `theme/variables.scss`):
+```scss
+.ios {
+	--ion-background-color: #222;
+}
 ```
 
-## Afegir la plataforma Android (o IOS, segons es desitgi)
-Un cop instal·lat Capacitor, cal instal·lar les eines necessàries segons la plataforma per a la qual s'estiguin desenvolupant i crear el projecte. Així doncs, la comanda per instal·lar les eines d'Android i poder-ne crear el projecte i sincronitzar-ne el codi són les següents:
+**Variables que ofereix Ionic**
 
-```bash
-    npm i @capacitor/android        # Només en cas que la dependència no estigui al package.json
-    ionic capacitor add android
-    ionic capacitor sync
+***Component variables***
+Per cada etiqueta, Ionic ofereix un conjunt de variables (propietats CSS) que es poden personalitzar a gust. Per exemple, en el cas de l'ion-button podem personalitzar totes les variables que es mostren en aquest [enllaç](https://ionicframework.com/docs/api/button#css-custom-properties).
+
+***Global variables***
+A part de les variables de component, hi ha tot un conjunt de variables relacionades amb la creació de la "marca" (tema, guia d'estil) de l'aplicació. Aquestes variables es troben dins del fitxer `theme/variables.scss`, el qual queda organitzat en diversos blocs. Els més importants:
+* Bloc "root": dins d'aquest selector s'especifiquen les variables que s'aplicaran a tots els modes (ios i md).
+* Bloc ".ios": dins d'aquesta classe s'especifiquen les variables per al mode ios
+* Bloc ".md": dins d'aquesta classe s'especifiquen les variables per al mode md.
+	
+Per utilitzar aquestes variables en les nostres CSS, tal com ja s'ha mostrat amb anterioritat, s'ha d'aplicar el codi següent:
+```scss
+h1 {
+	color: var(--ion-color-primary);
+}
 ```
 
-En el cas d'IOS, les comandes són les següents:
-
-```bash
-    npm i @capacitor/ios            # Només en cas que la dependència no estigui al package.json
-    ionic capacitor add ios
-    ionic capacitor sync
+Per canviar alguna variable de les predefinides en els elements d'Ionic:
+```scss
+ion-button {
+	--background: #FF0000;
+	--background: var(--ion-color-primary);
+}
 ```
-
-## Instal·lar i configurar Android Studio
-Per instal·lar Android Studio només cal descarregar l'instal·lador de la seva [pàgina web](https://developer.android.com/studio). Si el sistema operatiu que s'utilitza és Windows, cal executar l'instal·lador i seguir els passos que s'hi indiquen. En canvi, si el sistema operatiu que s'utilitza és Linux, prèviament a poder executar l'instal·lador cal seguir els passos següents:
-1. Decarregar la versió del codi comprimida en TAR.GS
-2. Descomprimir la carpeta i moure-la a /opt (com a `root`):
-```bash
-    mv android-studio-2023.2.1.24-linux /opt/
-```
-3. Modificació del `PATH` (s'ha de fer com a `root`)
-```bash
-    nano /etc/bash.bashrc
-
-    # Al final del fitxer /etc/bash.bashrc afegir-hi les línies següents:
-    export ANDROID_STUDIO_HOME=/opt/android-studio-2023.2.1.24-linux/android-studio/
-    export PATH=$PATH:/usr/sbin:$NODEJS_HOME/bin:$ANDROID_STUDIO_HOME/bin
-```
-4. Reiniciar el terminal per tal que els canvis de configuració siguin efectius
-5. Executar l'instal·lador d'Android Studio mitjançant la comanda (com a usuari normal):
-```bash
-    studio.sh
-```
-
-La instal·lació, tant en Windows com en Linux, és directa (sense canvi d'opcions) i, un cop finalitzada, dins del vostre directori d'usuari, hi trobareu la carpeta `Android/Sdk` amb les eines de desenvolupament d'Android que permeten crear i compilar l'APK. En Linux la trobareu a `/home/user_name`
-
-**Usuaris de Windows**\
-Cal que comproveu que la variable d'entorn `ANDROID_STUDIO_HOME` s'ha afegit i configurat automàticament dins del vostre sistema. En cas que no sigui així, afegiu-la i modifiqueu el `PATH` per tal que la inclogui.
-
-## Configurar les variables d'entorn relacionades amb Android Studio
-Un cop finalitzat el pas anterior i localitzada la carpeta `Android/Sdk` cal configurar la variable d'entorn `ANDROID_SDK_ROOT`.
-
-Els usuaris de Linux han de seguir aquestes instruccions (com a `root`):
-1. Modificació del fitxer `/etc/bash.bashrc`
-```bash
-    nano /etc/bash.bashrc
-
-    # A sobre de les línies afegides en el pas anterior, afegir-hi la següent comanda:
-    export ANDROID_SDK_ROOT=/home/milana/Android/Sdk
-```
-2. Reiniciar el terminal per tal que els canvis de configuració siguin efectius
-3. Comprovar que la variable ha estat ben configurada:
-```bash
-    echo $ANDROID_SDK_ROOT
-```
-
-## Instal·lar la JDK 17 de JAVA i configurar la variable d'entorn `JAVA_HOME`
-Trobareu l'instal·lador de la JDK en aquest [enllaç](https://www.oracle.com/es/java/technologies/downloads/). En el cas de Windows, és una instal·lació directa, tot assegurant que la variable d'entorn `JAVA_HOME` s'actualitza per apuntar a la JDK 17 (en cas que no sigui així, s'ha d'actualitzar manualment).
-
-En el cas de Linux, cal descarregar l'arxiu comprimit TAR.GZ i seguir els passos següents:
-1. Descomprimir la carpeta i moure-la a /opt (com a `root`):
-```bash
-    mv jdk-17_linux-x64_bin /opt/
-```
-2. Modificació del `PATH` (s'ha de fer com a `root`)
-```bash
-    nano /etc/bash.bashrc
-
-    # A sobre de les línies afegides en els passos anteriors, posar-hi la comanda següent:
-    export JAVA_HOME=/opt/jdk-17_linux-x64_bin/jdk-17.0.10
-```
-4. Reiniciar el terminal per tal que els canvis de configuració siguin efectius
-5. Comprovar que la comanda `java` apunta a la JDK 17
-```bash
-    echo $JAVA_HOME
-    java --version
-```
-
-## Actiar les opcions de desenvolupador al mòbil de prova
-Aquest pas depèn de cadascun dels vostres mòbils, però *grosso modo* cal anar a la configuració del dispositiu i buscar-ne el seu *número de compliació* (acostuma a estar dins de l'apartat *Informació del telèfon*). Un cop trobada aquesta informació cal fer diversos tocs a sobre fins que surt l'avís indicant que les eines de desenvolupador s'han activat.
-
-Un cop fet això, s'han de configurar les eines de desenvolupador (normalment es troben dins de l'apartat *Sistema*) per tal que permetin la depuració per USB i la depuració sense fil (wifi).
-
-## Connectar el mòbil a l'ordinador amb el projecte a través del cable USB i, a més a més, connectar tots dos dispositius a la mateixa xarxa
-Finalment, connecteu el mòbil a l'ordinador a través del cable USB i comproveu que els dos dispositius ja es poden comunicar mitjançant la comanda
-
-```bash
-    ionic capacitor run android --list
-```
-
-Aquesta comanda hauria de mostrar per pantalla dos dispositius: un de físic amb el nom del vostre mòbil Android i un simulador *Pixel 3* que genera, de manera automàtica, Android Studio.
-
-Si la comanda anterior no llista cap dispositiu, cal comprovar si la següent comanda sí funciona correctament (com a root):
-
-```bash
-    $ANDROID_SDK_ROOT/platform-tools/adb devices
-```
-
-En cas que aquesta 2a comanda sí llisti el vostre dispositiu físic però digui que el seu estat és *unauthorized*, obriu el mòbil i doneu permisos a la depuració USB (us haurà sortit una petita notificació per fer aquest pas). Fet això, ja us haurien de funcionar totes dues comandes correctament.
-
-També us heu d'assegurar que tant l'ordinador com el mòbil estan dins de la mateixa xarxa d'internet. Una possible solució és que el mòbil doni xarxa wifi a l'ordinador.
-
-## Activació del servidor *on-the-fly*
-Per poder comprovar el funcionament de la vostra aplicació directament sobre el mòbil només cal executar la comanda següent:
-
-```bash
-    ionic capacitor run android -l --external
-```
-
-Si tot ha anat bé, aquesta instrucció activa el procés de compilació del codi i demana el dispositiu i la interfície de xarxa sobre el qual es vol activar el servidor. A partir d'aquí, qualsevol canvi que es faci al codi mentre el servidor estigui activat, serà directament llençat contra el dispositiu per poder ser provat i *debbugat* sense necessitat de crear l'instal·lador APK cada vegada.
-
-Addicionalment, si el mòbil està connectat per USB a l'ordinador, es pot fer la *debbugació* de l'aplicació a través dels navegadors *Firefox* i *Chrome* accedint a les adreces
-* `about:debugging` a *Firefox*
-* `chrome://inspect/#devices` a *Chrome*
-
-<!-- https://stackoverflow.com/questions/68346778/ionic-capacitor-how-to-see-console-when-running-on-android-emulator -->
