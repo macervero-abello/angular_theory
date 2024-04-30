@@ -57,6 +57,12 @@ En cas que no hi siguin, les comandes per poder-les instal·lar localment dins d
     npm i -D @capacitor/cli
 ```
 
+Finalment, per activar-ne l'ús cal executar la comanda
+
+```bash
+    ionic integrations enable capacitor
+```
+
 ## Afegir la plataforma Android (o IOS, segons es desitgi)
 Un cop instal·lat Capacitor, cal instal·lar les eines necessàries segons la plataforma per a la qual s'estiguin desenvolupant i crear el projecte. Així doncs, la comanda per instal·lar les eines d'Android i poder-ne crear el projecte i sincronitzar-ne el codi són les següents:
 
