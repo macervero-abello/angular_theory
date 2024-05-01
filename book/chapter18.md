@@ -43,16 +43,22 @@ Un cop obert el projecte, cal esperar a que finalitzi la sincronització de fitx
 ## Creació de l'APK (versió Android)
 Un cop s'ha obert el projecte amb Androd Studio, la creació de l'APK (l'instal·lador i executable) és ben senzilla i només consta de 2 passos:
 1. Fer un *build* del projecte mitjançant el menú d'Android Studio `Build -> Build bundles APKs -> Build APKs`, tal com mostra la Figura següent:
+
 ![Menú de creació de l'APK a Android Studio](img/build_apk.png)
 
 Aquest pas crea l'APK dins de la carpeta `android/app/build/outputs/apk/debug`.
 
 2. Instal·lar i executar l'APK al mòbil a través d'Android Studio. Per poder fer aquest pas cal tenir connectat el mòbil al PC i haver-ne activat les opcions de desenvolupador, en concret, l'opció *USB debug*, tal com s'explica a l'apartat [Activar opcions de desenvolupador](chapter17.md#actiar-les-opcions-de-desenvolupador-al-mòbil-de-prova) del Capítol 17. A més a més, també cal configurar-lo com a dispositiu disponible a l'Android Studio:
     1. Obrir el *Device Manager* d'Android Studio a través del menú *Tools* o a través de la icona del mòbil que apareix a la dreta, tal com mostra la Figura següent:
+
     ![*Device Manager* d'Android Studio](img/device_manager.png)
+
     2. Seguir les instruccions per aconseguir connectar el mòbil al PC mitjançant un codi QR.
+
     ![*QR pairing* d'Android Studio](img/qr_pairing.png)
+
     3. Finalment, per executar l'APK només cal escollir el dispositiu dins del selector i prémer el botó *play*
+
     ![Execució de l'APK](img/execute_apk.png)
 
 
@@ -70,9 +76,13 @@ Per dissenyar les icones de l'aplicació implementada amb Ionic es pot utilitzar
 Passos a seguir:
 1. Accedir a l'Asset Studio: 
     1. Assegurar-nos que la pestanya [*Project* mostra la vista *Android*](https://developer.android.com/studio/projects#ProjectFiles), tal com mostra la Figura següent:
+
     ![Pestanya *Project*](img/android_studio_project_tab.png)
+
     2. Fer *clic* dret sobre la carpeta `app/src/main/res` i seleccionar `New -> Image Asset`, tal com mostra la Figura següent:
+
     ![Creació d'un nou conjunt d'icones](img/android_studio_image_asset.png)
+    
 2. Creació de les icones, tenint en compte que per versions d'Android iguals o superiors a la 8 s'han de crear del tipus *[Adaptative & legacy launcher icons*](https://developer.android.com/studio/write/create-app-icons#create-adaptive); en canvi, per versions anteriors s'han de crear del tipus "Legacy launcher icon only".
 
 
