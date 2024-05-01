@@ -244,6 +244,110 @@ Com es pot comprovar, el codi d'aquesta pàgina injecta el service que s'ha impl
 2. `scan()`: activa la càmera i fa la lectora
 3. `barcodes()`: el *getter* que permet retornar els codis llegits (per accedir al contingut descodificat, s'ha de cridar a l'atribut rawValue de la interfície [`Barcode`](https://capawesome.io/plugins/mlkit/barcode-scanning/#barcode), tal com mostra el codi HTML).
 
+### Resolució de problemes
+En segons quines versions d'Android, sigui per la versió del sistema operatiu o pel software instal·lat pel model de mòbil en concret, quan s'intenta utilitzar el lector de codis de barres apareix aquest error en els *logs* de l'aplicació:
+
+```bash
+Error: The Google Barcode Scanner Module is not available. You must install it first
+```
+
+Si aquest és el vostre cas, cal modificar una mica el codi del `BarcodeScannerService` per gestionar la instal·lació del mòdul de l'escàner de Google. Així doncs, el nou *service* quedarà de la manera següent:
+
+```typescript
+import { Injectable } from '@angular/core';
+import { Barcode, BarcodeFormat, BarcodeScanner, IsSupportedResult, PermissionStatus, ScanOptions, ScanResult } from '@capacitor-mlkit/barcode-scanning';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class BarcodeScannerService {
+
+  private _supported: boolean;
+  private _moduleAvailable: boolean;
+  private _barcodes: Barcode[];
+
+  constructor() {
+    this._supported = false;
+    this._moduleAvailable = false;
+    this._barcodes = [];
+    this.isSupported();
+  }
+
+  isSupported(): void {...}
+  get supported(): boolean {...}
+  async requestPermissions(): Promise<boolean> {...}
+
+  async checkGoogleGarcodeScannerModule(): Promise<void> {
+    BarcodeScanner.isGoogleBarcodeScannerModuleAvailable().then(
+      (avaliableModule: IsGoogleBarcodeScannerModuleAvailableResult) => {
+        this._moduleAvailable = avaliableModule.available;
+        if(!this._moduleAvailable) BarcodeScanner.installGoogleBarcodeScannerModule();
+      }
+    );
+  }
+
+  get moduleAvailable() {
+    if(!this._moduleAvailable) {
+      BarcodeScanner.isGoogleBarcodeScannerModuleAvailable().then(
+        (avaliableModule: IsGoogleBarcodeScannerModuleAvailableResult) => {
+          this._moduleAvailable = avaliableModule.available;
+        }
+      );
+    }
+
+    return this._moduleAvailable;
+  }
+
+  async scan(): Promise<boolean> {...}
+  get barcodes(): Barcode[] {...}
+}
+```
+
+S'afegeixen dos nous mètodes `checkGoogleGarcodeScannerModule()` i `get moduleAvailable()`. El primer s'encarrega de comprovar si el mòdul està instal·lat al sistema i, en cas que no ho estigui, l'instal·la en 2n pla. El segon mètode és un getter per poder consultar si el mòdul ja ha estat instal·lat i, per tant, ja està disponible per a poder-se utilitzar.
+
+Un cop modificat el *service* només cal utilitzar les noves funcions dins de les vistes. Així doncs, tan bon punt s'inicialitzi l'aplicació s'executarà el mètode `checkGoogleGarcodeScannerModule()` a l'`AppComponent` per assegurar que el mòdul queda instal·lat al més aviat possible:
+
+```typescript
+import { Component } from '@angular/core';
+import { BarcodeScannerService } from './service/barcode-scanner.service';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: 'app.component.html',
+  styleUrls: ['app.component.scss'],
+})
+export class AppComponent {
+  constructor(private _barcodeScanner: BarcodeScannerService) {
+    this._barcodeScanner.checkGoogleGarcodeScannerModule();
+  }
+}
+```
+
+Fet això, també es modificarà la vista des d'on s'executa el lector (`barcode-scanner.page.ts`) per comprovar si el mòdul ja està disponible o no:
+```typescript
+import { Component } from '@angular/core';
+import { Barcode } from '@capacitor-mlkit/barcode-scanning';
+import { BarcodeScannerService } from '../service/barcode-scanner.service';
+
+@Component({
+  selector: 'app-home',
+  templateUrl: 'home.page.html',
+  styleUrls: ['home.page.scss'],
+})
+export class BarcodeScannerPage {
+
+  constructor(private _barcodeScanner: BarcodeScannerService) {}
+
+  async scan(): Promise<boolean> {...}
+
+  get isSupported(): boolean {
+    return this._barcodeScanner.supported && this._barcodeScanner.moduleAvailable;
+  }
+
+  get barcodes(): Barcode[] {...}
+}
+```
+
 ## Instal·lació de les plataformes de compilació desitjades (Android o IOS)
 Un cop el codi de l'aplicació ja està implementat, cal preparar tot el sistema per tal que pugui ser compilat i executat en les plataformes desitjades. 
 
