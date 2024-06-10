@@ -3,7 +3,7 @@
 
 Els continguts d'aquesta guia estan basats en la versió Angular v17.
 
-## Part I - Angular
+## Angular
 * [Capítol 1. Format JSON i LocalStorage](chapter1.md)
 * [Capítol 2. Components Angular](chapter2.md)
 * [Capítol 3. Estils externs](chapter3.md)
