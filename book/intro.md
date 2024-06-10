@@ -4,6 +4,7 @@
 Els continguts d'aquesta guia estan basats en la versió Angular v17.
 
 ## Angular
+* [Capítol 1. Què és Angular. Instal·lació del l'entorn de desenvolupament](chapter01.md)
 * [Capítol 1. Format JSON i LocalStorage](chapter1.md)
 * [Capítol 2. Components Angular](chapter2.md)
 * [Capítol 3. Estils externs](chapter3.md)
