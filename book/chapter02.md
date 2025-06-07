@@ -16,9 +16,9 @@ Per comprovar que NodeJS ha estat instal·lat correctament es pot executar la co
 ```bash
 $ npm -v
 ```
-en qualsevol terminal `CMD`[^fn1] acabat d'obrir. Si tot ha anat bé, aquesta comanda mostrarà per pantalla la versió del *node package manager* instal·lada, de tal manera que, si s'ha instal·lat NodeJS v22.15.0, la versió del *node package manager* serà la 10.9.2, com a mínim. En cas que hi hagi algun problema, s'haurà d'actualitzar la variable d'entorn `PATH` per tal d'afegir-hi la ruta al directori on s'hagi instal·lat NodeJS.
+en qualsevol terminal `CMD` [^1] acabat d'obrir. Si tot ha anat bé, aquesta comanda mostrarà per pantalla la versió del *node package manager* instal·lada, de tal manera que, si s'ha instal·lat NodeJS v22.15.0, la versió del *node package manager* serà la 10.9.2, com a mínim. En cas que hi hagi algun problema, s'haurà d'actualitzar la variable d'entorn `PATH` per tal d'afegir-hi la ruta al directori on s'hagi instal·lat NodeJS.
 
-Quan NodeJS estigui ben instal·lat al sistema es podrà instal·lar el *framework* Angular de forma global (opció `-g`) mitjançant la comanda següent (des d'un `CMD`[^fn1]):
+Quan NodeJS estigui ben instal·lat al sistema es podrà instal·lar el *framework* Angular de forma global (opció `-g`) mitjançant la comanda següent (des d'un `CMD` [^1]):
 ```bash
 $ npm install -g @angular/cli
 ```
@@ -30,7 +30,7 @@ $ ng --version
 ```
 la qual mostra la versió d'Angular del sistema (actualment, la 19.2.11).
 
-[^fn1]: en cas que es vulgui utilitzar `POWERSHELL` vegeu les [següents instruccions](https://angular.dev/tools/cli/setup-local#install-the-angular-cli)
+[^1]: en cas que es vulgui utilitzar `POWERSHELL` vegeu les [següents instruccions](https://angular.dev/tools/cli/setup-local#install-the-angular-cli)
 
 ### Instal·lació en Linux
 En el cas de Linux, per instal·lar NodeJS cal 
