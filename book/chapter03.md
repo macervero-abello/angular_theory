@@ -85,258 +85,67 @@ La propietat `stylesUrls`, en canvi, permet definir el llistat de tots els fitxe
 Sigui quina sigui la propietat que es faci servir per establir els estils del *component* (`styleUrl`, `stuleUrls` o `styles`) cal tenir en compte que el primer fitxer `css` que s'aplicarà serà el fitxer `src/styles.css`el qual, tal com es va indicar en l'apartat [Directori amb el codi de l'aplicació](chapter02.md#directori-amb-el-codi-de-laplicació) del capítol anterior, defineix els estils generals de tota l'aplicació.
 
 ## Niament de components
+El *component* base i principal de tota aplicació Angular és el *component* `App`. En aplicacions petites serà l'única pàgina i en aplicacions grans serà el *component* que actuarà de contenidor per gestionar l'enrutament de les múltiples pàgines, tal com es veurà més endavant [^1]. Sigui com sigui, tots els components acabaran penjant d'una manera o d'una altra del *component* `App` o d'algun dels seus fills. És a dir, els components s'aniran niant els uns dins dels altres.
 
+Aquest niament de components s'aconsegueix incrustant l'etiqueta (*selector*) d'un dels components, el qual serà el *component* fill, dins del codi `html` d'un altre, el qual passarà a ser el *component* pare.
 
-
-Com a exemple de l'ús dels selectors dels components, les següents pestanyes mostren el codi del component `App`, dins del qual hi ha el nou component `Header` niat.
+Seguint l'exemple del capítol, on hem definit el *component* principal `App` i el *component* `Header` per definir la capçalera de l'aplicació, per poder incrustrar (niar) el `Header` dins l'`App` només cal aplicar els canvis següents:
+1. Afegir l'etiqueta `<app-header></app-header>` dins del fitxer `app.html`, ubicant-la allí on volem que aparegui a la pantalla.
+2. Modificar la propietat `imports` del decorador `@Component` del *component* `App` per indicar que ha de carregar el *component* `Header`
 
 {% tabs %}
-{% tab title="Codi TS AppComponent" %}
+{% tab title="Codi TS App" %}
 ```typescript
 import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+
+import { Header } from './layout/header/header';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  imports: [Header, RouterOutlet],
+  templateUrl: './app.html',
+  styleUrl: './app.css'
 })
-export class AppComponent {
+export class App {
 }
+
 ```
 {% endtab %}
 
-{% tab title="Codi TS ListComponent" %}
+{% tab title="Codi TS Header" %}
 ```typescript
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-list',
-  templateUrl: './list.component.html',
-  styleUrls: ['./list.component.css']
+  selector: 'app-header',
+  imports: [],
+  templateUrl: './header.html',
+  styleUrl: './header.css'
 })
-export class ListComponent {
+export class Header {
 }
 ```
 {% endtab %}
 
-{% tab title="Codi HTML AppComponent" %}
+{% tab title="Codi HTML App" %}
 ```html
-<h1>AppComponent</h1>
-<app-list></app-list>
+<app-header></app-header>
+<router-outlet />
 ```
 {% endtab %}
 
-{% tab title="Codi HTML ListComponent" %}
+{% tab title="Codi HTML Header" %}
 ```html
-<div style="border: solid black 2px;">
-    <h3>ListComponent</h3>
-    <ol>
-        <li>Element 1</li>
-        <li>Element 2</li>
-        <li>Element 3</li>
-    </ol>
-</div>
+<header>
+    <h1>Hello world!</h1>
+</header>
 ```
 {% endtab %}
 
 {% tab title="Visualització al navegador" %}
-![Visualització del resultat al navegador](img/nested_components.png)
+![Visualització del resultat al navegador](img/ch03/nested_components.png)
 {% endtab %}
 {% endtabs %}
 
-
-
-## Creació d'atributs i events: comunicació entre components niats
-Quan nosaltres creem un component, en certa manera, estem ampliant el ventall d'etiquetes d'`HTML`. Per tant, també hem de ser capaços de definir nous atributs i nous events per aquestes etiquetes.
-
-### Creació d'atributs
-Per crear un nou atribut d'etiqueta és necessari utilitzar el decorador `@Input`, el qual s'ha d'importar des de la llibreria `@angular/core`.
-
-```typescript
-import { Component, Input } from '@angular/core';
-
-@Component({
-  selector: 'app-list',
-  templateUrl: './list.component.html',
-  styleUrls: ['./list.component.css']
-})
-export class ListComponent {
-  @Input() nelems: number = 0;
-}
-```
-
-Aquest decorador permet exposar qualsevol dels propietat del nostre component, de tal manera que es pot fer servir com a atribut a la seva etiqueta i, per tant, aplicar-hi un *property binding*.
-
-```html
-<h1>AppComponent</h1>
-<app-list [nelems]="10"></app-list>
-```
-
-Si modifiquem l'exemple de l'apartat anterior, des de l'`AppComponent` podem crear la llista parametritzada que mostri tants elements com defineixi el nou atribut de `ListComponent`
-
-{% tabs %}
-{% tab title="Codi TS ListComponent" %}
-```typescript
-import { Component } from '@angular/core';
-
-@Component({
-  selector: 'app-list',
-  templateUrl: './list.component.html',
-  styleUrls: ['./list.component.css']
-})
-export class ListComponent {
-  @Input() nelems: number = 0;
-
-  public generateArrayElems(): number[] {
-    let vals: number[] = [];
-    for(let i=0; i<this.nelems; i++) {
-      vals.push(i);
-    }
-    return vals;
-  }
-}
-```
-{% endtab %}
-
-{% tab title="Codi HTML AppComponent" %}
-```html
-<h1>AppComponent</h1>
-<app-list [nelems]="10"></app-list>
-```
-{% endtab %}
-
-{% tab title="Codi HTML ListComponent" %}
-```html
-<div style="border: solid black 2px;">
-    <h3>ListComponent</h3>
-    <ol>
-        <li *ngFor="let elem in generateArrayElems()">Element {{ elem+1 }}</li>
-    </ol>
-</div>
-```
-{% endtab %}
-
-{% tab title="Visualització al navegador" %}
-![Visualització del resultat al navegador](img/parameterized_nested_list.png)
-{% endtab %}
-{% endtabs %}
-
-*Vídeos 067 i 068 del capítol "05 Components & Databinding Deep Dive" del curs d'Udemy*
-
-### Creació d'events
-La creació d'events és molt similar a la creació d'atributs. No obstant això, en aquest cas l'objectiu és afegir funcionalitat al nou component: a través de la detecció dels events que creem podrem donar una funcionalitat o una alra, segons el tractament que programem.
-.
-Per crear un nou event d'etiqueta és necessari utilitzar 
-1. el decorador `@Output`, el qual també s'ha d'importar des de la llibreria `@angular/core`
-2. la classe EventEmitter, per definir l'event i
-3. el llençament del nou event creat (`emit`).
-
-```typescript
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-
-@Component({
-  selector: 'app-list',
-  templateUrl: './list.component.html',
-  styleUrls: ['./list.component.css']
-})
-export class ListComponent {
-  @Input() nelems: number = 0;
-  @Output() onrandom: EventEmitter<void> = new EventEmitter();
-  
-  public generateArrayElems(): number[] {
-    let vals: number[] = [];
-    for(let i=0; i<this.nelems; i++) {
-      vals.push(i);
-    }
-    return vals;
-  }
-
-  public emitRandomEvent(): void {
-    this.onrandom.emit();
-  }
-}
-```
-
-El decorador `@Output` permet exposar qualsevol de les propietat del nostre component, de tal manera que es pot fer servir com a event a la seva etiqueta i, per tant, aplicar-hi un *event binding*.
-
-```html
-<h1>AppComponent</h1>
-<app-list [nelems]="rndnum" (onrandom)="generateRandomNumber()"></app-list>
-```
-
-Si tornem a modificar l'exemple de l'apartat anterior, des de l'`AppComponent` podem crear la llista parametritzada aleatòriament a `ListComponent`
-
-{% tabs %}
-{% tab title="Codi TS ListComponent" %}
-```typescript
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-
-@Component({
-  selector: 'app-list',
-  templateUrl: './list.component.html',
-  styleUrls: ['./list.component.css']
-})
-export class ListComponent {
-  @Input() nelems: number = 0;
-  @Output() onrandom: EventEmitter<void> = new EventEmitter();
-  
-  public generateArrayElems(): number[] {
-    let vals: number[] = [];
-    for(let i=0; i<this.nelems; i++) {
-      vals.push(i);
-    }
-    return vals;
-  }
-
-  public emitRandomEvent(): void {
-    this.onrandom.emit();
-  }
-}
-```
-{% endtab %}
-
-{% tab title="Codi HTML ListComponent" %}
-```html
-<div style="border: solid black 2px;">
-    <h3>ListComponent</h3>
-    <ol>
-        <li *ngFor="let elem of generateArrayElems()">Element {{ elem+1 }}</li>
-    </ol>
-    <button (click)="emitRandomEvent()">Generació aleactòria</button>
-</div>
-```
-{% endtab %}
-
-{% tab title="Codi TS AppComponent" %}
-```typescript
-import { Component } from '@angular/core';
-
-@Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
-})
-export class AppComponent {
-  public rndnum: number = 0;
-
-  public generateRandomNumber(): void {
-    this.rndnum = Math.floor(Math.random() * 100);
-  }
-}
-```
-{% endtab %}
-
-{% tab title="Codi HTML AppComponent" %}
-```html
-<h1>AppComponent</h1>
-<app-list [nelems]="rndnum" (onrandom)="generateRandomNumber()"></app-list>
-```
-{% endtab %}
-
-
-{% tab title="Visualització al navegador" %}
-![Visualització del resultat al navegador](img/random_nested_list.png)
-{% endtab %}
-{% endtabs %}
-
-*Vídeo 069 capítol "05 Components & Databinding Deep Dive" del curs d'Udemy*
+[^1]: aquest enrutament fa que l'usuari tingui la sensació d'estar navegant a través de múltiples pàgines d'una mateixa aplicació web, però cal recordar que una aplicació Angular és una *SPA* i, per tant, en realitat només existeix una única pàgina `HTML`.
