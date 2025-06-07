@@ -4,6 +4,7 @@
 * [Capítol 1. Què és Angular? Instal·lació del l'entorn de desenvolupament](chapter01.md)
 * [Capítol 2. Instal·lació i preparació del l'entorn de desenvolupament](chapter02.md)
 * [Capítol 3. Components Angular](chapter03.md)
+<!--
 * [Capítol 1. Format JSON i LocalStorage](book/chapter1.md)
 * [Capítol 2. Components Angular](book/chapter2.md)
 * [Capítol 3. Estils externs](book/chapter3.md)
@@ -15,3 +16,4 @@
 * [Capítol 9. Guardes de ruta](book/chapter9.md)
 * [Capítol 10. Workspace: una aplicació, múltiples GUI](book/chapter10.md)
 * [Capítol 11. Publicació d'una aplicació Angular a GitHub Pages](book/chapter11.md)
+-->
