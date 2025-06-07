@@ -1,9 +1,9 @@
 # Table of contents
 
 * [Índex](book/intro.md)
-* [Capítol 1. Què és Angular? Instal·lació del l'entorn de desenvolupament](chapter01.md)
-* [Capítol 2. Instal·lació i preparació del l'entorn de desenvolupament](chapter02.md)
-* [Capítol 3. Components Angular](chapter03.md)
+* [Capítol 1. Què és Angular? Instal·lació del l'entorn de desenvolupament](book/chapter01.md)
+* [Capítol 2. Instal·lació i preparació del l'entorn de desenvolupament](book/chapter02.md)
+* [Capítol 3. Components Angular](book/chapter03.md)
 <!--
 * [Capítol 1. Format JSON i LocalStorage](book/chapter1.md)
 * [Capítol 2. Components Angular](book/chapter2.md)
