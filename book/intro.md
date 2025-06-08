@@ -7,6 +7,7 @@ Els continguts d'aquesta guia estan basats en la versió Angular v20.
 * [Capítol 1. Què és Angular? Instal·lació del l'entorn de desenvolupament](chapter01.md)
 * [Capítol 2. Instal·lació i preparació del l'entorn de desenvolupament](chapter02.md)
 * [Capítol 3. Components Angular](chapter03.md)
+* [Capítol 4. *Data Binding*](chapter04.md)
 <!--
 * [Capítol 1. Què és Angular. Instal·lació del l'entorn de desenvolupament](chapter01.md)
 * [Capítol 1. Format JSON i LocalStorage](chapter1.md)
