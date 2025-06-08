@@ -26,7 +26,7 @@ $ ng g c [path/component_name] --skip-tests
 ```
 
 Per tant, si s'executa
-```console
+```bash
 $ ng generate component layout/header
 ```
 es crearà el component `Header` dins de la ruta `src/app/layout` del projecte.
