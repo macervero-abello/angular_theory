@@ -149,3 +149,7 @@ export class Header {
 {% endtabs %}
 
 [^1]: aquest enrutament fa que l'usuari tingui la sensació d'estar navegant a través de múltiples pàgines d'una mateixa aplicació web, però cal recordar que una aplicació Angular és una *SPA* i, per tant, en realitat només existeix una única pàgina `HTML`.
+
+## Webgrafia del capítol
+* Google (2025). [Angular](https://angular.dev/). Consultat el 7 de juny de 2025.
+* Udemy (2025). [Curs *Angular - The Complete Guide (2025 Edition)*](https://www.udemy.com/course/the-complete-guide-to-angular-2/). Consultat el 7 de juny de 2025.

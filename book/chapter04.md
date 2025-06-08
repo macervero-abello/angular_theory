@@ -365,4 +365,8 @@ La Figura 4.5 mostra el funcionament del codi presentat a les línies de sobre
 
 ![Direccionalitat dels *bindings*](img/ch04/bindings_direction.png)
 
+## Webgrafia del capítol
+* Google (2025). [Angular](https://angular.dev/). Consultat el 8 de juny de 2025.
+* Udemy (2025). [Curs *Angular - The Complete Guide (2025 Edition)*](https://www.udemy.com/course/the-complete-guide-to-angular-2/). Consultat el 8 de juny de 2025.
+
  
