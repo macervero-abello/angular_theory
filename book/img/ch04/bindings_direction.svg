@@ -25,9 +25,9 @@
      inkscape:document-units="mm"
      showgrid="true"
      showguides="true"
-     inkscape:zoom="1.4396184"
-     inkscape:cx="375.44671"
-     inkscape:cy="205.95736"
+     inkscape:zoom="1.0179639"
+     inkscape:cx="447.953"
+     inkscape:cy="219.55591"
      inkscape:window-width="1920"
      inkscape:window-height="972"
      inkscape:window-x="0"
@@ -171,14 +171,14 @@
         <text
            xml:space="preserve"
            style="font-weight:bold;font-size:4.93889px;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans, Bold';fill:none;fill-rule:evenodd;stroke:#dc00ff;stroke-width:0.529167;stroke-linecap:round;stroke-linejoin:round"
-           x="34.834358"
+           x="28.462997"
            y="58.465336"
            id="text1168"><tspan
              sodipodi:role="line"
              id="tspan1166"
              style="font-size:4.93889px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.529167"
-             x="34.834358"
-             y="58.465336">Double-Way-Binding</tspan></text>
+             x="28.462997"
+             y="58.465336">Two-Way-Data-Binding</tspan></text>
       </g>
       <g
          id="g4773">

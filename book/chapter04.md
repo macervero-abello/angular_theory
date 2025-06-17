@@ -421,6 +421,9 @@ export class App {
 {% endtabs %}
 
 ## Direcció de l'enllaç de dades
+Tal com s'ha vist en els apartats anteriors, cada tipus d'enllaç de dades té una direccionalitat, és a dir, permet afectar el codi `HTML` des del `TS` o viceversa.
+
+La següent imatge resumeix el sentit de l'enllaç que provoca cada tipus de *binding*.
 
 ![Direccionalitat dels *bindings*](img/ch04/bindings_direction.png)
 
