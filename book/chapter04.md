@@ -270,7 +270,7 @@ export class App {
 {% endtabs %}
 
 ## *Event Binding*
-L' *Event Binding* és el procés de *data binding* que permet tractar els events llençats per les etiquetes `HTML` mitjançant instruccions o mètodes `TS` del *component*. L'enllaç entre el codi `HTML` i el codi `TS` es pot fer de dues maneres:
+L'*Event Binding* és el procés de *data binding* que permet tractar els events llençats per les etiquetes `HTML` mitjançant instruccions o mètodes `TS` del *component*. L'enllaç entre el codi `HTML` i el codi `TS` es pot fer de dues maneres:
 1. Mitjançant instruccions incrustrades directament a l'`HTML`
 2. Mitjançant mètodes implementats al `TS`
 
@@ -358,7 +358,16 @@ La Figura 4.5 mostra el funcionament del codi presentat a les línies de sobre
 </figure>
 
 ## *Double-Way-Binding (Property & Event Binding)*
+El *Double-Way-Binding* és un procés de *data binding* molt lligat als camps d'un formulari, de tal manera que permet tractar, a la vegada, un *Property Binding* i un *Event Binding*. Com que activa els dos tipus de *bindings* aconsegueix que la informació emmagatzemada al `TS` afecti a l'`HTML` del component i que els events `HTML` afectin les dades emmagatzemades al `TS`.
 
+En el cas concret dels camps d'un formulari (especialment les etiquetes `<input/>)
+
+
+L'*Event Binding* és el procés de *data binding* que permet tractar els events llençats per les etiquetes `HTML` mitjançant instruccions o mètodes `TS` del *component*. L'enllaç entre el codi `HTML` i el codi `TS` es pot fer de dues maneres:
+1. Mitjançant instruccions incrustrades directament a l'`HTML`
+2. Mitjançant mètodes implementats al `TS`
+
+Siguin quina sigui l'estratègia utilitzada, s'ha d'embolcallar l'event de l'etiqueta `HTML` que es vol tractar entre parèntesis i assignar-li la instrucció o mètode que cal executar, el qual anirà entre dobles cometes: `( HTML_EVENT ) = "INSTRUCTION_OR_METHOD"`
 
 
 ## Direcció de l'enllaç de dades
