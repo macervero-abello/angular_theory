@@ -6,6 +6,7 @@
 * [Capítol 3. Components Angular](book/chapter03.md)
 * [Capítol 4. *Data Binding*](book/chapter04.md)
 * [Capítol 5. Modificació del DOM](book/chapter05.md)
+* [Capítol 6. Format `JSON` i LocalStorage](book/chapter06.md)
 <!--
 * [Capítol 1. Format JSON i LocalStorage](book/chapter1.md)
 * [Capítol 2. Components Angular](book/chapter2.md)
