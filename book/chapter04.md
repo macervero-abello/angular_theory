@@ -428,7 +428,7 @@ La següent imatge resumeix el sentit de l'enllaç que provoca cada tipus de *bi
 ![Direccionalitat dels *bindings*](img/ch04/bindings_direction.png)
 
 ## Webgrafia del capítol
-* Google (2025). [Angular](https://angular.dev/). Consultat el 8 de juny de 2025.
-* Udemy (2025). [Curs *Angular - The Complete Guide (2025 Edition)*](https://www.udemy.com/course/the-complete-guide-to-angular-2/). Consultat el 8 de juny de 2025.
+* Google (2025). [Angular](https://angular.dev/). Consultat el 16 de juny de 2025.
+* Udemy (2025). [Curs *Angular - The Complete Guide (2025 Edition)*](https://www.udemy.com/course/the-complete-guide-to-angular-2/). Consultat el 16 de juny de 2025.
 
  

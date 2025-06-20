@@ -278,3 +278,7 @@ export class App {
 <router-outlet />
 ```
 Les principal diferència respecte de la sentència `@if` és que, tal com s'ha dit, el tractament de l'`@else` s'ha de fer mitjançant un *component template* `<ng-template>` que tingui definit un identificador (`#noidentified`). Aquest identificador és el que permet unir l'`*ngIf` amb el bloc `else` corresponent.
+
+## Webgrafia del capítol
+* Google (2025). [Angular](https://angular.dev/). Consultat el 18 de juny de 2025.
+* Udemy (2025). [Curs *Angular - The Complete Guide (2025 Edition)*](https://www.udemy.com/course/the-complete-guide-to-angular-2/). Consultat el 18 de juny de 2025.
