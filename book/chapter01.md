@@ -39,7 +39,7 @@ La primera versió d'Anguar era, en realitat, un *framework* de JavasScript i s'
 * Angular 15: novembre de 2022
 * Angular 16: maig de 2023 (*signals*)
 * Angular 17: novembre de 2023
-* Angular 18: maig de 2024
+* Angular 18: maig de 2024 (*zoneless*)
 * Angular 19: novembre de 2024
 * Angular 20: maig de 2025
 
