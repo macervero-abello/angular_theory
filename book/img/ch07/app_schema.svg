@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   sodipodi:docname="app_schema.svg"
+   inkscape:export-filename="app_schema.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     showguides="true"
+     inkscape:zoom="1.4396184"
+     inkscape:cx="381.00374"
+     inkscape:cy="246.94044"
+     inkscape:window-width="1920"
+     inkscape:window-height="972"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1">
+    <sodipodi:guide
+       position="49.533041,249.21535"
+       orientation="0,-1"
+       id="guide1338"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="94.330737,276.96387"
+       orientation="1,0"
+       id="guide1355"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="66.26595,277.27634"
+       orientation="1,0"
+       id="guide1357"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="122.39552,269.65092"
+       orientation="1,0"
+       id="guide1420"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="38.201161,241.90239"
+       orientation="1,0"
+       id="guide1422"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="150.4603,241.9024"
+       orientation="1,0"
+       id="guide1424"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="39.92201,249.21536"
+       orientation="0,-1"
+       id="guide2022"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="40.191947,249.21537"
+       orientation="0,-1"
+       id="guide2024"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="145.26075,211.79862"
+       orientation="0,-1"
+       id="guide2197"
+       inkscape:locked="false" />
+  </sodipodi:namedview>
+  <defs
+     id="defs2">
+    <marker
+       style="overflow:visible"
+       id="marker2135"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Arrow1"
+       markerWidth="4.0606604"
+       markerHeight="6.7071066"
+       viewBox="0 0 4.0606602 6.7071068"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         style="fill:none;stroke:context-stroke;stroke-width:1;stroke-linecap:butt"
+         d="M 3,-3 0,0 3,3"
+         id="path2133"
+         transform="rotate(180,0.125,0)"
+         sodipodi:nodetypes="ccc" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker1950"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Arrow1"
+       markerWidth="4.0606604"
+       markerHeight="6.7071066"
+       viewBox="0 0 4.0606602 6.7071068"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         style="fill:none;stroke:context-stroke;stroke-width:1;stroke-linecap:butt"
+         d="M 3,-3 0,0 3,3"
+         id="path1948"
+         transform="rotate(180,0.125,0)"
+         sodipodi:nodetypes="ccc" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Arrow1"
+       markerWidth="4.0606604"
+       markerHeight="6.7071066"
+       viewBox="0 0 4.0606602 6.7071068"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         style="fill:none;stroke:context-stroke;stroke-width:1;stroke-linecap:butt"
+         d="M 3,-3 0,0 3,3"
+         id="path5057"
+         transform="rotate(180,0.125,0)"
+         sodipodi:nodetypes="ccc" />
+    </marker>
+  </defs>
+  <g
+     inkscape:label="Capa 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g4697"
+       inkscape:export-filename="app_schema.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96">
+      <g
+         id="g4675">
+        <rect
+           style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+           id="rect1307"
+           width="55.129574"
+           height="13.625922"
+           x="122.89552"
+           y="85.701385"
+           rx="0.23752901"
+           ry="0.30673718" />
+        <text
+           xml:space="preserve"
+           style="font-weight:bold;font-size:6.35px;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans, Bold';fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+           x="128.14229"
+           y="94.241371"
+           id="text1311"><tspan
+             sodipodi:role="line"
+             id="tspan1309"
+             style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:1"
+             x="128.14229"
+             y="94.241371">ListMessage</tspan></text>
+      </g>
+      <g
+         id="g1343"
+         transform="translate(-11.77099,-4.2036649)">
+        <text
+           xml:space="preserve"
+           style="font-weight:bold;font-size:6.35px;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans, Bold';fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+           x="36.745052"
+           y="61.668575"
+           id="text896-7"><tspan
+             sodipodi:role="line"
+             id="tspan894-5"
+             style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:1"
+             x="36.745052"
+             y="61.668575">Header</tspan></text>
+        <rect
+           style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+           id="rect1327"
+           width="55.129574"
+           height="13.625922"
+           x="22.407366"
+           y="52.488316"
+           rx="0.23752901"
+           ry="0.30673718" />
+      </g>
+      <g
+         id="g1336"
+         transform="translate(23.29789,-7.9380245)">
+        <text
+           xml:space="preserve"
+           style="font-weight:bold;font-size:6.35px;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans, Bold';fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+           x="64.157295"
+           y="29.628313"
+           id="text896"><tspan
+             sodipodi:role="line"
+             id="tspan894"
+             style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:1"
+             x="64.157295"
+             y="29.628313">App</tspan></text>
+        <rect
+           style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+           id="rect1329"
+           width="55.129574"
+           height="13.625922"
+           x="43.46806"
+           y="21.16119"
+           rx="0.23752901"
+           ry="0.30673718" />
+      </g>
+      <g
+         id="g1348"
+         transform="translate(30.343373,-1.7511274)">
+        <text
+           xml:space="preserve"
+           style="font-weight:bold;font-size:6.35px;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans, Bold';fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+           x="102.42499"
+           y="58.478096"
+           id="text896-9"><tspan
+             sodipodi:role="line"
+             id="tspan894-1"
+             style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:1"
+             x="102.42499"
+             y="58.478096">Messages</tspan></text>
+        <rect
+           style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+           id="rect1331"
+           width="55.129574"
+           height="13.625922"
+           x="92.552147"
+           y="50.035778"
+           rx="0.23752901"
+           ry="0.30673718" />
+      </g>
+      <g
+         id="g2105">
+        <path
+           style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#Arrow1);marker-end:url(#marker1950)"
+           d="M 38.201161,46.826091 V 36.326953 H 150.4603 v 10.499138"
+           id="path1920" />
+        <path
+           style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+           d="m 94.330736,26.849088 -6e-6,9.477865"
+           id="path2097" />
+      </g>
+      <path
+         style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker2135)"
+         d="m 150.46029,61.910573 1e-5,22.333684"
+         id="path2131" />
+    </g>
+  </g>
+</svg>

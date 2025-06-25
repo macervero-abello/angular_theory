@@ -10,6 +10,7 @@ Els continguts d'aquesta guia estan basats en la versió Angular v20.
 * [Capítol 4. *Data Binding*](chapter04.md)
 * [Capítol 5. Modificació del DOM](chapter05.md)
 * [Capítol 6. Format `JSON` i LocalStorage](chapter06.md)
+* [Capítol 7. Detecció de canvis](chapter07.md)
 <!--
 * [Capítol 1. Què és Angular. Instal·lació del l'entorn de desenvolupament](chapter01.md)
 * [Capítol 1. Format JSON i LocalStorage](chapter1.md)
