@@ -85,7 +85,7 @@ La propietat `stylesUrls`, en canvi, permet definir el llistat de tots els fitxe
 Sigui quina sigui la propietat que es faci servir per establir els estils del *component* (`styleUrl`, `stuleUrls` o `styles`) cal tenir en compte que el primer fitxer `css` que s'aplicarà serà el fitxer `src/styles.css`el qual, tal com es va indicar en l'apartat [Directori amb el codi de l'aplicació](chapter02.md#directori-amb-el-codi-de-laplicació) del capítol anterior, defineix els estils generals de tota l'aplicació.
 
 ## Niament de components
-El *component* base i principal de tota aplicació Angular és el *component* `App`. En aplicacions petites serà l'única pàgina i en aplicacions grans serà el *component* que actuarà de contenidor per gestionar l'enrutament de les múltiples pàgines, tal com es veurà més endavant [^1]. Sigui com sigui, tots els components acabaran penjant d'una manera o d'una altra del *component* `App` o d'algun dels seus fills. És a dir, els components s'aniran niant els uns dins dels altres.
+El *component* base i principal de tota aplicació Angular és el *component* `App`. En aplicacions petites serà l'única pàgina i en aplicacions grans serà el *component* que actuarà de contenidor per gestionar l'enrutament de les múltiples pàgines, tal com es veurà més endavant <!--[^1]-->. Sigui com sigui, tots els components acabaran penjant d'una manera o d'una altra del *component* `App` o d'algun dels seus fills. És a dir, els components s'aniran niant els uns dins dels altres.
 
 Aquest niament de components s'aconsegueix incrustant l'etiqueta (*selector*) d'un dels components, el qual serà el *component* fill, dins del codi `html` d'un altre, el qual passarà a ser el *component* pare.
 
@@ -148,7 +148,11 @@ export class Header {
 {% endtab %}
 {% endtabs %}
 
-[^1]: aquest enrutament fa que l'usuari tingui la sensació d'estar navegant a través de múltiples pàgines d'una mateixa aplicació web, però cal recordar que una aplicació Angular és una *SPA* i, per tant, en realitat només existeix una única pàgina `HTML`.
+{% hint style="info" %}
+**Informació:** l'enrutament comentat a les línies de sobre fa que l'usuari tingui la sensació d'estar navegant a través de múltiples pàgines d'una mateixa aplicació web, però cal recordar que una aplicació Angular és una *SPA* i, per tant, en realitat només existeix una única pàgina `HTML`
+{% endhint %}
+
+<!--[^1]: aquest enrutament fa que l'usuari tingui la sensació d'estar navegant a través de múltiples pàgines d'una mateixa aplicació web, però cal recordar que una aplicació Angular és una *SPA* i, per tant, en realitat només existeix una única pàgina `HTML`.-->
 
 ## Webgrafia del capítol
 * Google (2025). [Angular](https://angular.dev/). Consultat el 7 de juny de 2025.
