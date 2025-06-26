@@ -234,13 +234,17 @@ Totes aquestes comprovacions provoquen l'execució del mètode `onCheckUpdates()
 
 <figure>
     <img src="img/ch07/change_detection2_1.png" alt="Situació tot just iniciar l'aplicació">
-    <img src="img/ch07/change_detection2_2.png" alt="Situació un cop modificat el nom d'usuari">
-    <figcaption>Figura 7.3: la primera imatge mostra la situació inicial de l'aplicació i, en canvi, la segona imatge mostra les comprovacions que ha provocat la modificació del nom d'usuari dins del component Header</figcaption>
+    <figcaption>Figura 7.3.1: situació inicial de l'aplicació</figcaption>
 </figure>
-<!--
+
+<figure>
+    <img src="img/ch07/change_detection2_2.png" alt="Situació un cop modificat el nom d'usuari">
+    <figcaption>Figura 7.3.2: comprovacions que ha provocat la modificació del nom d'usuari dins del component Header</figcaption>
+</figure>
+
 ## Primera millora d'eficiència: *Angular Signals*
 L'*Angular Signals* és un sistema que permet el resseguiment precís (granular) dels canvis d'estat de l'aplicació per fer que les actualitzacions del *renderitzat* siguin el més òptimes possible.
-
+<!--
 {% hint style="info" %}
 **Informació:** s'entèn com a estat el valor que reben les dades emmagatzemades dins de l'aplicació en un moment determinat.
 {% endhint %}
