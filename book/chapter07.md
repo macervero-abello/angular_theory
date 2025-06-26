@@ -231,13 +231,13 @@ Així doncs, si l'usuari intenta iniciar sessió i, per tant, modifica l'atribut
 </figure>
 
 Totes aquestes comprovacions provoquen l'execució del mètode `onCheckUpdates()` utilitzat en l'*String Interpolation* que es fa al final de cada component, per tant, la consola de les eines de desenvolupament mostra les comprovacions en l'ordre en què es fan, tal com mostra la Figura 7.3
-<!--
+
 <figure>
     <img src="img/ch07/change_detection2_1.png" alt="Situació tot just iniciar l'aplicació">
     <img src="img/ch07/change_detection2_2.png" alt="Situació un cop modificat el nom d'usuari">
     <figcaption>Figura 7.3: la primera imatge mostra la situació inicial de l'aplicació i, en canvi, la segona imatge mostra les comprovacions que ha provocat la modificació del nom d'usuari dins del component Header</figcaption>
 </figure>
-
+<!--
 ## Primera millora d'eficiència: *Angular Signals*
 L'*Angular Signals* és un sistema que permet el resseguiment precís (granular) dels canvis d'estat de l'aplicació per fer que les actualitzacions del *renderitzat* siguin el més òptimes possible.
 
