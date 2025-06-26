@@ -224,7 +224,7 @@ Com es pot veure, l'aplicació està formada per una capçalera, on es simula un
 Quan s'utilita la llibreria Zone.js, qualsevol canvi en algun dels *components* activa la comprovació d'absolutament tots els *components* de l'arbre jeràrquic mostrat a la Figura 7.1.
 
 Així doncs, si l'usuari intenta iniciar sessió i, per tant, modifica l'atribut `username` del *component* `Header`, s'activa la comprovació de tot l'arbre, començant pel *component* arrel `App`, tal com mostra la Figura 7.2
-
+<!--
 <figure>
     <img src="img/ch07/change_detection1.png" alt="Comprovacions que es disparen al llarg de tot l'arbre jeràrquic quan es produeix un canvi i s'utilitza Zone.js">
     <figcaption>Figura 7.2: comprovacions que es disparen al llarg de tot l'arbre jeràrquic quan es produeix un canvi i s'utilitza Zone.js</figcaption>
@@ -241,8 +241,10 @@ Totes aquestes comprovacions provoquen l'execució del mètode `onCheckUpdates()
 ## Primera millora d'eficiència: *Angular Signals*
 L'*Angular Signals* és un sistema que permet el resseguiment precís (granular) dels canvis d'estat de l'aplicació per fer que les actualitzacions del *renderitzat* siguin el més òptimes possible.
 
+{% hint style="info" %}
+**Informació:** s'entèn com a estat el valor que reben les dades emmagatzemades dins de l'aplicació en un moment determinat.
+{% endhint %}
 
-<!--
 Així doncs, un *signal* és un embolcall sobre les dades que permet notificar tots els canvis que pateix aquest valor a tots els consumidors que s'hi han subscrit. Si parlem des del punt de vista d'arquitectura de software, els *signals* implementen un patró *Observer* on l'*Observable* són les dades que conformen l'estat de l'aplicació i que són susceptibles d'anar canviant al llarg del temps; i els *Observers* són tots aquells elements (ara per ara *components*) que volen detectar qualsevol canvi d'estat per poder actualitzar correctament la seva part `HTML`.
 
 Tal com passa amb les dades que embolcallen, els *signals* poden ser de lectura/escriptura (*writebles*) o només de lectura (*read-only*)
