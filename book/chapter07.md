@@ -237,14 +237,14 @@ Totes aquestes comprovacions provoquen l'execució del mètode `onCheckUpdates()
     <img src="img/ch07/change_detection2_2.png" alt="Situació un cop modificat el nom d'usuari">
     <figcaption>Figura 7.3: la primera imatge mostra la situació inicial de l'aplicació i, en canvi, la segona imatge mostra les comprovacions que ha provocat la modificació del nom d'usuari dins del component Header</figcaption>
 </figure>
-<!--
+
 ## Primera millora d'eficiència: *Angular Signals*
 L'*Angular Signals* és un sistema que permet el resseguiment precís (granular) dels canvis d'estat de l'aplicació per fer que les actualitzacions del *renderitzat* siguin el més òptimes possible.
 
 {% hint style="info" %}
 **Informació:** s'entèn com a estat el valor que reben les dades emmagatzemades dins de l'aplicació en un moment determinat.
 {% endhint %}
-
+<!--
 Així doncs, un *signal* és un embolcall sobre les dades que permet notificar tots els canvis que pateix aquest valor a tots els consumidors que s'hi han subscrit. Si parlem des del punt de vista d'arquitectura de software, els *signals* implementen un patró *Observer* on l'*Observable* són les dades que conformen l'estat de l'aplicació i que són susceptibles d'anar canviant al llarg del temps; i els *Observers* són tots aquells elements (ara per ara *components*) que volen detectar qualsevol canvi d'estat per poder actualitzar correctament la seva part `HTML`.
 
 Tal com passa amb les dades que embolcallen, els *signals* poden ser de lectura/escriptura (*writebles*) o només de lectura (*read-only*)
