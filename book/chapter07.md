@@ -244,7 +244,7 @@ Totes aquestes comprovacions provoquen l'execució del mètode `onCheckUpdates()
 
 ## Primera millora d'eficiència: *Angular Signals*
 L'*Angular Signals* és un sistema que permet el resseguiment precís (granular) dels canvis d'estat de l'aplicació per fer que les actualitzacions del *renderitzat* siguin el més òptimes possible.
-<!--
+
 {% hint style="info" %}
 **Informació:** s'entèn com a estat el valor que reben les dades emmagatzemades dins de l'aplicació en un moment determinat.
 {% endhint %}
@@ -631,7 +631,6 @@ Aquest codi crea les dos zones de comprovació següents:
 </figure>
 
 ## Aplicacions *Zoneless*
--->
 
 <!--
 Webgrafia
