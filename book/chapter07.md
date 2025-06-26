@@ -219,7 +219,7 @@ export class ListMessages {
 {% endtabs %}
 
 Com es pot veure, l'aplicació està formada per una capçalera, on es simula un inici de sessió, i un contenidor de missatges per poder gestionar una llista de notes. A cadascun dels *components* s'hi ha afegit el mètode `onCheckUpdates()` el qual mostra un missatge a la consola de les eines de desenvolupador del navegador on s'executa. Aquest mètode ajudarà a visualitzar les comprovacions que es realitzen utilitzant l'estratègia Zone.js o l'estratègia *zoneless*.
-
+<!--
 ## Detecció de canvis clàssica: Zone.js
 Quan s'utilita la llibreria Zone.js, qualsevol canvi en algun dels *components* activa la comprovació d'absolutament tots els *components* de l'arbre jeràrquic mostrat a la Figura 7.1.
 
@@ -627,6 +627,7 @@ Aquest codi crea les dos zones de comprovació següents:
 </figure>
 
 ## Aplicacions *Zoneless*
+-->
 
 <!--
 Webgrafia
