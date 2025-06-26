@@ -219,7 +219,7 @@ export class ListMessages {
 {% endtabs %}
 
 Com es pot veure, l'aplicació està formada per una capçalera, on es simula un inici de sessió, i un contenidor de missatges per poder gestionar una llista de notes. A cadascun dels *components* s'hi ha afegit el mètode `onCheckUpdates()` el qual mostra un missatge a la consola de les eines de desenvolupador del navegador on s'executa. Aquest mètode ajudarà a visualitzar les comprovacions que es realitzen utilitzant l'estratègia Zone.js o l'estratègia *zoneless*.
-<!--
+
 ## Detecció de canvis clàssica: Zone.js
 Quan s'utilita la llibreria Zone.js, qualsevol canvi en algun dels *components* activa la comprovació d'absolutament tots els *components* de l'arbre jeràrquic mostrat a la Figura 7.1.
 
@@ -237,7 +237,7 @@ Totes aquestes comprovacions provoquen l'execució del mètode `onCheckUpdates()
     <img src="img/ch07/change_detection2_2.png" alt="Situació un cop modificat el nom d'usuari">
     <figcaption>Figura 7.3: la primera imatge mostra la situació inicial de l'aplicació i, en canvi, la segona imatge mostra les comprovacions que ha provocat la modificació del nom d'usuari dins del component Header</figcaption>
 </figure>
-
+<!--
 ## Primera millora d'eficiència: *Angular Signals*
 L'*Angular Signals* és un sistema que permet el resseguiment precís (granular) dels canvis d'estat de l'aplicació per fer que les actualitzacions del *renderitzat* siguin el més òptimes possible.
 
