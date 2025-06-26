@@ -224,14 +224,14 @@ Com es pot veure, l'aplicació està formada per una capçalera, on es simula un
 Quan s'utilita la llibreria Zone.js, qualsevol canvi en algun dels *components* activa la comprovació d'absolutament tots els *components* de l'arbre jeràrquic mostrat a la Figura 7.1.
 
 Així doncs, si l'usuari intenta iniciar sessió i, per tant, modifica l'atribut `username` del *component* `Header`, s'activa la comprovació de tot l'arbre, començant pel *component* arrel `App`, tal com mostra la Figura 7.2
-<!--
+
 <figure>
     <img src="img/ch07/change_detection1.png" alt="Comprovacions que es disparen al llarg de tot l'arbre jeràrquic quan es produeix un canvi i s'utilitza Zone.js">
     <figcaption>Figura 7.2: comprovacions que es disparen al llarg de tot l'arbre jeràrquic quan es produeix un canvi i s'utilitza Zone.js</figcaption>
 </figure>
 
 Totes aquestes comprovacions provoquen l'execució del mètode `onCheckUpdates()` utilitzat en l'*String Interpolation* que es fa al final de cada component, per tant, la consola de les eines de desenvolupament mostra les comprovacions en l'ordre en què es fan, tal com mostra la Figura 7.3
-
+<!--
 <figure>
     <img src="img/ch07/change_detection2_1.png" alt="Situació tot just iniciar l'aplicació">
     <img src="img/ch07/change_detection2_2.png" alt="Situació un cop modificat el nom d'usuari">
