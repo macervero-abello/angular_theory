@@ -480,7 +480,7 @@ export class Messages {
 
 {% tab title="Codi TS ListMessage" %}
 ```typescript
-import { Component, computed, signal, Signal, untracked, WritableSignal } from '@angular/core';
+import { Component, signal, WritableSignal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -630,12 +630,63 @@ Aquest codi crea les dos zones de comprovació següents:
     <figcaption>Figura 7.4: zones de comprovació creades mitjançant l'estratègia OnPush</figcaption>
 </figure>
 
-## Aplicacions *Zoneless*
+Un cop realitzada aquesta configuració, qualsevol canvi en el *component* `Header` només provocarà comprovacions dins de la seva branca, tal com mostra la Figura 7.5. D'una manera similar, qualsevol canvi dins del *component* `ListMessage` només provocarà comprovacions dins de la seva branca, tal com mostra la Figura 7.6.
 
-<!--
-Webgrafia
-1. https://www.npmjs.com/package/zone.js 23 de juny
-2. https://medium.com/@sehban.alam/what-is-zone-js-in-angular-e0029c21c32f 23 de juny
-3. https://blog.angular-university.io/angular-signals/ 26 de juny
-4. https://en.wikipedia.org/wiki/Anonymous_function 26 de juny
--->
+<figure>
+    <img src="img/ch07/change_detection4.png" alt="Zones de comprovació creades mitjançant l'estratègia OnPush quan hi ha un canvi al component Header">
+    <figcaption>Figura 7.5: zones de comprovació creades mitjançant l'estratègia OnPush quan hi ha un canvi al component Header</figcaption>
+</figure>
+
+<figure>
+    <img src="img/ch07/change_detection5.png" alt="Zones de comprovació creades mitjançant l'estratègia OnPush quan hi ha un canvi al component ListMessage">
+    <figcaption>Figura 7.6: zones de comprovació creades mitjançant l'estratègia OnPush quan hi ha un canvi al component ListMessage</figcaption>
+</figure>
+
+## Aplicacions *Zoneless*
+En el moment en què planifiquem les aplicacions per treballar amb *signals* i amb l'estragègia `OnPush` podem fer-les encara més eficients eliminant completament la llibreria Zone.js.
+
+Per treballar amb una aplicació *zoneless* es pot fer de dues maneres:
+1. Crear l'aplicació *zoneless* des de zero en el moment d'executar la comanda `ng new` (cal recordar que una de les opcions és, justament, si es desitja que l'aplicació sigui *zoneless* o no)
+2. Modificar una aplicació que utilitza la llibreria Zone.js per configurar-la com a *zoneless*
+
+La primera opció és trivial. En canvi, la segona, necessita que es facin modificacions ens dos fitxers de configuració clau:
+1. l'`angular.json` i
+2. el `app.config.ts`.
+
+### Modificació del fitxer `angular.json`
+Cal eliminar totes les referències a la llibreria Zone.js del fitxer `angular.json`
+1. projects > architect > build > options > polyfills
+2. projects > architect > test > options > polyfills
+
+![Eliminació de la llibreria Zone.js del fitxer de configuració angular.json](img/ch07/config_angular.png)
+
+{% hint style="info" %}
+**Informació:** en cas que el servidor de desenvolupament s'estigués executant cal parar-lo i tornar-lo a activar mitjançant la comanda `ng serve`
+{% endhint %}
+
+### Modificació del fitxer `app.config.ts`
+Cal substituir el *provider* `provideZoneChangeDetection()` pel *provider* `provideZonelessChangeDetection()`:
+```typescript
+import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZonelessChangeDetection } from '@angular/core';
+import { provideRouter } from '@angular/router';
+
+import { routes } from './app.routes';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideBrowserGlobalErrorListeners(),
+    //provideZoneChangeDetection({ eventCoalescing: true }),
+    provideZonelessChangeDetection(),
+    provideRouter(routes)
+  ]
+};
+```
+
+## Webgrafia del capítol
+* OpenJS Foundation (2025). [NodeJS](https://nodejs.org/). Consultat el 23 de maig de 2025.
+* Medium (2025). [What is Zone.js in Angular?](https://medium.com/@sehban.alam/what-is-zone-js-in-angular-e0029c21c32f). Consultat el 23 de juny de 2025.
+* Angular University (2025). [Angular Signals: Complete Guide](https://blog.angular-university.io/angular-signals/). Consultat el 26 de juny de 2025.
+* Wikimedia Foundation, Inc (2025). [Anonymous function](https://en.wikipedia.org/wiki/Anonymous_function). Consultat el 26 de juny de 2025.
+* Google (2025). [Angular](https://angular.dev/). Consultat el 27 de juny de 2025.
+* Udemy (2025). [Curs *Angular - The Complete Guide (2025 Edition)*](https://www.udemy.com/course/the-complete-guide-to-angular-2/). Consultat el 27 de juny de 2025.
+* Angular.love (2025). [The Latest in Angular Change Detection – All You Need to Know ](https://angular.love/the-latest-in-angular-change-detection-zoneless-signals). Consultat el 27 de juny de 2025.
