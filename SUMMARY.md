@@ -8,6 +8,7 @@
 * [Capítol 5. Modificació del DOM](book/chapter05.md)
 * [Capítol 6. Format `JSON` i LocalStorage](book/chapter06.md)
 * [Capítol 7. Detecció de canvis](book/chapter07.md)
+* [Capítol 8. Comunicació entre components Angular](book/chapter08.md)
 <!--
 * [Capítol 1. Format JSON i LocalStorage](book/chapter1.md)
 * [Capítol 2. Components Angular](book/chapter2.md)

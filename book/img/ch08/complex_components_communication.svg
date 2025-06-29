@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   sodipodi:docname="complex_components_communication.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     showguides="true"
+     inkscape:zoom="0.7198092"
+     inkscape:cx="411.91471"
+     inkscape:cy="210.47244"
+     inkscape:window-width="1920"
+     inkscape:window-height="972"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1">
+    <sodipodi:guide
+       position="85.744589,274.23553"
+       orientation="1,0"
+       id="guide1075"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="85.744589,274.23553"
+       orientation="0,-1"
+       id="guide1133"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="85.744587,237.48026"
+       orientation="0,-1"
+       id="guide1135"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="59.851097,267.24626"
+       orientation="1,0"
+       id="guide1137"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="67.082298,265.06699"
+       orientation="0,-1"
+       id="guide1143"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="67.082298,246.18287"
+       orientation="0,-1"
+       id="guide1145"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="185.67988,193.92268"
+       orientation="1,0"
+       id="guide1717"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="111.63808,267.24627"
+       orientation="1,0"
+       id="guide2599"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="33.957602,239.19361"
+       orientation="1,0"
+       id="guide2767"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="137.53157,239.19361"
+       orientation="1,0"
+       id="guide2769"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="61.122412,248.37745"
+       orientation="0,-1"
+       id="guide2889"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="44.185422,245.18288"
+       orientation="1,0"
+       id="guide2891"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="126.83815,241.2586"
+       orientation="1,0"
+       id="guide2893"
+       inkscape:locked="false" />
+  </sodipodi:namedview>
+  <defs
+     id="defs2">
+    <marker
+       style="overflow:visible"
+       id="Arrow1"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Arrow1"
+       markerWidth="4.0606604"
+       markerHeight="6.7071066"
+       viewBox="0 0 4.0606602 6.7071068"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         style="fill:none;stroke:context-stroke;stroke-width:1;stroke-linecap:butt"
+         d="M 3,-3 0,0 3,3"
+         id="path5057"
+         transform="rotate(180,0.125,0)"
+         sodipodi:nodetypes="ccc" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker1610"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Arrow1"
+       markerWidth="4.0606604"
+       markerHeight="6.7071066"
+       viewBox="0 0 4.0606602 6.7071068"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         style="fill:none;stroke:context-stroke;stroke-width:1;stroke-linecap:butt"
+         d="M 3,-3 0,0 3,3"
+         id="path1608"
+         transform="rotate(180,0.125,0)"
+         sodipodi:nodetypes="ccc" />
+    </marker>
+  </defs>
+  <g
+     inkscape:label="Capa 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g3373">
+      <g
+         id="g3321"
+         transform="translate(0,-129.64608)">
+        <g
+           id="g3290">
+          <path
+             style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#29b000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:3, 3;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#marker1610)"
+             d="m 136.29046,141.05788 h 37.00631"
+             id="path1606" />
+          <text
+             xml:space="preserve"
+             style="font-weight:bold;font-size:4.23333px;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans, Bold';fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:3, 3;stroke-dashoffset:0;stroke-opacity:1"
+             x="128.23125"
+             y="135.94397"
+             id="text1674"><tspan
+               sodipodi:role="line"
+               id="tspan1672"
+               style="stroke:none;stroke-width:1"
+               x="128.23125"
+               y="135.94397">Comunicació desitjada</tspan></text>
+        </g>
+        <g
+           id="g3302">
+          <g
+             id="g2196"
+             transform="translate(-12.383108,107.93142)">
+            <text
+               xml:space="preserve"
+               style="font-weight:bold;font-size:4.23333px;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans, Bold';fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:3, 3;stroke-dashoffset:0;stroke-opacity:1"
+               x="136.53708"
+               y="51.413246"
+               id="text1674-2"><tspan
+                 sodipodi:role="line"
+                 id="tspan1672-9"
+                 style="stroke:none;stroke-width:1"
+                 x="136.53708"
+                 y="51.413246">Camí de traspàs de dades</tspan></text>
+            <path
+               style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#00668b;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#marker1610)"
+               d="m 148.67357,56.510609 h 37.00631"
+               id="path1678" />
+          </g>
+        </g>
+      </g>
+      <g
+         id="g2850">
+        <g
+           id="g1059">
+          <rect
+             style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+             id="rect234"
+             width="50.786987"
+             height="12.97853"
+             x="60.351097"
+             y="16.275211"
+             rx="0.33834058"
+             ry="0.5015291" />
+          <text
+             xml:space="preserve"
+             style="font-weight:bold;font-size:4.23333px;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans, Bold';fill:none;fill-rule:evenodd;stroke:#ff0000;stroke-width:0.529167;stroke-linecap:round;stroke-linejoin:round"
+             x="63.596088"
+             y="23.86725"
+             id="text290"><tspan
+               sodipodi:role="line"
+               id="tspan288"
+               style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.529167"
+               x="63.596088"
+               y="23.86725">Parent component</tspan></text>
+        </g>
+        <g
+           id="g1073"
+           transform="translate(-51.756835,-0.24736269)">
+          <g
+             id="g1067"
+             transform="translate(-0.03015258,35.289282)">
+            <rect
+               style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+               id="rect1061"
+               width="50.786987"
+               height="12.97853"
+               x="60.351097"
+               y="16.275211"
+               rx="0.33834058"
+               ry="0.5015291" />
+            <text
+               xml:space="preserve"
+               style="font-weight:bold;font-size:4.23333px;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans, Bold';fill:none;fill-rule:evenodd;stroke:#ff0000;stroke-width:0.529167;stroke-linecap:round;stroke-linejoin:round"
+               x="65.57943"
+               y="23.932364"
+               id="text1065"><tspan
+                 sodipodi:role="line"
+                 id="tspan1063"
+                 style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.529167"
+                 x="65.57943"
+                 y="23.932364">Child component</tspan></text>
+          </g>
+        </g>
+        <g
+           id="g2609"
+           transform="translate(51.817135,-0.24736269)">
+          <g
+             id="g2607"
+             transform="translate(-0.03015258,35.289282)">
+            <rect
+               style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+               id="rect2601"
+               width="50.786987"
+               height="12.97853"
+               x="60.351097"
+               y="16.275211"
+               rx="0.33834058"
+               ry="0.5015291" />
+            <text
+               xml:space="preserve"
+               style="font-weight:bold;font-size:4.23333px;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans, Bold';fill:none;fill-rule:evenodd;stroke:#ff0000;stroke-width:0.529167;stroke-linecap:round;stroke-linejoin:round"
+               x="63.321171"
+               y="23.915827"
+               id="text2605"><tspan
+                 sodipodi:role="line"
+                 id="tspan2603"
+                 style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.529167"
+                 x="63.321171"
+                 y="23.915827">Sibling component</tspan></text>
+          </g>
+        </g>
+        <g
+           id="g2831">
+          <path
+             style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+             d="m 33.957604,51.31713 -3e-6,-7.858654 H 137.53157 v 7.358655"
+             id="path2771" />
+          <path
+             style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+             d="m 85.744589,29.253741 -6e-6,14.204735"
+             id="path2827" />
+        </g>
+      </g>
+      <path
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#29b000;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:3, 3;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#marker1610)"
+         d="m 67.01288,59.519741 h 37.00631"
+         id="path2885" />
+      <path
+         style="fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#00668b;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#Arrow1)"
+         d="M 44.185421,48.62255 85.744589,31.933009 126.83815,48.62255"
+         id="path2895" />
+    </g>
+  </g>
+</svg>
