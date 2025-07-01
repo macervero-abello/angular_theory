@@ -459,3 +459,7 @@ export class List {
 ```
 
 Com que aquest decorador fa exactament la mateixa funció que el mètode `output()` i, per tant, permet exposar qualsevol atribut del *component* per fer-lo servir d'event d'etiqueta, la resta de codi de l'aplicació es manté exactament igual que el mostrat en l'apartat anterior.
+
+## Webgrafia del capítol
+* Google (2025). [Angular](https://angular.dev/). Consultat el 27 de juny de 2025.
+* Udemy (2025). [Curs *Angular - The Complete Guide (2025 Edition)*](https://www.udemy.com/course/the-complete-guide-to-angular-2/). Consultat el 27 de juny de 2025.

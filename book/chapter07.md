@@ -683,7 +683,6 @@ export const appConfig: ApplicationConfig = {
 ```
 
 ## Webgrafia del capítol
-* OpenJS Foundation (2025). [NodeJS](https://nodejs.org/). Consultat el 23 de maig de 2025.
 * Medium (2025). [What is Zone.js in Angular?](https://medium.com/@sehban.alam/what-is-zone-js-in-angular-e0029c21c32f). Consultat el 23 de juny de 2025.
 * Angular University (2025). [Angular Signals: Complete Guide](https://blog.angular-university.io/angular-signals/). Consultat el 26 de juny de 2025.
 * Wikimedia Foundation, Inc (2025). [Anonymous function](https://en.wikipedia.org/wiki/Anonymous_function). Consultat el 26 de juny de 2025.
