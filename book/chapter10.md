@@ -1,9 +1,9 @@
-# Capítol 4. *Routing*
-La configuració del *routing* a Angular permet navegar a través de les diverses pàgines de l'aplicació web, tenint en compte que es tracta d'una SPA (*Single Page Application*) i que, per tant, només existeix un únic fitxer `HTML` (l'index.html).
+# Capítol 10. *Routing*
+La configuració del *routing* a Angular permet navegar a través de les diverses pàgines de l'aplicació web, tenint en compte que es tracta d'una SPA (*Single Page Application*) i que, per tant, només existeix un únic fitxer `HTML` (l'`index.html`).
 
-Així doncs, aquesta nagevació no és un canvi de fitxer `HTML` real (la `URL` base del navegador sempre serà la mateixa), sinó una càrrega i descàrrega dels `HTML` dels diversos components que constitueixen les diferents pàgines de l'aplicació. És a dir, el *routing* activa tot un mecanisme que, a través de codi `Javascript` permet modificar el `DOM` de la pàgina index.html.
+Així doncs, aquesta nagevació no és un canvi de fitxer `HTML` real (la `URL` base del navegador sempre serà la mateixa), sinó una càrrega i descàrrega dels `HTML` dels diversos *components* que constitueixen les diferents pàgines de l'aplicació. És a dir, el *routing* activa tot un mecanisme que, a través de codi `Javascript` permet modificar el `DOM` de la pàgina `index.html`.
 
-Per fer tot això, es necessita afegir a la `URL` base un conjunt de fragments que, ben configurats, carreguen el component desitjat.
+Per fer tot això, es necessita afegir a la `URL` base un conjunt de fragments que, ben configurats, carreguen el *component* desitjat.
 
 Angular permet dos tipus de *routing*:
 * *Routing* clàssic o tradicional
@@ -18,92 +18,97 @@ Aquest tipus de *routing* és addient en els casos d'aplicacions amb poques rute
 
 ### Configuració bàsica
 Per configurar el *routing* clàssic cal seguir els passos següents:
-1. Configurar els fragments de les rutes i enllaçar-los als components corresponents
-2. Activar el servei de *routing*
-3. Crear els enllaços i la navegació als fitxers `HTML` i `TS` dels components
+1. Definir el contenidor de rutes a partir de l'etiqueta `<router-outlet />`
+2. Crear els *components* que representaran les diverses rutes (normalment s'associa una ruta a una pàgina de l'aplicació)
+3. Configurar els fragments de les rutes i enllaçar-los als *components* corresponents (creats en l'apartat anterior)
+4. Activar el servei de *routing*
+5. Crear els enllaços i la navegació als fitxers `HTML` i `TS` dels *components*
 
 #### Contextualització d'un exemple
-Per fer l'explicació, suposarem que tenim una aplicació amb dues pàgines: la pàgina `home`, definida al `HomeComponent`, i la pàgina `about`, definida a l'`AboutComponent`.
+Per fer l'explicació, suposarem que tenim una aplicació amb dues pàgines: la pàgina `home`, definida al *component* `Home`, i la pàgina `about`, definida al *component* `About`.
 
-#### Configuració dels fragments de les rutes i activació del servei de *routing*
-La configuració de les rutes i l'activació del servei de *routing* es realitza al fitxer de configuració de dependències `app.module.ts`.
-
-Primer de tot cal crear un array de rutes (`Routes`), on cada ruta és un objecte `JSON` que, com a mínim, té l'atribut `path` per definir el fragment que es desitja i l'atribut `component` per establir el component que s'ha de carregar.
-
-```typescript
-const routes: Routes = [
-  { path: 'home', component: HomeComponent },
-  { path: 'about', component: AboutComponent }
-]
-```
-
-L'ordre en què es defineixen les rutes dins d'aquest array és important, ja que l'enrutador d'Angular utilitza la política *first-mach wins*, és a dir, utilitza la primera ruta que coincideix amb el fragment de la `URL`. Per tant, les rutes s'han d'ordenar de més específiques a menys.
-
-Un cop definides les rutes cal importar el mòdul `RouterModule` i configurar-lo amb l'array creat.
-
-```typescript
-imports: [
-  BrowserModule,
-  RouterModule.forRoot(routes)
-]
-```
-
-El codi complet del fitxer app.module.ts seria el següent:
+A més a més, com és evident, també tindrem el component arrel `App` que, aquest cop, actuarà com a contenidor de rutes i, per tant, només contindrà l'etiqueta `<router-outlet />` en el seu `HTML` i la dependència `RouterOutlet` dins dels `imports` del seu `TS`.
 
 {% tabs %}
-{% tab title="Codi app.module.ts" %}
-```typescript
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+{% tab title="Codi app.html" overflow="wrap" lineNumbers="true" %}
+  ```html
+  <router-outlet />
+  ```
+{% endtab %}
 
-import { AppComponent } from './app.component';
-import { HomeComponent } from './pages/home/home.component';
-import { AboutComponent } from './pages/about/about.component';
-import { RouterModule, Routes } from '@angular/router';
+{% tab title="Codi app.ts" overflow="wrap" lineNumbers="true" %}
+  ```typescript
+  import { Component } from '@angular/core';
+  import { RouterOutlet } from '@angular/router';
 
-const routes: Routes = [
-  { path: 'home', component: HomeComponent },
-  { path: 'about', component: AboutComponent },
-];
-
-@NgModule({
-  declarations: [
-    AppComponent,
-    HomeComponent,
-    AboutComponent,
-    ListComponent
-  ],
-  imports: [
-    BrowserModule,
-    RouterModule.forRoot(routes)
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
-})
-export class AppModule { }
-
-
-```
+  @Component({
+    selector: 'app-root',
+    imports: [RouterOutlet],
+    templateUrl: './app.html',
+    styleUrl: './app.css'
+  })
+  export class App {}
+  ```
 {% endtab %}
 {% endtabs %}
 
+#### Configuració dels fragments de les rutes i activació del servei de *routing*
+La configuració de les rutes es realitza al fitxer de configuració `app.routes.ts` i el servei de *routing* es configura dins del fitxer `app.config.ts`
+
+Així doncs, primer de tot cal crear un array de rutes (`Routes`) dins d'`app.routes.ts`, on cada ruta és un objecte `JSON` que, com a mínim, té l'atribut `path` per definir el fragment que es desitja i l'atribut `component` per establir el *component* que s'ha de carregar.
+
+{% code title="Codi app.routes.ts" overflow="wrap" lineNumbers="true" %}
+  ```typescript
+  import { Routes } from '@angular/router';
+
+  import { Home } from './view/pages/home/home';
+  import { About } from './view/pages/about/about';
+
+  export const routes: Routes = [
+    { path: 'home', component: Home },
+    { path: 'about', component: About }
+  ];
+  ```
+{% endcode %}
+
+L'ordre en què es defineixen les rutes dins d'aquest array és important, ja que l'enrutador d'Angular utilitza la política *first-mach wins*, és a dir, utilitza la primera ruta que coincideix amb el fragment de la `URL`. Per tant, les rutes s'han d'ordenar de més específiques a menys.
+
+Un cop definides les rutes cal activar el servei de *routing* dins del fitxer de configuració `app.config.ts` i configurar-lo amb l'array creat (aquest pas ja ve fet de manera automàtica en les versions d'Angular més noves).
+
+{% code title="Codi app.config.ts" overflow="wrap" lineNumbers="true" %}
+  ```typescript
+  import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZonelessChangeDetection } from '@angular/core';
+  import { provideRouter } from '@angular/router';
+
+  import { routes } from './app.routes';
+
+  export const appConfig: ApplicationConfig = {
+    providers: [
+      provideBrowserGlobalErrorListeners(),
+      provideZonelessChangeDetection(),
+      provideRouter(routes)                       //Activació del servei de routing
+    ]
+  };
+  ```
+{% endcode %}
+
 ##### Configuració d'una ruta per defecte i gestió de ruta no trobada
-Per configurar la ruta per defecte, el `JSON` ha de tenir tres atributs: el `path`, el `redirectTo` i el `pathMatch`.
+Dins del fitxer `app.routes.ts` també es pot crear una ruta per defecte (la pàgina que s'ha d'obrir en cas que la `URL` no especifiqui cap fragment de ruta) i una ruta per a gestionar els fragments no trobats. Per fer-ho, el `JSON` de l'objecte `Route` que cal definir al fitxer de configuració `app.routes.ts` ha de contenir tres atributs: el `path`, el `redirectTo` i el `pathMatch`.
 1. `path`: serà el fragment buit (l'`URL` només tindrà la part del domini)
 2. `redirectTo`: indicarà a quina ruta cal redirigir tot el trànsit per defecte que arribi a l'aplicació
-3. `pathMatch`: indica quina política de coincidència s'ha d'aplicar al fragment del `path`7
+3. `pathMatch`: indica quina política de coincidència s'ha d'aplicar al fragment del `path`
 
-Així doncs, si s'afegeix una ruta per defecte, l'array de rutes anterior queda de la manera següent:
+Així doncs, si s'afegeix una ruta per defecte, l'array de rutes mostrat en l'exemple de l'apartat anterior queda de la manera següent:
 
 ```typescript
-const routes: Routes = [
-  { path: 'home', component: HomeComponent },
-  { path: 'about', component: AboutComponent },
-  { path: '', redirectTo: 'home', pathMatch: 'full'}
-]
+export const routes: Routes = [
+  { path: 'home', component: Home },
+  { path: 'about', component: About },
+  { path: '', redirectTo: 'home', pathMatch: 'full' }
+];
 ```
 
-Per gestionar una ruta no trobada (o no accessible) només cal crear un component al qual redirigir l'intent d'accés erroni i configurar la ruta per al `path: '**'`
+Per gestionar una ruta no trobada (o no accessible) només cal crear un component al qual redirigir l'intent d'accés erroni, per exemple, el *component* `PageNotFound`, i configurar la ruta per al `path: '**'`
 
 ```typescript
 const routes: Routes = [
@@ -117,23 +122,23 @@ const routes: Routes = [
 #### Navegació a través d'enllaços i botons
 Un cop configurades totes les rutes desitjades només fa falta crear la navegació entre pàgines a través de botos i enllaços.
 
-Com que tota aplicació Angular és una SPA (*Single Page Application*), es necessita un component principal que faci de contenidor de la resta de components/pàgines. Aquest paper se l'endú l'`AppComponent`, el qual, dins del seu codi `HTML`, tindrà l'etiqueta `<router-outlet>`, que és la que fa de contenidor per a la resta de components. Cal veure que l'`AppComponent` pot funcionar com a component *layout*, és a dir, aquell component que defineix els elements comuns al llarg de tota l'aplicació (capçalera, menú, etc.).
+Com que tota aplicació Angular és una SPA (*Single Page Application*), es necessita un *component* principal que faci de contenidor de la resta de *components*/pàgines. Tal com hem dit a l'inici de l'explicació (apartat [Contextualització d'un exemple](#contextualització-dun-exemple)), aquest paper se l'endú el *component* `App`, el qual, dins del seu codi `HTML`, tindrà l'etiqueta `<router-outlet />`, que és la que fa de contenidor per a la resta de *components*. Cal veure que el *component* `App` pot funcionar com a *component* *layout*, és a dir, aquell *component* que defineix els elements comuns al llarg de tota l'aplicació (capçalera, menú, etc.).
 
-Fet això, només cal afegir enllaços i botons per saltar entre components, tenint en compte que l'ús de l'atribut `href` dels enllaços queda totalment prohibit perquè provoca una recàrrega de la pàgina i, per tant, trenca el principi bàsic de l'SPA (reinicia tota l'aplicació perquè la torna a descarregar del servidor). Aquest atribut queda substituït per l'atribut `routerLink` que ofereix Angular i que es pot aplicar a qualsevol etiqueta.
+Fet això, només cal afegir enllaços i botons per saltar entre *components*, tenint en compte que **l'ús de l'atribut `href` dels enllaços queda totalment prohibit perquè provoca una recàrrega de la pàgina** i, per tant, trenca el principi bàsic de l'SPA (reinicia tota l'aplicació perquè la torna a descarregar del servidor). Aquest atribut queda substituït per l'atribut `routerLink` que ofereix Angular dins del *module* `RouterModule` i que es pot aplicar a qualsevol etiqueta.
 
 ```html
 <a [routerLink]="['/home']">Home</a>
 ```
 
 L'atribut `routerLink` espera rebre un array amb els múltiples fragments de la nova `URL`, els quals poden ser absoluts o relatius. Per exemple:
-* Si estem a la pàgina `home` (`HomeComponent`), l'enllaç
+* Si estem a la pàgina `home` (*component* `Home`), l'enllaç
 ```html
-<a [routerLink]="['/about']">Home</a>
+<a [routerLink]="['/about']">About</a>
 ```
 defineix una ruta absoluta i generarà la `URL` `localhost:4200/about`. 
-* Si estem a la pàgina `home` (`HomeComponent`), l'enllaç
+* Si estem a la pàgina `home` (*component* `Home`), l'enllaç
 ```html
-<a [routerLink]="['about']">Home</a>
+<a [routerLink]="['about']">About</a>
 ```
 defineix una ruta relativa i generarà la `URL` `localhost:4200/home/about`.
 * L'enllaç 
@@ -142,83 +147,92 @@ defineix una ruta relativa i generarà la `URL` `localhost:4200/home/about`.
 ```
 defineix múltiples fragments i crearà la ruta `localhost:4200/home/gallery`.
 
-Pel que fa als botons, la navegació s'haurà de definir a través del seu event `click` i l'ús del *service* `Router` que ofereix Angular; per exemple, el component `AboutComponent` pot definir el botó següent:
+Pel que fa als botons, la navegació s'haurà de definir a través del seu event `click` i l'ús del *service* `Router` que ofereix Angular; per exemple, el *component* `About` pot definir el botó següent:
 ```html
 <button (click)="navigateToHome()">Home</button>
 ```
-A partir d'aquí, per la navegació per botó haurà d'injectar el *service* `Router` dins del seu constructor, tal com mostra el codi següent:
-```typescript
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 
-@Component({
-  selector: 'app-about',
-  templateUrl: './about.component.html',
-  styleUrls: ['./about.component.css']
-})
-export class AboutComponent {
+A partir d'aquí, per la navegació per botó haurà d'injectar el *service* `Router` (dins del seu constructor o utilitzant el mètode `inject()`), tal com mostra el codi següent:
+{% code title="Codi about.ts" overflow="wrap" lineNumbers="true" %}
+  ```typescript
+  import { Component, inject } from '@angular/core';
+  import { Router } from '@angular/router';
 
-  constructor(private _router: Router) {}
-}
-```
-Com es veurà en els capítols següents, tots els *services*, tant els que ofereix Angular com els que crearem nosaltres segons les necessitats de la nostra aplicació, aconstumen a seguir el patró d'instanciació `Singelton` i, per tant, només exiteix una única instància de cada *service* per a tota l'aplicació. Per poder-ne sol·licitar l'ús, els components o les classes ho han de fer a través del procés d'injecció, el qual defineix un atribut de classe dins de la zona de paràmetres del constructor.
-
-El *service* `Router` té, entre altres, el mètode `navigate`, el qual espera rebre un array de fragments de ruta (exactament com l'atribut `routerLink`). Així doncs, per acabar de configurar la navegació a través del botó de l'exemple, només cal definir la funció `navigateToHome()`, la qual haurà de fer ús del `Router`:
-
-```typescript
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-
-@Component({
-  selector: 'app-about',
-  templateUrl: './about.component.html',
-  styleUrls: ['./about.component.css']
-})
-export class AboutComponent {
-
-  constructor(private _router: Router) {}
-
-  navigateToAbout(): void {
-    this._router.navigate(['/home']);
+  @Component({
+    selector: 'app-about',
+    imports: [],
+    templateUrl: './about.html',
+    styleUrl: './about.css'
+  })
+  export class About {
+    //private _router: Rounter = inject(Router);    //Injecció amb el mètode inject()
+    constructor(private _router: Router) {}       //Injecció dins del constructor
   }
-}
-```
+  ```
+{% endcode %}
+
+Com es veurà en els capítols següents, tots els *services*, tant els que ofereix Angular com els que crearem nosaltres segons les necessitats de la nostra aplicació, aconstumen a seguir el patró d'instanciació `Singelton` i, per tant, només exiteix una única instància de cada *service* per a tota l'aplicació. Per poder-ne sol·licitar l'ús, els *components* o les classes ho han de fer a través del procés d'injecció, el qual
+* o defineix un atribut de classe dins de la zona de paràmetres del constructor;
+* o defineix un atribut de classe a la zona d'atributs i utilitza el mètode `inject()` per a invocar el *service* desitjat
+
+El *service* `Router` té, entre altres, el mètode `navigate()`, el qual espera rebre un array de fragments de ruta (exactament com l'atribut `routerLink`). Així doncs, per acabar de configurar la navegació a través del botó de l'exemple, només cal definir la funció `onNavigateToHome()`, la qual haurà de fer ús del `Router`:
+
+{% code title="Codi about.ts" overflow="wrap" lineNumbers="true" %}
+  ```typescript
+  import { Component, inject } from '@angular/core';
+  import { Router } from '@angular/router';
+
+  @Component({
+    selector: 'app-about',
+    imports: [],
+    templateUrl: './about.html',
+    styleUrl: './about.css'
+  })
+  export class About {
+    //private _router: Rounter = inject(Router);    //Injecció amb el mètode inject()
+    constructor(private _router: Router) {}       //Injecció dins del constructor
+
+    public onNavigateToHome() {
+      this._router.navigate(["/home"]);
+    }
+  }
+  ```
+{% endcode %}
 
 Exemple complet:
 {% tabs %}
-{% tab title="Codi app.module.ts" %}
-```typescript
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+{% tab title="Codi app.config.ts" overflow="wrap" lineNumbers="true" %}
+  ```typescript
+  import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZonelessChangeDetection } from '@angular/core';
+  import { provideRouter } from '@angular/router';
 
-import { AppComponent } from './app.component';
-import { HomeComponent } from './pages/home/home.component';
-import { AboutComponent } from './pages/about/about.component';
-import { RouterModule, Routes } from '@angular/router';
+  import { routes } from './app.routes';
 
-const routes: Routes = [
-  { path: 'home', component: HomeComponent },
-  { path: 'about', component: AboutComponent },
-  { path: '', redirectTo: 'home', pathMatch: 'full'},
-  { path: '**', component: PageNotFoundComponent },
-];
+  export const appConfig: ApplicationConfig = {
+    providers: [
+      provideBrowserGlobalErrorListeners(),
+      provideZonelessChangeDetection(),
+      provideRouter(routes)
+    ]
+  };
+  ```
+{% endtab %}
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    HomeComponent,
-    AboutComponent,
-    ListComponent
-  ],
-  imports: [
-    BrowserModule,
-    RouterModule.forRoot(routes)
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
-})
-export class AppModule { }
-```
+{% tab title="Codi app.routes.ts" overflow="wrap" lineNumbers="true" %}
+  ```typescript
+  import { Routes } from '@angular/router';
+
+  import { Home } from './view/pages/home/home';
+  import { About } from './view/pages/about/about';
+  import { PageNotFound } from './view/pages/page-not-found/page-not-found';
+
+  export const routes: Routes = [
+      { path: 'home', component: Home },
+      { path: 'about', component: About },
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
+      { path: '**', component: PageNotFound }
+  ];
+  ```
 {% endtab %}
 
 {% tab title="Codi app.component.html" %}
