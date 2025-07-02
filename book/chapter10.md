@@ -235,240 +235,306 @@ Exemple complet:
   ```
 {% endtab %}
 
-{% tab title="Codi app.component.html" %}
-```typescrip
-<router-outlet></router-outlet>
-```
+{% tab title="Codi app.html" overflow="wrap" lineNumbers="true" %}
+  ```html
+  <router-outlet />
+  ```
 {% endtab %}
 
-{% tab title="Codi home.component.html" %}
-```html
-<a [routerLink]="['/about']">About</a>
-```
+{% tab title="Codi app.ts" overflow="wrap" lineNumbers="true" %}
+  ```typescript
+  import { Component } from '@angular/core';
+  import { RouterOutlet } from '@angular/router';
+
+  @Component({
+    selector: 'app-root',
+    imports: [RouterOutlet],
+    templateUrl: './app.html',
+    styleUrl: './app.css'
+  })
+  export class App {}
+  ```
 {% endtab %}
 
-{% tab title="Codi about.component.html" %}
-```html
-<button (click)="navigateToHome()">Home</button>
-```
+{% tab title="Codi home.html" overflow="wrap" lineNumbers="true" %}
+  ```html
+  <p>home works!</p>
+  <a [routerLink]="['/about']">About</a>
+  ```
 {% endtab %}
 
-{% tab title="Codi about.component.ts" %}
-```typescript
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+{% tab title="Codi home.ts" overflow="wrap" lineNumbers="true" %}
+  ```typescript
+  import { Component } from '@angular/core';
+  import { RouterModule } from '@angular/router';
 
-@Component({
-  selector: 'app-about',
-  templateUrl: './about.component.html',
-  styleUrls: ['./about.component.css']
-})
-export class AboutComponent {
+  @Component({
+    selector: 'app-home',
+    imports: [RouterModule],
+    templateUrl: './home.html',
+    styleUrl: './home.css'
+  })
+  export class Home {}
+  ```
+{% endtab %}
 
-  constructor(private _router: Router) {}
+{% tab title="Codi about.html" overflow="wrap" lineNumbers="true" %}
+  ```html
+  <p>about works!</p>
+  <button (click)="onNavigateToHome()">Home</button>
+  ```
+{% endtab %}
 
-  navigateToAbout(): void {
-    this._router.navigate(['/home']);
+{% tab title="Codi about.ts" overflow="wrap" lineNumbers="true" %}
+  ```typescript
+  import { Component } from '@angular/core';
+  import { Router } from '@angular/router';
+
+  @Component({
+    selector: 'app-about',
+    imports: [],
+    templateUrl: './about.html',
+    styleUrl: './about.css'
+  })
+  export class About {
+    constructor(private _router: Router) {}
+
+    public onNavigateToHome() {
+      this._router.navigate(["/home"]);
+    }
   }
-}
-```
+  ```
+{% endtab %}
+
+{% tab title="Codi page-not-found.html" overflow="wrap" lineNumbers="true" %}
+  ```html
+  <p>page-not-found works!</p>
+  ```
+{% endtab %}
+
+{% tab title="Codi page-not-found.ts" overflow="wrap" lineNumbers="true" %}
+  ```typescript
+  import { Component } from '@angular/core';
+
+  @Component({
+    selector: 'app-page-not-found',
+    imports: [],
+    templateUrl: './page-not-found.html',
+    styleUrl: './page-not-found.css'
+  })
+  export class PageNotFound {
+
+  }
+  ```
 {% endtab %}
 {% endtabs %}
 
 ### Configuració de subrutes
-De subrutes n'hi ha de dos tipus, les estàtiques i les parametritzades i, tot i que la teoria bàsica és la mateixa, les subrutes es tracten a part pel petit increment de complexitat del tractament de les rutes parametritzades.
+De subrutes n'hi ha de dos tipus, les estàtiques i les parametritzades i, tot i que la teoria bàsica és la mateixa, les subrutes s'expliquen a part pel petit increment de complexitat del tractament de les rutes parametritzades.
 
 A part d'això, la càrrega d'una subruta es pot tractar com una pàgina addicional o com un element nou dins de la pàgina que ja s'estava visitant.
 
 #### Subrutes estàtiques
 Són aquelles rutes que tenen una `URL` constant (els segments estan predefinits) i, per tant, sempre carreguen el mateix contingut.
 
-Per exemplificar-ho, suposem que a la pàgina d'inici hi posem un nou enllaç que, en preme'l, mostri un formulari de contacte. La `URL` inicial serà `localhost:4200/home` i la que mostrarà el formulari serà `localhost:4200/home/contact.` Aquest nou formulari es pot mostrar com un nou element dins de la pàgina inicial o com una pàgina individual.
+Per exemplificar-ho, suposem que a la pàgina d'inici hi posem un nou enllaç que, en preme'l, mostra un formulari de contacte. La `URL` inicial serà `localhost:4200/home` i la que mostrarà el formulari serà `localhost:4200/home/contact.` Aquest nou formulari es pot mostrar com un nou element dins de la pàgina inicial o com una pàgina individual.
 
 ##### Subrutes estàtiques que formen part d'una altra pàgina
-Seguint l'exemple anterior, la configuració de les rutes al fitxer `app.module.ts` seria el següent:
+Seguint l'exemple anterior, si volem que el *component* `Contact` quedi incrustat dins del *component* `Home`, la configuració de les rutes al fitxer `app.routes.ts` seria el següent:
 
-```typescript
-...
-const routes: Routes = [
-  { path: 'home', component: HomeComponent, children: [
-      {path: 'contact', component: ContactComponent}
-    ]
-  },
-  { path: 'about', component: AboutComponent },
-  ...
-];
+{% code title="Codi app.routes.ts" overflow="wrap" lineNumbers="true" %}
+  ```typescript
+  import { Routes } from '@angular/router';
 
-@NgModule({
-  ...
-  imports: [
-    BrowserModule,
-    RouterModule.forRoot(routes)
-  ],
-  ...
-})
-export class AppModule { }
-```
+  import { Home } from './view/pages/home/home';
+  import { Contact } from './view/pages/contact/contact';
+  import { About } from './view/pages/about/about';
+  import { PageNotFound } from './view/pages/page-not-found/page-not-found';
 
-Aquest codi mostra una ruta principal definida pel `path: 'home'` que té una subruta especificada amb la propietat `children`. Quan l'usuari entri a l'`URL` `localhost:4200/home` es carregarà el component `HomeComponent` i, en canvi, quan entri a l'`URL` `localhost:4200/home/contact` es carregaran els components `HomeComponent` i, també, `ContactComponent`.
+  export const routes: Routes = [
+      { path: 'home', component: Home, children:[
+          { path: 'contact', component: Contact }
+        ]
+      },
+      { path: 'about', component: About },
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
+      { path: '**', component: PageNotFound }
+  ];
+  ```
+{% endcode %}
 
-Per tal d'assolir aquest objectiu, el codi `HTML` del component `HomeComponent` ha de ser el següent (navegant amb enllaços, és clar):
+Aquest codi mostra una ruta principal definida pel `path: 'home'` que té una subruta especificada amb la propietat `children`. Quan l'usuari entri a l'`URL` `localhost:4200/home` es carregarà el *component* `Home` i, en canvi, quan entri a l'`URL` `localhost:4200/home/contact` es carregaran els *components* `Home` i, també, `Contact`.
 
-```html
-<div class="home_content">
-  <a [routerLink]="['/about']">About</a><br/>
-  <a [routerLink]="['contact']">Contact</a>
+Per tal d'assolir aquest objectiu, el codi `HTML` del *component* `Home` ha de contenir un contenidor de rutes, és a dir, l'etiqueta `<router-outlet />, tal com es mostra a continuació:
 
-  <router-outlet></router-outlet>
-</div>
-```
+{% code title="Codi home.html" overflow="wrap" lineNumbers="true" %}
+  ```html
+  <div class="hcomponent">
+    <p>home works!</p>
+    
+    <a [routerLink]="['/about']">About</a>
+    <br/>
+    <a [routerLink]="['contact']">Contact</a>
+    
+    <router-outlet />
+  </div>
+  ```
+{% endcode %}
 
-Quan l'usuari premi l'enllaç *Contact*, la subruta `/home/contact` es carregarà en el contenidor de routes (etiqueta *router-outlet*) del `HomeComponent`. D'aquesta manera aconseguim visualitzar, a la vegada, el `HomeComponent` (carregat a través del *router-outlet* de l'`AppComponent`) i el `ContactComponent` (carregat a través del *router-outlet* del `HomeComponent`).
+Quan l'usuari premi l'enllaç *Contact*, la subruta `/home/contact` es carregarà en el contenidor de routes (etiqueta `<router-outlet />`) del *component* `Home`. D'aquesta manera aconseguim visualitzar, a la vegada, el `Home` (carregat a través del `<router-outlet />` del *component* `App`) i el `Contact` (carregat a través del `<router-outlet />` del *component* `Home`).
 
-Si el contingut del component `ContentComponent` és el que es mostra a continuació:
+Si el contingut `HTML` del *component* `Content` és el que es mostra a continuació:
 
-```html
-<div class="contact_content">
-  <label>eMail</label>
-  <input type="email" placeholder="User's email"/> <br/>
+{% code title="Codi contact.html" overflow="wrap" lineNumbers="true" %}
+  ```html
+  <div class="ccomponent">
+    <p>contact works!</p>
+
+    <label>eMail</label><br/>
+    <input type="email" placeholder="User's email"/> <br/>
   
-  <label>Message</label>
-  <textarea placeholder="User's message"></textarea>
-</div>
-```
+    <label>Message</label><br/>
+    <textarea placeholder="User's message"></textarea>
+  </div>
+  ```
+{% endcode %}
 
 El resultat final en pantalla mostra el següent:
 
-![Visualització del resultat al navegador](img/subrouting_1.png)
+![Visualització del resultat al navegador](img/ch10/subrouting1.png)
 
 ##### Subrutes estàtiques que són pàgines diferents
-Seguint amb el mateix exemple, la configuració de les rutes al fitxer `app.module.ts` és lleugerament diferent a l'anterior versió:
+Seguint amb el mateix exemple, si volem que les pàgines corresponents als components `Home` i `Contact` siguin independents, la configuració de les rutes al fitxer `app.routes.ts` és lleugerament diferent a l'anterior versió:
 
-```typescript
-...
-const routes: Routes = [
-  { path: 'home', children: [
-      {path: '', component: HomeComponent},
-      {path: 'contact', component: ContactComponent}
-    ]
-  },
-  { path: 'about', component: AboutComponent },
-  ...
-];
+{% code title="Codi app.routes.ts" overflow="wrap" lineNumbers="true" %}
+  ```typescript
+  import { Routes } from '@angular/router';
 
-@NgModule({
-  ...
-  imports: [
-    BrowserModule,
-    RouterModule.forRoot(routes)
-  ],
-  ...
-})
-export class AppModule { }
-```
+  import { Home } from './view/pages/home/home';
+  import { Contact } from './view/pages/contact/contact';
+  import { About } from './view/pages/about/about';
+  import { PageNotFound } from './view/pages/page-not-found/page-not-found';
+
+  export const routes: Routes = [
+      { path: 'home', children: [
+          { path: '', component: Home },
+          { path: 'contact', component: Contact }
+        ]
+      },
+      { path: 'about', component: About },
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
+      { path: '**', component: PageNotFound }
+  ];
+  ```
+{% endcode %}
 
 En aquest cas, la ruta `home` té dues subrutes:
- - una ruta per defecte que és l'encarregada de carregar el `HomeComponent` i
- - una ruta amb el nou segment `contact` que s'encarrega de carregar el `ContactComponent`.
+ * una ruta per defecte que és l'encarregada de carregar el *component* `Home` i
+ * una ruta amb el nou segment `contact` que s'encarrega de carregar el *component* `Contact`.
 
-A més a més, per assolir l'objectiu, el document `HTML` de `HomeComponent` ja no ha de tenir l'etiqueta *router-outlet*
+A més a més, per assolir l'objectiu, el document `HTML` del *component* `Home` ja no ha de tenir l'etiqueta *router-outlet*
 
-```html
-<div class="home_content">
-  <a [routerLink]="['/about']">About</a><br/>
-  <a [routerLink]="['contact']">Contact</a>
-</div>
-```
+{% code title="Codi home.html" overflow="wrap" lineNumbers="true" %}
+  ```html
+  <div class="hcomponent">
+    <p>home works!</p>
+    
+    <a [routerLink]="['/about']">About</a>
+    <br/>
+    <a [routerLink]="['contact']">Contact</a>    
+  </div>
+  ```
+{% endcode %}
 
-Fent aquests petits canvis, totes les pàgines es carreguen al contenidor *router-outlet* que conté `AppComponent` i, per tant, el resultat en pantalla és el següent:
+Fent aquests petits canvis, totes les pàgines es carreguen al contenidor `<router-outlet />` que conté el *component* `App` i, per tant, el resultat en pantalla és el següent:
 
-![Visualització del resultat al navegador](img/subrouting_2.png)
+![Visualització del resultat al navegador](img/ch10/subrouting2.png)
 
 ### Subrutes parametritzades
 Són aquelles rutes que tenen una `URL` variable, és a dir, els segments estan parametritzats i, per tant, són capaces de canviar el contingut mostrat depenent d'aquests paràmetres.
 
-Per exemplificar-ho, suposem que afegim una pàgina que mostra un llistat d'elements. Cada cop que l'usuari premi un d'aquests elements es mostrarà una nova ruta amb totes les seves dades detallades.La `URL` de la llista serà `localhost:4200/list` i la que mostrarà els detalls de cadascun dels elements `localhost:4200/home/0.`, on `0` és el paràmetre i serà un identificador o un valor que estigui enllaçat a l'element que volem visualitzar.
+Per exemplificar-ho, suposem que afegim una pàgina que mostra un llistat d'elements (*component* `List`). Cada cop que l'usuari premi un d'aquests elements es mostrarà una nova ruta amb totes les seves dades detallades (*component* `ListDetail`). La `URL` de la llista serà `localhost:4200/list` i la que mostrarà els detalls de cadascun dels elements `localhost:4200/list/xx.`, on `xx` és el paràmetre i serà un identificador o un valor que estigui enllaçat a l'element que volem visualitzar.
 
 Addicionalment, i tal com passa amb les subrutes estàtiques, la pàgina amb la informació detallada dels elements es pot mostrar dins del llistat o com una pàgina individual.
 
 ##### Subrutes parametritzades que formen part d'una altra pàgina
-Seguint l'exemple anterior, la configuració de les rutes al fitxer `app.module.ts` seria el següent:
+Seguint l'exemple anterior, i tenint en compte que la informació detallada de l'element seleccionat es mostrarà dins de la mateixa pàgina del *component* `List`, la configuració de les rutes al fitxer `app.routes.ts` seria el següent:
 
-```typescript
-...
-const routes: Routes = [
-  { path: 'home', component: HomeComponent, children: [
-      {path: 'contact', component: ContactComponent}
-    ]
-  },
-  { path: 'about', component: AboutComponent },
-  { path: 'list', component: ListComponent, children: [
-      {path: ':id', component: DetailsComponent}
-    ]
-  }
-  ...
-];
+{% code title="Codi app.routes.ts" overflow="wrap" lineNumbers="true" %}
+  ```typescript
+  import { Routes } from '@angular/router';
 
-@NgModule({
-  ...
-  imports: [
-    BrowserModule,
-    RouterModule.forRoot(routes)
-  ],
-  ...
-})
-export class AppModule { }
-```
+  import { Home } from './view/pages/home/home';
+  import { Contact } from './view/pages/contact/contact';
+  import { About } from './view/pages/about/about';
+  import { List } from './view/pages/list/list';
+  import { ListDetail } from './view/pages/list-detail/list-detail';
+  import { PageNotFound } from './view/pages/page-not-found/page-not-found';
 
-Aquest codi mostra una ruta principal definida pel `path: 'list'` que té una subruta parametritzada especificada amb la propietat `children`. Quan un `path` de ruta començar pel símbol `:` significa que el valor és un paràmetre que rep el nom especificat a continuació. En el cas de l'exemple, el paràmetre rep el nom d'`id`.
+  export const routes: Routes = [
+      { path: 'home', component: Home, children: [
+          { path: 'contact', component: Contact }
+        ]
+      },
+      { path: 'about', component: About },
+      { path: 'list', component: List, children: [
+          { path: ':id', component: ListDetail }
+        ]
+      },
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
+      { path: '**', component: PageNotFound }
+  ];
+  ```
+{% endcode %}
 
-Quan l'usuari entri a l'`URL` `localhost:4200/list` es carregarà el component `ListComponent` i, en canvi, quan entri a l'`URL` `localhost:4200/list/3` es carregaran els components `ListComponent` i, també, `DetailsComponent`.
+Aquest codi mostra una ruta principal definida pel `path: 'list'` que té una subruta parametritzada especificada amb la propietat `children`. Quan un `path` de ruta començar pel símbol `:` significa que el valor és un paràmetre que rep el nom especificat a continuació. En el cas de l'exemple, el paràmetre rep el nom `id`.
 
-Per tal d'assolir aquest objectiu, el codi `HTML` del component `ListComponent` ha de ser el següent (navegant amb enllaços):
+Quan l'usuari entri a l'`URL` `localhost:4200/list` es carregarà el *component* `List` i, en canvi, quan entri a l'`URL` `localhost:4200/list/3`, per exemple, es carregaran els *components* `List` i, també, `ListDetail`.
+
+Per tal d'assolir aquest objectiu, el codi del *component* `List` ha de ser el següent (navegant amb enllaços):
 
 {% tabs %}
-{% tab title="Codi list.component.html" %}
-```html
-<div class="list_content">
-  <ul>
-    <li *ngFor="let elem of elems; let idx=index" [routerLink]="[idx]">
-      {{ elem }}
-    </li>
-  </ul>
+{% code title="Codi list.html" overflow="wrap" lineNumbers="true" %}
+  ```html
+  <div class="lcomponent">
+      <p>list works!</p>
 
-  <router-outlet></router-outlet>
-</div>
-```
+      <ul>
+          @for(elem of elems; track elem) {
+              <li [routerLink]="[$index]">{{ elem }}</li>
+          }
+      </ul>
+      <router-outlet />
+  </div>
+  ```
 {% endtab %}
 
-{% tab title="Codi list.component.ts" %}
-```typescript
-import { Component } from '@angular/core';
+{% tab title="Codi list.ts" overflow="wrap" lineNumbers="true" %}
+  ```typescript
+  import { Component } from '@angular/core';
+  import { RouterModule } from '@angular/router';
 
-@Component({
-  selector: 'app-list',
-  templateUrl: './list.component.html',
-  styleUrls: ['./list.component.css']
-})
-export class ListComponent {
-
-  public elems: string[] = ['Element 1', 'Element 2', 'Element 3'];
-
-}
+  @Component({
+    selector: 'app-list',
+    imports: [RouterModule],
+    templateUrl: './list.html',
+    styleUrl: './list.css'
+  })
+  export class List {
+    public elems: string[] = ['Element 1', 'Element 2', 'Element 3'];
+  }
 ```
 {% endtab %}
 {% endtabs %}
 
-Quan l'usuari premi l'enllaç associat a qualsevol dels elements, la subruta `/list/:id` es carregarà en el contenidor de routes (etiqueta *router-outlet*) del `ListComponent`. D'aquesta manera aconseguim visualitzar, a la vegada, el `ListComponent` (carregat a través del *router-outlet* de l'`AppComponent`) i el `DetailsComponent` (carregat a través del *router-outlet* del `ListComponent`).
+Quan l'usuari premi l'enllaç associat a qualsevol dels elements, la subruta `/list/:id` es carregarà en el contenidor de routes (etiqueta `<router-outlet />`) del *component* `List`. D'aquesta manera aconseguim visualitzar, a la vegada, el *component* `List` (carregat a través del `<router-outlet />` d'`App`) i el *component* `Details` (carregat a través del `<router-outlet />` de l'`List`).
 
-Ara cal veure com tracta el paràmetre el component `DetailsComponent` sabent que, el seu contingut `HTML` és el següent:
+Ara cal veure com tracta el paràmetre el *component* `ListDetail`, procés que pot fer de 3 maneres diferents:
+1. Mitjançant un `InputSignal` i el mètode `input()`
+2. Mitjançant el decorador `@Input()`
+3. Mitjançant un `Observable`
 
-```html
-<div class="details_content">
-  Element {{ idx }}
-</div>
-```
-
+<!--
 Per tal d'obtenir l'identificador correcte, el codi *typescript* del component `DetailsComponent` ha de fer ús d'un nou *service* que ofereix Angular, l'`ActivatedRoute`, que s'encarrega de tractar totes i cadascuna de les rutes en el moment en què s'activen (l'usuari les escriu al navegador).
 
 ```typescript
@@ -962,3 +1028,8 @@ a{
 A la següent imatge podem veure com, cada cop que es canvia de pàgina, l'enllaç del menú ressaltat en gris correspon a la ruta activada.
 
 ![Visualització del resultat al navegador](img/activeLink.png)
+-->
+
+## Webgrafia del capítol
+* Google (2025). [Angular](https://angular.dev/). Consultat el 2 de juliol de 2025.
+* Udemy (2025). [Curs *Angular - The Complete Guide (2025 Edition)*](https://www.udemy.com/course/the-complete-guide-to-angular-2/). Consultat el 2 de juliol de 2025.
