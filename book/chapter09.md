@@ -44,30 +44,24 @@ export class App {
 El codi `HTML` pot ser el següent:
 1. Assignació directa del valor en format `string`:
 
-    {% code title="Codi app.html" overflow="wrap" lineNumbers="true" %}
-      ```html
-      <img [src]="imgSrc()" [style]="'width: 512px; padding: 5px; border: #24b1bf 5px solid'" />
-      <router-outlet />
-      ```
-    {% endcode %}
+    ```html
+    <img [src]="imgSrc()" [style]="'width: 512px; padding: 5px; border: #24b1bf 5px solid'" />
+    <router-outlet />
+    ```
 
 2. Assignació del *signal* `simpleStyles`:
 
-    {% code title="Codi app.html" overflow="wrap" lineNumbers="true" %}
-      ```html
-      <img [src]="imgSrc()" [style]="simpleStyles()" />
-      <router-outlet />
-      ```
-    {% endcode %}
+    ```html
+    <img [src]="imgSrc()" [style]="simpleStyles()" />
+    <router-outlet />
+    ```
 
 3. Assignació del *signal* `objStyles`:
 
-    {% code title="Codi app.html" overflow="wrap" lineNumbers="true" %}
-      ```html
-      <img [src]="imgSrc()" [style]="objStyles()" />
-      <router-outlet />
-      ```
-    {% endcode %}
+    ```html
+    <img [src]="imgSrc()" [style]="objStyles()" />
+    <router-outlet />
+    ```
 
 Ara però, a part d'aquesta aplicació senzilla d'estils, es poden fer coses molt més elaborades com, per exemple, modificar la mida de la imatge de manera aleatòria o posar o treure el marc de la imatge segons si es compleix o no alguna propietat (per a més informació vegeu el següent [enllaç](https://angular.dev/guide/templates/binding#css-style-properties)).
 
@@ -190,47 +184,39 @@ export class App {
 El codi `HTML` pot ser el següent:
 1. Assignació directa del valor en format `string` (el botó no té cap efecte sobre la imatge):
 
-    {% code title="Codi app.html" overflow="wrap" lineNumbers="true" %}
-      ```html
-      <img [src]="imgSrc()" [class]="'myBasicImage myHighlightedImage'" />
-      <br/>
-      <button (click)="onBorderActivated()">{{ msg() }} el marc</button>
-      <router-outlet />
-      ```
-    {% endcode %}
+    ```html
+    <img [src]="imgSrc()" [class]="'myBasicImage myHighlightedImage'" />
+    <br/>
+    <button (click)="onBorderActivated()">{{ msg() }} el marc</button>
+    <router-outlet />
+    ```
 
 2. Assignació del *signal* `simpleClasses` (el botó no té cap efecte sobre la imatge):
 
-    {% code title="Codi app.html" overflow="wrap" lineNumbers="true" %}
-      ```html
-      <img [src]="imgSrc()" [class]="simpleClasses()" />
-      <br/>
-      <button (click)="onBorderActivated()">{{ msg() }} el marc</button>
-      <router-outlet />
-      ```
-    {% endcode %}
+    ```html
+    <img [src]="imgSrc()" [class]="simpleClasses()" />
+    <br/>
+    <button (click)="onBorderActivated()">{{ msg() }} el marc</button>
+    <router-outlet />
+    ```
 
 3. Assignació del *signal* `arrayClasses` (el botó no té cap efecte sobre la imatge):
 
-    {% code title="Codi app.html" overflow="wrap" lineNumbers="true" %}
-      ```html
-      <img [src]="imgSrc()" [class]="arrayClasses()" />
-      <br/>
-      <button (click)="onBorderActivated()">{{ msg() }} el marc</button>
-      <router-outlet />
-      ```
-    {% endcode %}
+    ```html
+    <img [src]="imgSrc()" [class]="arrayClasses()" />
+    <br/>
+    <button (click)="onBorderActivated()">{{ msg() }} el marc</button>
+    <router-outlet />
+    ```
 
 4. Assignació del *signal* `conditionalClasses` (en aquest cas, el botó afecta la visualització de la imatge):
 
-    {% code title="Codi app.html" overflow="wrap" lineNumbers="true" %}
-      ```html
-      <img [src]="imgSrc()" [class]="conditionalClasses()" />
-      <br/>
-      <button (click)="onBorderActivated()">{{ msg() }} el marc</button>
-      <router-outlet />
-      ```
-    {% endcode %}
+    ```html
+    <img [src]="imgSrc()" [class]="conditionalClasses()" />
+    <br/>
+    <button (click)="onBorderActivated()">{{ msg() }} el marc</button>
+    <router-outlet />
+    ```
 
 El resultat de l'última opció del llistat també es pot assolir assignant un conjunt de classes inicials a l'etiqueta `<img />` i, posteriorment, aplicar un *Property Binding* **condicional** sobre la propietat la classe *myHighlightedImage* de l'atribut `class`. En aquest cas, el codi `HTML` quedaria de la manera següent:
 
