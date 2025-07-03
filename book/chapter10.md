@@ -494,14 +494,14 @@ Quan l'usuari entri a l'`URL` `localhost:4200/list` es carregarà el *component*
 Per tal d'assolir aquest objectiu, el codi del *component* `List` ha de ser el següent (navegant amb enllaços):
 
 {% tabs %}
-{% code title="Codi list.html" overflow="wrap" lineNumbers="true" %}
+{% tab title="Codi list.html" overflow="wrap" lineNumbers="true" %}
   ```html
   <div class="lcomponent">
       <p>list works!</p>
 
       <ul>
           @for(elem of elems; track elem) {
-              <li [routerLink]="[$index]">{{ elem }}</li>
+              <li [routerLink]="[($index+1)]">{{ elem }}</li>
           }
       </ul>
       <router-outlet />
@@ -533,6 +533,91 @@ Ara cal veure com tracta el paràmetre el *component* `ListDetail`, procés que 
 1. Mitjançant un `InputSignal` i el mètode `input()`
 2. Mitjançant el decorador `@Input()`
 3. Mitjançant un `Observable`
+
+###### Subrutes parametritzades tractades amb un `InputSignal`
+Per poder gestionar els paràmetres de ruta mitjançant un `InputSignal` cal seguir dos passos molt simples
+1. Configurar el servei de *routing* per tal que pugui enllaçar els paràmetres de ruta amb `InputSignal` declarats dins dels *components*. Per fer-ho, cal modificar el fitxer `app.config.ts` de la manera següent:
+
+{% code title="Codi app.config.ts" overflow="wrap" lineNumbers="true" %}
+  ```typescript
+  import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZonelessChangeDetection } from '@angular/core';
+  import { provideRouter, withComponentInputBinding } from '@angular/router';
+
+  import { routes } from './app.routes';
+
+  export const appConfig: ApplicationConfig = {
+    providers: [
+      provideBrowserGlobalErrorListeners(),
+      provideZonelessChangeDetection(),
+      provideRouter(routes, withComponentInputBinding())
+    ]
+  };
+  ```
+{% endcode %}
+El mètode `withComponentInputBinding()` configura el servei de *routing* per tal que enllaci els paràmetres amb els `InputSignals` corresponents.
+
+2. Dins del *component* que gestiona la ruta parametritzada cal definir un `InputSignal` obligatori (*required*) que tingui el mateix nom que el paràmetre definit dins de l'*array* de rutes (fitxer `app.routes.ts`). Així doncs, com que en l'exemple que estem implementant el paràmetre de ruta es diu `id`, el *component* `ListDetail` haurà de tenir un `InputSignal` anomenat `id`, tal com mostra el codi següent:
+
+{% tabs %}
+{% tab title="Codi app.routes.ts" overflow="wrap" lineNumbers="true" %}
+  ```typescript
+  import { Routes } from '@angular/router';
+
+  import { Home } from './view/pages/home/home';
+  import { Contact } from './view/pages/contact/contact';
+  import { About } from './view/pages/about/about';
+  import { List } from './view/pages/list/list';
+  import { ListDetail } from './view/pages/list-detail/list-detail';
+  import { PageNotFound } from './view/pages/page-not-found/page-not-found';
+
+  export const routes: Routes = [
+      { path: 'home', component: Home, children: [
+              { path: 'contact', component: Contact }
+          ]
+      },
+      { path: 'about', component: About },
+      { path: 'list', component: List, children: [
+              { path: ':id', component: ListDetail }
+          ]
+      },
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
+      { path: '**', component: PageNotFound }
+  ];
+  ```
+{% endtab %}
+
+{% tab title="Codi list-details.ts" overflow="wrap" lineNumbers="true" %}
+```typescript
+  import { Component, input, InputSignal } from '@angular/core';
+
+  @Component({
+    selector: 'app-list-detail',
+    imports: [],
+    templateUrl: './list-detail.html',
+    styleUrl: './list-detail.css'
+  })
+  export class ListDetail {
+    public id: InputSignal<number> = input.required<number>();
+  }
+```
+{% endtab %}
+{% endtabs %}
+
+Realitzant correctament aquesta configuració, si el codi `HTML` del *component* `ListDetails` és el següent:
+{% code title="Codi list-details.html" overflow="wrap" lineNumbers="true" %}
+  ```html
+  <div class="ldcomponent">
+    <p>list-detail works!</p>
+    Element {{ (id()) }}
+  </div>
+  ```
+{% endcode %}
+
+
+###### Subrutes parametritzades *legacy* tractades amb el decorador `@Input()`
+
+###### Subrutes parametritzades *legacy* tractades amb un `Observable`
+
 
 <!--
 Per tal d'obtenir l'identificador correcte, el codi *typescript* del component `DetailsComponent` ha de fer ús d'un nou *service* que ofereix Angular, l'`ActivatedRoute`, que s'encarrega de tractar totes i cadascuna de les rutes en el moment en què s'activen (l'usuari les escriu al navegador).
