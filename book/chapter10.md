@@ -876,125 +876,167 @@ Exemple complet:
 
 
 ###### Subrutes parametritzades *legacy* tractades amb el decorador `@Input()`
+Per poder subrutes parametritzades utilitzant el codi *legacy* del decorador `@Input()` s'ha de fer exactament el mateix que s'ha indicat en l'apartat anterior ([Subrutes parametritzades tractades amb un `InputSignal`](#subrutes-parametritzades-tractades-amb-un-inputsignal)) però, en comptes d'utilitzar un `InputSignal` s'utilitza un atribut obligatori (*required*) decorat amb `@Input`.
 
-###### Subrutes parametritzades *legacy* tractades amb un `Observable`
-
-
-<!--
-Per tal d'obtenir l'identificador correcte, el codi *typescript* del component `DetailsComponent` ha de fer ús d'un nou *service* que ofereix Angular, l'`ActivatedRoute`, que s'encarrega de tractar totes i cadascuna de les rutes en el moment en què s'activen (l'usuari les escriu al navegador).
-
-```typescript
-import { Component } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-
-@Component({
-  selector: 'app-details',
-  templateUrl: './details.component.html',
-  styleUrls: ['./details.component.css']
-})
-export class DetailsComponent {
-
-  public idx: number = 0;
-
-  constructor(private _activatedRoute: ActivatedRoute) {
-    this._activatedRoute.params.subscribe({
-      next: (params: Params) => {
-        this.idx = params['id'] as number;
-        this.idx++;
-      },
-      complete: () => {
-        console.log("Parameterized route processed");
-      },
-      error: (msg: string) => {
-        console.log("Error: " + msg);
-      }
-    });
-  }
-}
-```
-
-Aquest codi segueix els passos següents:
- 1. Injecta el servei `Activated route` dins del constructor
- 2. Un dels atributs que té aquest servei és el `params`, que és un *map* (un *diccionari* o un *array associatiu*) que compleix el patró `Observer`, és a dir, que es manté *observant* la ruta i, cada cop que els paràmetres canvien, es modifiquen el valors d'aquest atribut.
- 3. Com que estem treballant amb el patró `Observer`, caldrà *subscriure'ns* (subscribe) a l'atribut `params` per tal que poder-nos assabentar de tots els seus canvis.
-
-El resultat final en pantalla mostra el següent:
-
-![Visualització del resultat al navegador](img/subrouting_3.png)
-
-##### Subrutes parametritzades que són pàgines diferents
-Tal com hem vist abans, per fer subrutes parametritzades que siguin pàgines diferents només cal canviar la configuració de l'`app.module.ts` i el fitxer `HTML` del component pare, en aquest cas, el `ListComponent`.
-
-Per tant, el fitxer `app.module.ts` queda de la manera següent:
-
-```typescript
-...
-const routes: Routes = [
-  { path: 'home', component: HomeComponent, children: [
-      {path: 'contact', component: ContactComponent}
-    ]
-  },
-  { path: 'about', component: AboutComponent },
-  { path: 'list', children: [
-      {path: '', component: ListComponent},
-      {path: ':id', component: DetailsComponent}
-    ]
-  }
-  ...
-];
-
-@NgModule({
-  ...
-  imports: [
-    BrowserModule,
-    RouterModule.forRoot(routes)
-  ],
-  ...
-})
-export class AppModule { }
-```
-
-La ruta `list` té dues subrutes:
- - una ruta per defecte que és l'encarregada de carregar el `ListComponent` i
- - una ruta amb el nou segment parametritzat `id` que s'encarrega de carregar el `DetailComponent`.
-
-Finalment, el codi del component `ListComponent` ha de ser el següent, tenint en compte que la navegació es fa amb enllaços i que el fitxer `TS` del component no canvia:
-
+Així doncs, el codi és exactament el mateix que en el cas anterior i només canvia el `TS` i l'`HTML` del *component* `ListDetails` de la manera següent:
 {% tabs %}
-{% tab title="Codi list.component.html" %}
-```html
-<div class="list_content">
-  <ul>
-    <li *ngFor="let elem of elems; let idx=index" [routerLink]="[idx]">
-      {{ elem }}
-    </li>
-  </ul>
-</div>
-```
+{% tab title="Codi list-details.ts" %}
+  {% code title="Codi list-details.ts" overflow="wrap" lineNumbers="true" %}
+  ```typescript
+    import { Component, Input } from '@angular/core';
+
+    @Component({
+      selector: 'app-list-detail',
+      imports: [],
+      templateUrl: './list-detail.html',
+      styleUrl: './list-detail.css'
+    })
+    export class ListDetail {
+      @Input({required: true}) id!: string;
+    }
+  ```
+  {% endcode %}
 {% endtab %}
-
-{% tab title="Codi list.component.ts" %}
-```typescript
-import { Component } from '@angular/core';
-
-@Component({
-  selector: 'app-list',
-  templateUrl: './list.component.html',
-  styleUrls: ['./list.component.css']
-})
-export class ListComponent {
-
-  public elems: string[] = ['Element 1', 'Element 2', 'Element 3'];
-
-}
-```
+{% tab title="Codi list-details.html" %}
+  {% code title="Codi list-details.html" overflow="wrap" lineNumbers="true" %}
+  ```html
+  <div class="ldcomponent">
+    <p>list-detail works!</p>
+    Element {{ id }}
+  </div>
+  ```
+  {% endcode %}
 {% endtab %}
 {% endtabs %}
 
+{% hint style="warning" %}
+**Nota:** el fitxer `app.config.ts` ha de tenir la mateixa configuració, per tant, el servei de *routing* s'ha de dotar del mètode `withComponentInputBinding()` per tal que l'enllaçat del paràmetre de ruta amb l'atribut `@Input()` es faci correctament.
+{% endhint %}
+
+###### Subrutes parametritzades *legacy* tractades amb un `Observable`
+En aquest cas, per tal d'obtenir l'identificador correcte no fa falta configurar el servei de *routing*, per tant, el fitxer `app.config.ts` queda inalterat:
+
+{% code title="Codi app.config.ts" overflow="wrap" lineNumbers="true" %}
+```typescript
+  import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZonelessChangeDetection } from '@angular/core';
+  import { provideRouter } from '@angular/router';
+
+  import { routes } from './app.routes';
+
+  export const appConfig: ApplicationConfig = {
+    providers: [
+      provideBrowserGlobalErrorListeners(),
+      provideZonelessChangeDetection(),
+      provideRouter(routes)
+    ]
+  };
+```
+{% endcode %}
+
+En canvi, el codi `TS` del *component* `ListDetail` ha de fer ús d'un nou *service* que ofereix Angular, l'`ActivatedRoute`, que s'encarrega de tractar totes i cadascuna de les rutes en el moment en què s'activen (quan l'usuari les escriu al navegador).
+
+{% code title="Codi list-details.ts" overflow="wrap" lineNumbers="true" %}
+  ```typescript
+  import { Component } from '@angular/core';
+  import { ActivatedRoute, Params } from '@angular/router';
+
+  @Component({
+    selector: 'app-list-detail',
+    imports: [],
+    templateUrl: './list-detail.html',
+    styleUrl: './list-detail.css'
+  })
+  export class ListDetail {
+    public id: number = -1;
+
+    constructor(private _activatedRoute: ActivatedRoute) {
+      this._activatedRoute.params.subscribe({
+        next: (params: Params) => {
+          this.id = params['id'] as number;
+        },
+        complete: () => {
+          console.log("Parameterized route processed");
+        },
+        error: (msg: string) => {
+          console.log("Error: " + msg);
+        }
+      });
+    }
+  }
+  ```
+{% endcode %}
+
+Aquest codi segueix els passos següents:
+ 1. Injecta el servei `ActivatedRoute` dins del constructor
+ 2. Un dels atributs que té aquest servei és el `params`, que és un *map* (un *diccionari* o un *array associatiu*) que compleix el patró `Observer`, és a dir, que es manté *observant* la ruta i, cada cop que els paràmetres canvien, es modifiquen els valors d'aquest atribut.
+ 3. Com que estem treballant amb el patró `Observer`, caldrà *subscriure'ns* (`subscribe()`) a l'atribut `params` per tal que poder-nos assabentar de tots els seus canvis. Aquest mètode rep un objecte JSON que té 3 propietats:
+    1. `next`: un mètode *lambda* que rep per paràmetre l'objecte `params: Params` amb els valors de tots els paràmetres de la ruta; el bloc de codi d'aquest mètode *lambda* fa el tractament que creu necessari de les dades rebudes
+    2. `complete`: un mètode *lambda* que s'executa un cop el tractament dels paràmetres s'ha realitzat amb èxit
+    3. `error`: un mètode *lambda* que rep per paràmetre un missatge d'error i que s'executa si el tractament dels paràmetres provoca algun error
+
+El resultat final en pantalla és exactament el mateix que l'assolit ens els dos apartats anteriors.
+
+
+##### Subrutes parametritzades que que són pàgines diferents
+Tal com hem vist abans, per fer subrutes parametritzades que siguin pàgines diferents només cal canviar la configuració de l'`app.routes.ts` i el fitxer `HTML` del component pare, en aquest cas, `List`.
+
+
+Per tant, el fitxer `app.routes.ts` queda de la manera següent:
+{% code title="Codi app.routes.ts" overflow="wrap" lineNumbers="true" %}
+  ```typescript
+  import { Routes } from '@angular/router';
+
+  import { Home } from './view/pages/home/home';
+  import { Contact } from './view/pages/contact/contact';
+  import { About } from './view/pages/about/about';
+  import { List } from './view/pages/list/list';
+  import { ListDetail } from './view/pages/list-detail/list-detail';
+  import { PageNotFound } from './view/pages/page-not-found/page-not-found';
+
+  export const routes: Routes = [
+    { path: 'home', children: [
+        { path: '', component: Home },
+        { path: 'contact', component: Contact }
+      ]
+    },
+    { path: 'about', component: About },
+    { path: 'list', children: [
+        { path: '', component: List },
+        { path: ':id', component: ListDetail }
+      ]
+    },
+    { path: '', redirectTo: 'home', pathMatch: 'full' },
+    { path: '**', component: PageNotFound }
+  ];
+  ```
+{% endcode %}
+
+La ruta `list` té dues subrutes:
+ - una ruta per defecte que és l'encarregada de carregar el *component* `List` i
+ - una ruta amb el nou segment parametritzat `id` que s'encarrega de carregar el *component* `ListDetail`.
+
+Finalment, el codi del *component* `List` ha de ser el següent, tenint en compte que la navegació es fa amb enllaços i que el fitxer `TS` del component no canvia:
+
+{% code title="Codi list.html" overflow="wrap" lineNumbers="true" %}
+  ```html
+  <div class="lcomponent">
+    <p>list works!</p>
+
+    <ul>
+        @for(elem of elems; track elem) {
+            <li [routerLink]="[($index+1)]">{{ elem }}</li>
+        }
+    </ul>
+  </div>
+  ```
+{% endcode %}
+
 Amb aquests petits canvis, el resultat final en pantalla mostra el següent:
 
-![Visualització del resultat al navegador](img/subrouting_4.png)
+![Visualització del resultat al navegador](img/ch10/subrouting4.png)
 
+
+<!--
 ## *Lazy routing*
 El *lazy routing* es caracteritza pel fet que les rutes i, per tant, els components associats, no es carreguen fins que l'usuari hi entra per primer cop (no hi ha cap precàrrega)
 
