@@ -613,6 +613,267 @@ Realitzant correctament aquesta configuració, si el codi `HTML` del *component*
   ```
 {% endcode %}
 
+el resultat que es visualitza en el navegador és el que es mostra a continuació:
+![Visualització del resultat d'una subruta parametritzada tractada amb un `InputSignal`](img/ch10/subrouting3.png)
+
+Exemple complet:
+
+{% tabs %}
+{% tab title="Codi app.config.ts" %}
+  {% code title="Codi app.config.ts" overflow="wrap" lineNumbers="true" %}
+  ```typescript
+  import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZonelessChangeDetection } from '@angular/core';
+  import { provideRouter, withComponentInputBinding } from '@angular/router';
+
+  import { routes } from './app.routes';
+
+  export const appConfig: ApplicationConfig = {
+    providers: [
+      provideBrowserGlobalErrorListeners(),
+      provideZonelessChangeDetection(),
+      provideRouter(routes, withComponentInputBinding())
+    ]
+  };
+  ```
+  {% endcode %}
+{% endtab %}
+
+{% tab title="Codi app.routes.ts" %}
+  {% code title="Codi app.routes.ts" overflow="wrap" lineNumbers="true" %}
+  ```typescript
+  import { Routes } from '@angular/router';
+
+  import { Home } from './view/pages/home/home';
+  import { Contact } from './view/pages/contact/contact';
+  import { About } from './view/pages/about/about';
+  import { List } from './view/pages/list/list';
+  import { ListDetail } from './view/pages/list-detail/list-detail';
+  import { PageNotFound } from './view/pages/page-not-found/page-not-found';
+
+  export const routes: Routes = [
+      { path: 'home', component: Home, children: [
+              { path: 'contact', component: Contact }
+          ]
+      },
+      { path: 'about', component: About },
+      { path: 'list', component: List, children: [
+              { path: ':id', component: ListDetail }
+          ]
+      },
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
+      { path: '**', component: PageNotFound }
+  ];
+  ```
+  {% endcode %}
+{% endtab %}
+
+{% tab title="Codi app.html" %}
+  {% code title="Codi app.html" overflow="wrap" lineNumbers="true" %}
+  ```html
+  <router-outlet />
+  ```
+  {% endcode %}
+{% endtab %}
+{% tab title="Codi app.ts" %}
+  {% code title="Codi app.ts" overflow="wrap" lineNumbers="true" %}
+  ```typescript
+  import { Component } from '@angular/core';
+  import { RouterOutlet } from '@angular/router';
+
+  @Component({
+    selector: 'app-root',
+    imports: [RouterOutlet],
+    templateUrl: './app.html',
+    styleUrl: './app.css'
+  })
+  export class App {}
+  ```
+  {% endcode %}
+{% endtab %}
+
+{% tab title="Codi home.html" %}
+  {% code title="Codi home.html" overflow="wrap" lineNumbers="true" %}
+  ```html
+  <div class="hcomponent">
+    <p>home works!</p>
+
+    <a [routerLink]="['/about']">About</a>
+    <br/>
+    <a [routerLink]="['contact']">Contact</a>
+
+    <router-outlet />
+  </div>
+  ```
+  {% endcode %}
+{% endtab %}
+{% tab title="Codi home.ts" %}
+  {% code title="Codi home.ts" overflow="wrap" lineNumbers="true" %}
+  ```typescript
+  import { Component } from '@angular/core';
+  import { RouterModule } from '@angular/router';
+
+  @Component({
+    selector: 'app-home',
+    imports: [RouterModule],
+    templateUrl: './home.html',
+    styleUrl: './home.css'
+  })
+  export class Home {}
+  ```
+  {% endcode %}
+{% endtab %}
+
+{% tab title="Codi contact.html" %}
+  {% code title="Codi contact.html" overflow="wrap" lineNumbers="true" %}
+  ```html
+  <div class="ccomponent">
+    <p>contact works!</p>
+
+    <label>eMail</label><br/>
+    <input type="email" placeholder="User's email"/> <br/>
+  
+    <label>Message</label><br/>
+    <textarea placeholder="User's message"></textarea>
+  </div>
+  ```
+  {% endcode %}
+{% endtab %}
+{% tab title="Codi contact.ts" %}
+  {% code title="Codi contact.ts" overflow="wrap" lineNumbers="true" %}
+  ```typescript
+  import { Component } from '@angular/core';
+
+  @Component({
+    selector: 'app-contact',
+    imports: [],
+    templateUrl: './contact.html',
+    styleUrl: './contact.css'
+  })
+  export class Contact {}
+  ```
+  {% endcode %}
+{% endtab %}
+
+{% tab title="Codi about.html" %}
+  {% code title="Codi about.html" overflow="wrap" lineNumbers="true" %}
+  ```html
+  <p>about works!</p>
+  <button (click)="onNavigateToHome()">Home</button>
+  ```
+  {% endcode %}
+{% endtab %}
+{% tab title="Codi about.ts" %}
+  {% code title="Codi about.ts" overflow="wrap" lineNumbers="true" %}
+  ```typescript
+  import { Component, inject } from '@angular/core';
+  import { Router } from '@angular/router';
+
+  @Component({
+    selector: 'app-about',
+    imports: [],
+    templateUrl: './about.html',
+    styleUrl: './about.css'
+  })
+  export class About {
+    //private _router: Router = inject(Router);
+    constructor(private _router: Router) {}
+
+    public onNavigateToHome() {
+      this._router.navigate(["/home"]);
+    }
+  }
+  ```
+  {% endcode %}
+{% endtab %}
+
+{% tab title="Codi list.html" %}
+  {% code title="Codi list.html" overflow="wrap" lineNumbers="true" %}
+  ```html
+  <div class="lcomponent">
+    <p>list works!</p>
+
+    <ul>
+        @for(elem of elems; track elem) {
+            <li [routerLink]="[($index+1)]">{{ elem }}</li>
+        }
+    </ul>
+    <router-outlet />
+  </div>
+  ```
+  {% endcode %}
+{% endtab %}
+{% tab title="Codi list.ts" %}
+  {% code title="Codi list.ts" overflow="wrap" lineNumbers="true" %}
+  ```typescript
+  import { Component } from '@angular/core';
+  import { RouterModule } from '@angular/router';
+
+  @Component({
+    selector: 'app-list',
+    imports: [RouterModule],
+    templateUrl: './list.html',
+    styleUrl: './list.css'
+  })
+  export class List {
+    public elems: string[] = ['Element 1', 'Element 2', 'Element 3'];
+  }
+  ```
+  {% endcode %}
+{% endtab %}
+
+{% tab title="Codi list-detail.html" %}
+  {% code title="Codi list-detail.html" overflow="wrap" lineNumbers="true" %}
+  ```html
+  <div class="ldcomponent">
+    <p>list-detail works!</p>
+    Element {{ (id()) }}
+  </div>
+  ```
+  {% endcode %}
+{% endtab %}
+{% tab title="Codi list-detail.ts" %}
+  {% code title="Codi list-detail.ts" overflow="wrap" lineNumbers="true" %}
+  ```typescript
+  import { Component, input, InputSignal } from '@angular/core';
+
+  @Component({
+    selector: 'app-list-detail',
+    imports: [],
+    templateUrl: './list-detail.html',
+    styleUrl: './list-detail.css'
+  })
+  export class ListDetail {
+    public id: InputSignal<number> = input.required<number>();
+  }
+  ```
+  {% endcode %}
+{% endtab %}
+
+{% tab title="Codi page-not-found.html" %}
+  {% code title="Codi page-not-found.html" overflow="wrap" lineNumbers="true" %}
+  ```html
+  <p>page-not-found works!</p>
+  ```
+  {% endcode %}
+{% endtab %}
+{% tab title="Codi page-not-found.ts" %}
+  {% code title="Codi page-not-found.ts" overflow="wrap" lineNumbers="true" %}
+  ```typescript
+  import { Component } from '@angular/core';
+
+  @Component({
+    selector: 'app-page-not-found',
+    imports: [],
+    templateUrl: './page-not-found.html',
+    styleUrl: './page-not-found.css'
+  })
+  export class PageNotFound {}
+  ```
+  {% endcode %}
+{% endtab %}
+
+{% endtabs %}
+
 
 ###### Subrutes parametritzades *legacy* tractades amb el decorador `@Input()`
 
