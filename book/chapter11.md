@@ -306,27 +306,27 @@ Finalment, el codi del *component* `App` és el següent:
 
 {% tabs %}
 {% tab title="Codi app.html" overflow="wrap" lineNumbers="true" %}
-    ```html
-    <div class="w3-container w3-teal">
-        <h1>Professor: {{ teacher().firstName }}</h1>
-    </div>
+  ```html
+  <div class="w3-container w3-teal">
+      <h1>Professor: {{ teacher().firstName }}</h1>
+  </div>
 
-    <ul class="w3-ul">
-        @for(student of students(); track student.id) {
-            <li class="w3-row">
-                <div class="w3-col l9">
-                    {{ student.lastName1 }} {{ student.lastName2 }}, {{ student.firstName }}
-                </div>
-                <div class="w3-col l3">
-                    <button (click)="onAssistance(student.id)" class="mybtn w3-btn w3-green w3-margin-right" [class.w3-disabled]="!isAttending(student.id)">Assisteix</button>
-                    <button (click)="onMissing(student.id)" class="mybtn w3-btn w3-red" [class.w3-disabled]="isAttending(student.id)">Falta</button>
-                </div>
-            </li>
-        }
-    </ul>
+  <ul class="w3-ul">
+      @for(student of students(); track student.id) {
+          <li class="w3-row">
+              <div class="w3-col l9">
+                  {{ student.lastName1 }} {{ student.lastName2 }}, {{ student.firstName }}
+              </div>
+              <div class="w3-col l3">
+                  <button (click)="onAssistance(student.id)" class="mybtn w3-btn w3-green w3-margin-right" [class.w3-disabled]="!isAttending(student.id)">Assisteix</button>
+                  <button (click)="onMissing(student.id)" class="mybtn w3-btn w3-red" [class.w3-disabled]="isAttending(student.id)">Falta</button>
+              </div>
+          </li>
+      }
+  </ul>
 
-    <router-outlet />
-    ```
+  <router-outlet />
+  ```
 {% endtab %}
 
 {% tab title="Codi app.css" overflow="wrap" lineNumbers="true" %}
@@ -380,21 +380,21 @@ Finalment, el codi del *component* `App` és el següent:
 Com es pot veure en el codi `TS` del *component* `App`, el *service* `AttendanceListManager` s'ha injectat creant un atribut `private` dins de la zona de paràmetres del constructor. Cal recordar que també es pot injectar amb el mètode `inject()`, tal com mostra el codi següent:
 
 {% code title="Codi app.ts" overflow="wrap" lineNumbers="true" %}
-  ```typescript
-    import { Component, inject, Signal } from '@angular/core';
-    import { RouterOutlet } from '@angular/router';
+```typescript
+  import { Component, inject, Signal } from '@angular/core';
+  import { RouterOutlet } from '@angular/router';
 
-    import { AttendanceListManager } from './service/attendance-list-manager';
-    import { Student } from './model/student';
-    import { Teacher } from './model/teacher';
+  import { AttendanceListManager } from './service/attendance-list-manager';
+  import { Student } from './model/student';
+  import { Teacher } from './model/teacher';
 
-    @Component({
-    selector: 'app-root',
-    imports: [RouterOutlet],
-    templateUrl: './app.html',
-    styleUrl: './app.css'
-    })
-    export class App {
+  @Component({
+  selector: 'app-root',
+  imports: [RouterOutlet],
+  templateUrl: './app.html',
+  styleUrl: './app.css'
+  })
+  export class App {
     public students: Signal<Student[]>;
     public teacher: Signal<Teacher>;
 
@@ -416,6 +416,6 @@ Com es pot veure en el codi `TS` del *component* `App`, el *service* `Attendance
     public isAttending(id: string): boolean {
         return this._attendanceListManager.isAttending(id);
     }
-    }
-  ```
+  }
+```
 {% encode %}
