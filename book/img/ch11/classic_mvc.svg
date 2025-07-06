@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="297mm"
+   height="210mm"
+   viewBox="0 0 297 210"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   sodipodi:docname="classic_mvc.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="1"
+     inkscape:cx="492.5"
+     inkscape:cy="201.5"
+     inkscape:window-width="1920"
+     inkscape:window-height="972"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1"
+     showguides="true">
+    <sodipodi:guide
+       position="25.081725,161.30337"
+       orientation="0,-1"
+       id="guide1084"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="13.937901,170.36308"
+       orientation="1,0"
+       id="guide1086"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="57.407086,161.30337"
+       orientation="1,0"
+       id="guide1816"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="73.850275,161.30336"
+       orientation="1,0"
+       id="guide1818"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="117.31946,161.30336"
+       orientation="1,0"
+       id="guide1872"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="133.77406,161.30337"
+       orientation="1,0"
+       id="guide1876"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="177.24325,161.30337"
+       orientation="1,0"
+       id="guide1939"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="193.66569,161.30337"
+       orientation="1,0"
+       id="guide1941"
+       inkscape:locked="false" />
+    <sodipodi:guide
+       position="36.313753,155.794"
+       orientation="0,-1"
+       id="guide1949"
+       inkscape:locked="false" />
+  </sodipodi:namedview>
+  <defs
+     id="defs2">
+    <marker
+       style="overflow:visible"
+       id="marker2719"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Arrow1"
+       markerWidth="4.0606604"
+       markerHeight="6.7071066"
+       viewBox="0 0 4.0606602 6.7071068"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         style="fill:none;stroke:context-stroke;stroke-width:1;stroke-linecap:butt"
+         d="M 3,-3 0,0 3,3"
+         id="path2717"
+         transform="rotate(180,0.125,0)"
+         sodipodi:nodetypes="ccc" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Arrow1"
+       markerWidth="4.0606604"
+       markerHeight="6.7071066"
+       viewBox="0 0 4.0606602 6.7071068"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         style="fill:none;stroke:context-stroke;stroke-width:1;stroke-linecap:butt"
+         d="M 3,-3 0,0 3,3"
+         id="path5057"
+         transform="rotate(180,0.125,0)"
+         sodipodi:nodetypes="ccc" />
+    </marker>
+  </defs>
+  <g
+     inkscape:label="Capa 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g2943"
+       inkscape:export-filename="classic_mvc.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96">
+      <g
+         id="g2838">
+        <rect
+           style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.842575;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+           id="rect234"
+           width="42.62661"
+           height="10.176133"
+           x="14.359188"
+           y="49.11792"
+           rx="0.33959475"
+           ry="0.35473666" />
+        <text
+           xml:space="preserve"
+           style="font-weight:bold;font-size:5.64444px;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans, Bold';fill:none;fill-rule:evenodd;stroke:#00668b;stroke-width:1;stroke-linecap:round;stroke-linejoin:round"
+           x="28.774511"
+           y="56.310257"
+           id="text290"><tspan
+             sodipodi:role="line"
+             id="tspan288"
+             style="font-size:5.64444px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1"
+             x="28.774511"
+             y="56.310257">View</tspan></text>
+      </g>
+      <g
+         id="g2843">
+        <rect
+           style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.842575;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+           id="rect1072"
+           width="42.62661"
+           height="10.176133"
+           x="74.271561"
+           y="49.11792"
+           rx="0.33959475"
+           ry="0.35473666" />
+        <text
+           xml:space="preserve"
+           style="font-weight:bold;font-size:5.64444px;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans, Bold';fill:none;fill-rule:evenodd;stroke:#00668b;stroke-width:1;stroke-linecap:round;stroke-linejoin:round"
+           x="79.512817"
+           y="56.310249"
+           id="text1076"><tspan
+             sodipodi:role="line"
+             id="tspan1074"
+             style="font-size:5.64444px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1"
+             x="79.512817"
+             y="56.310249">Controller</tspan></text>
+      </g>
+      <g
+         id="g2848">
+        <rect
+           style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.842575;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+           id="rect1078"
+           width="42.62661"
+           height="10.176133"
+           x="134.19534"
+           y="49.117916"
+           rx="0.33959475"
+           ry="0.35473666" />
+        <text
+           xml:space="preserve"
+           style="font-weight:bold;font-size:5.64444px;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans, Bold';fill:none;fill-rule:evenodd;stroke:#00668b;stroke-width:1;stroke-linecap:round;stroke-linejoin:round"
+           x="145.83759"
+           y="56.310246"
+           id="text1082"><tspan
+             sodipodi:role="line"
+             id="tspan1080"
+             style="font-size:5.64444px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1"
+             x="145.83759"
+             y="56.310246">Model</tspan></text>
+      </g>
+      <g
+         id="g2853">
+        <rect
+           style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.843;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1;stroke-dasharray:2.52899998,2.52899998;stroke-dashoffset:0"
+           id="rect1943"
+           width="42.62661"
+           height="10.176133"
+           x="194.08698"
+           y="49.117916"
+           rx="0.33959475"
+           ry="0.35473666" />
+        <text
+           xml:space="preserve"
+           style="font-weight:bold;font-size:5.64444px;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans, Bold';fill:none;fill-rule:evenodd;stroke:#00668b;stroke-width:1;stroke-linecap:round;stroke-linejoin:round"
+           x="205.41365"
+           y="56.310246"
+           id="text1947"><tspan
+             sodipodi:role="line"
+             id="tspan1945"
+             style="font-size:5.64444px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1"
+             x="205.41365"
+             y="56.310246">Dades</tspan></text>
+      </g>
+      <path
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-start:url(#Arrow1);marker-end:url(#marker2719)"
+         d="M 57.858959,54.205999 H 73.391866"
+         id="path2689" />
+      <path
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-start:url(#Arrow1);marker-end:url(#marker2719)"
+         d="m 117.79734,54.206 h 15.5053"
+         id="path2791" />
+      <path
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.499482;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-start:url(#Arrow1);marker-end:url(#marker2719)"
+         d="m 177.72099,54.206 h 15.47316"
+         id="path2821" />
+      <g
+         id="g2865">
+        <rect
+           style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.842575;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+           id="rect2859"
+           width="42.62661"
+           height="10.176133"
+           x="14.359188"
+           y="49.11792"
+           rx="0.33959475"
+           ry="0.35473666" />
+        <text
+           xml:space="preserve"
+           style="font-weight:bold;font-size:5.64444px;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans, Bold';fill:none;fill-rule:evenodd;stroke:#00668b;stroke-width:1;stroke-linecap:round;stroke-linejoin:round"
+           x="28.774511"
+           y="56.310257"
+           id="text2863"><tspan
+             sodipodi:role="line"
+             id="tspan2861"
+             style="font-size:5.64444px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1"
+             x="28.774511"
+             y="56.310257">View</tspan></text>
+      </g>
+      <g
+         id="g2873">
+        <rect
+           style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.842575;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+           id="rect2867"
+           width="42.62661"
+           height="10.176133"
+           x="74.271561"
+           y="49.11792"
+           rx="0.33959475"
+           ry="0.35473666" />
+        <text
+           xml:space="preserve"
+           style="font-weight:bold;font-size:5.64444px;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans, Bold';fill:none;fill-rule:evenodd;stroke:#00668b;stroke-width:1;stroke-linecap:round;stroke-linejoin:round"
+           x="79.512817"
+           y="56.310249"
+           id="text2871"><tspan
+             sodipodi:role="line"
+             id="tspan2869"
+             style="font-size:5.64444px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1"
+             x="79.512817"
+             y="56.310249">Controller</tspan></text>
+      </g>
+      <g
+         id="g2881">
+        <rect
+           style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.842575;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+           id="rect2875"
+           width="42.62661"
+           height="10.176133"
+           x="134.19534"
+           y="49.117916"
+           rx="0.33959475"
+           ry="0.35473666" />
+        <text
+           xml:space="preserve"
+           style="font-weight:bold;font-size:5.64444px;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans, Bold';fill:none;fill-rule:evenodd;stroke:#00668b;stroke-width:1;stroke-linecap:round;stroke-linejoin:round"
+           x="145.83759"
+           y="56.310246"
+           id="text2879"><tspan
+             sodipodi:role="line"
+             id="tspan2877"
+             style="font-size:5.64444px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1"
+             x="145.83759"
+             y="56.310246">Model</tspan></text>
+      </g>
+      <g
+         id="g2889">
+        <rect
+           style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.843;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1;stroke-dasharray:2.52899998,2.52899998;stroke-dashoffset:0"
+           id="rect2883"
+           width="42.62661"
+           height="10.176133"
+           x="194.08698"
+           y="49.117916"
+           rx="0.33959475"
+           ry="0.35473666" />
+        <text
+           xml:space="preserve"
+           style="font-weight:bold;font-size:5.64444px;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans, Bold';fill:none;fill-rule:evenodd;stroke:#00668b;stroke-width:1;stroke-linecap:round;stroke-linejoin:round"
+           x="205.41365"
+           y="56.310246"
+           id="text2887"><tspan
+             sodipodi:role="line"
+             id="tspan2885"
+             style="font-size:5.64444px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1"
+             x="205.41365"
+             y="56.310246">Dades</tspan></text>
+      </g>
+      <path
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-start:url(#Arrow1);marker-end:url(#marker2719)"
+         d="M 57.858959,54.205999 H 73.391866"
+         id="path2891" />
+      <path
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-start:url(#Arrow1);marker-end:url(#marker2719)"
+         d="m 117.79734,54.206 h 15.5053"
+         id="path2893" />
+      <path
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.499482;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-start:url(#Arrow1);marker-end:url(#marker2719)"
+         d="m 177.72099,54.206 h 15.47316"
+         id="path2895" />
+    </g>
+  </g>
+</svg>

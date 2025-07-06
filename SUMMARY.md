@@ -11,6 +11,7 @@
 * [Capítol 8. Comunicació entre components Angular](book/chapter08.md)
 * [Capítol 9. *Style Binding*, *Class Binding* i estils externs](book/chapter09.md)
 * [Capítol 10. *Routing*](book/chapter10.md)
+* [Capítol 11. Patró *MVC*](book/chapter11.md)
 <!--
 * [Capítol 1. Format JSON i LocalStorage](book/chapter1.md)
 * [Capítol 2. Components Angular](book/chapter2.md)
