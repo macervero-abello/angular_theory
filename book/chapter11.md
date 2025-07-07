@@ -419,3 +419,7 @@ Com es pot veure en el codi `TS` del *component* `App`, el *service* `Attendance
   }
 ```
 {% encode %}
+
+## Webgrafia del capítol
+* Google (2025). [Angular](https://angular.dev/). Consultat el 6 de juliol de 2025.
+* Udemy (2025). [Curs *Angular - The Complete Guide (2025 Edition)*](https://www.udemy.com/course/the-complete-guide-to-angular-2/). Consultat el 6 de juliol de 2025.
