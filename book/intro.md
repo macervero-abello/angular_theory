@@ -15,7 +15,7 @@ Els continguts d'aquesta guia estan basats en la versió Angular v20.
 * [Capítol 9. *Style Binding*, *Class Binding* i estils externs](chapter09.md)
 * [Capítol 10. *Routing*](chapter10.md)
 * [Capítol 11. Patró *MVC*](chapter11.md)
-* [Capítol 12. Desplegament a *GitHub Pages*](chapter12.md)
+* [Capítol 13. Desplegament a *GitHub Pages*](chapter13.md)
 <!--
 * [Capítol 1. Què és Angular. Instal·lació del l'entorn de desenvolupament](chapter01.md)
 * [Capítol 1. Format JSON i LocalStorage](chapter1.md)

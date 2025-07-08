@@ -12,7 +12,7 @@
 * [Capítol 9. *Style Binding*, *Class Binding* i estils externs](book/chapter09.md)
 * [Capítol 10. *Routing*](book/chapter10.md)
 * [Capítol 11. Patró *MVC*](book/chapter11.md)
-* [Capítol 12. Desplegament a *GitHub Pages*](book/chapter12.md)
+* [Capítol 13. Desplegament a *GitHub Pages*](book/chapter13.md)
 <!--
 * [Capítol 1. Format JSON i LocalStorage](book/chapter1.md)
 * [Capítol 2. Components Angular](book/chapter2.md)
