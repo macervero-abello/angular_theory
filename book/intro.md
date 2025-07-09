@@ -16,6 +16,7 @@ Els continguts d'aquesta guia estan basats en la versió Angular v20.
 * [Capítol 10. *Routing*](chapter10.md)
 * [Capítol 11. Patró *MVC*](chapter11.md)
 * [Capítol 12. Accés a dades externes: serveis web (API REST) i fitxers JSON](chapter12.md)
+* [Capítol 13. Firebase](chapter13.md)
 * [Capítol 14. Desplegament a *GitHub Pages*](chapter14.md)
 <!--
 * [Capítol 1. Què és Angular. Instal·lació del l'entorn de desenvolupament](chapter01.md)

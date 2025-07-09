@@ -1,92 +1,99 @@
-# Capítol 8. Firebase
+# Capítol 13. Firebase
 Firebase és una *suit* de Google que ofereix tot un conjunt d'eines per ajudar als desenvolupadors d'aplicacions mòbils a crear i posar al mercat els seus projectes.
 
 En el nostre cas utilitzarem la seva base de dades NoSQL (*Firestore*) i el seu servei d'autenticació per tal de tenir un petit servidor de dades per a les nostres aplicacions.
 
-Ara però, per qüestions de compatibilitat de vesions, el primer que cal fer és assegurar que la versió d'Angular del projecte és, com a mínim, la 16. En cas que no sigui així, caldrà actualitzar el projecte on s vulgui incorporar la *suit* Firebase seguint els passos indicats en el següent [enllaç](https://update.angular.io/?v=15.0-16.0):
+Ara però, per qüestions de compatibilitat de vesions, el primer que cal fer és assegurar que la versió d'Angular del projecte és, com a mínim, la 16. En cas que no sigui així, caldrà actualitzar el projecte on es vulgui incorporar la *suit* Firebase seguint els passos indicats en el següent [enllaç](https://angular.dev/update-guide):
 
+<!--
 ```bash
-   ng update @angular/core@16 @angular/cli@16
+   ng update @angular/core@latest @angular/cli@latest
 ```
 
-Un cop seguit aquest procés, cal comprovar que, efectivament, el fitxer `package.json` ha registrat la versió 16 d'Angular, tal com mostra la figura següent:
+Un cop seguit aquest procés, cal comprovar que, efectivament, el fitxer `package.json` ha registrat la versió correcta d'Angular, tal com mostra la figura següent:
 
 ![Fitxer `package.json` mostrant la versió actualitzada d'Angular](img/angular_updated.png)
 
 A continuació, s'ha d'esborrar la carpeta `node_modules` i el fitxer `package-lock.json` i tornar-ho a instal·lat tot amb la comanda `npm install` per tal de finalitzar completament l'actualització.
+-->
 
 ## Configuració dels serveis de Firebase
 Per configurar qualsevol dels serveus de Firebase cal fer dos grans passos:
  1. Enllaçar la vostra aplicació Angular a la *suit* Firebase
- 2. Enllaçar l'SDK de la suit de Firebase a la vostra aplicació Angular
+ 2. Enllaçar l'SDK de la *suit* de Firebase a la vostra aplicació Angular
 
 A continuació s'explica com s'han de fer tots dos passos.
 
 ### Enllaç de l'aplicació Angular a la *suit* Firebase
 Per crear aquest vincle cal que inicieu sessió a la pàgina web de la [suit](https://firebase.google.com) i accediu a la consola (*dashboard*)
 
-![Accés a la consola de Firebase](img/firebase_console.png)
+![Accés a la consola de Firebase](img/ch13/firebase_console.png)
 
 Un cop dins, per cada aplicació que hagi d'utilitzar Firebase cal crear un nou projecte, seguint les instruccions que va indicant el propi procés.
 
-Quan el procés de creació finalitzi es carregarà el *dashboard* del projecte per tal que el pugueu configurar amb les característiques necessàries per a l'aplicació mòbil (o web) que s'estigui desenvolupant.
+Quan el procés de creació finalitzi es carregarà el *dashboard* del projecte per tal que el pugueu configurar amb les característiques necessàries per a l'aplicació web (o mòbil) que s'estigui desenvolupant.
 
 El primer que cal fer és afegir una nova aplicació web, que pot ser amb codi nadiu (iOS o Android), codi mutiplataforma (HTML, JS, Angular, React, etc.), codi Unity (per a jocs) o codi Flutter. En el nostre cas afegirem una nova aplicació Angular, tal com mostra la següent imatge i seguirem els passos que va indicant el procés de configuració.
 
-![Configuració de la nova aplicació per al projecte Firebase](img/firebase_add_project.png)
+![Configuració de la nova aplicació per al projecte Firebase](img/ch13/firebase_add_project.png)
 
-Un cop la nova aplicació quedi registrada es mostrarà el codi que es necessita incloure al codi Angular per fer el vincle amb el projecte de Firebase. Tot i això, de moment, aquest codi no s'utiltizarà perquè està pensat per ser aplicat a una aplicació Javascript i, en canvi, nosaltres, el necessitem aplicar dins del *framework* d'Angular
+Un cop la nova aplicació quedi registrada es mostrarà el codi que es necessita incloure al codi Angular per fer el vincle amb el projecte de Firebase. Tot i això, de moment, aquest codi no s'utiltizarà perquè està pensat per ser aplicat dins d'una aplicació Javascript i, en canvi, nosaltres, el necessitem aplicar dins del *framework* d'Angular
 
-![Codi per vincular l'aplicació Angular projecte Firebase](img/firebase_link_code.png)
+![Codi per vincular l'aplicació Angular projecte Firebase](img/ch13/firebase_link_code.png)
 
-Així doncs, en aquest punt cal accedir a la nostra aplicació Angular i afegir-hi la llibreria `@angular/fire` (s'instal·larà la versió 16 de la llibreria, que és la compatible amb la versió d'Angular definida).
- ```bash
-   ng add @angular/fire
- ```
+Així doncs, en aquest punt cal accedir a la nostra aplicació Angular i afegir-hi la llibreria `@angular/fire`:
+
+```bash
+  ng add @angular/fire
+```
+
 Durant la instal·lació no heu de configurar cap servei de Firebase
 
-![Desmarcar qualsevol servei de Firebase](img/firebase_installation.png)
+![Desmarcar qualsevol servei de Firebase](img/ch13/firebase_installation.png)
 
 Fet això, tornarem al *dashboard* del nostre projecte de Firebase per crear i configurar la base de dades, servei que s'anomena *Firestore*.
 1. Activar Firestore dins del *dashboard*
 
-![Activació de Firestore](img/firestore_activation.png)
+![Activació de Firestore](img/ch13/firestore_activation.png)
  
 2. Crear la nova base de dades
  
-![Creació de la BD Firestore](img/firebase_create_db.png)
+![Creació de la BD Firestore](img/ch13/firebase_create_db.png)
  
  1. Configurar el servidor on s'allotjarà la base de dades (busqueu un que sigui europeu)
  
- ![Localització de la BD Firestore](img/firestore_db_location.png)
+ ![Localització de la BD Firestore](img/ch13/firestore_db_location.png)
  
  2. Configuració del mode *producció* o *desenvolupador* (proves). Per defecte, admetrem el mode de *producció*, el qual haurà de ser modificat posteriorment per permetre les operacions de lectura i escriptura a la base de dades
  
- ![Mode de la BD Firestore](img/firestore_db_mode.png)
+ ![Mode de la BD Firestore](img/ch13/firestore_db_mode.png)
  
-3. Un cop creada la base de dades, l'aplicatiu fa una redirecció a la pàgina inicial del gestor de dades on, el primer que cal fer, és els permisos (regles) d'accés per tal que tots els usuaris de l'aplicació puguin escriure i llegir dades.
+3. Un cop creada la base de dades, l'aplicatiu fa una redirecció a la pàgina inicial del gestor de dades on, el primer que cal fer, és configurar els permisos (regles) d'accés per tal que tots els usuaris de l'aplicació puguin escriure i llegir dades.
  
-![Permisos de la BD Firestore](img/firestore_db_rules.png)
+![Permisos de la BD Firestore](img/ch13/firestore_db_rules.png)
 
 Un cop finalitzats tots aquests passos, ja es pot començar a poblar la base de dades. Prèviament, però, encara cal enllaçar l'SDK de Firebase a l'aplicació Angular.
 
 ### Enllaç de l'SDK de la *suit* de Firebase a l'aplicació Angular
 
-Per enllaçar l'SDK de Firebase a l'aplicació Angular al crear els arxius d'*environment*. Aquests arxius han passat a ser opcionals a les aplicacions d'Angular (abans eren obligatoris i es creaven al mateix moment en què es creava el projecte) i la seva funció és la de declarar variables globals segons l'entorn de desenvolupament que es desitgi: *producció* o *desenvolupament*.
+Per enllaçar l'SDK de Firebase a l'aplicació Angular cal crear els arxius d'*environment*. Aquests arxius han passat a ser opcionals a les aplicacions d'Angular (abans eren obligatoris i es creaven al mateix moment en què es creava el projecte) i la seva funció és la de declarar variables globals segons l'entorn de desenvolupament que es desitgi: *producció* o *desenvolupament*.
 
 Per crear aquests arxius cal executar la comanda
+
 ```bash
    ng generate environments
 ```
+
 Fet això apareixen els dos fitxers següents:
  - `src/environments/environment.development.ts`: entorn de *desenvolupament*
  - `src/environments/environment.ts`: entorn de *producció*
 
 En aquest punt cal recuperar la configuració de les variables de la *suit* Firebase entrant al *dashboard* per accedir a la configuració del nou projecte creat, tal com indica la següent imatge:
 
-![Configuració de les constants de la *suit* de Firebase](img/firebase_sdk.png)
+![Configuració de les constants de la *suit* de Firebase](img/ch13/firebase_sdk.png)
 
 De totes aquestes dades només ens interessa la constant `firebaseConfig`, la qual s'ha de traspassar als fitxers `src/environments/environment.ts` i `src/environments/environment.development.ts` de la següent manera:
+
 ```typescript
 export const environment = {
     production: false,
@@ -100,50 +107,56 @@ export const environment = {
       }
 };
 ```
-Finalment, ja només cal activar les dependències dels mòduls de Firebase i dels fitxers `environment` al fitxer `app.module.ts`:
-```typescript
-...
-import { environment } from 'src/environments/environment';
-import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
-import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 
-@NgModule({
-  declarations: [AppComponent],
-  imports: [
-    ...
-    provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
-    provideFirestore(() => getFirestore())
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
-})
-export class AppModule { }
+Finalment, ja només cal activar el mòdul Firebase, configurat segons el que indiquen dels fitxers `environment`, al fitxer `app.config.ts`:
+
+{% code title="Codi app.config.ts" overflow="wrap" lineNumbers="true" %}
+```typescript
+import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZonelessChangeDetection } from '@angular/core';
+import { provideRouter } from '@angular/router';
+
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';            //Importació del package on es troba el provider de Firebase
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';         //Importació del package on es troba el provider de Firestore (base de dades de Firebase)
+import { environment } from '../environments/environment.development';            //Importació del fitxer environment
+
+import { routes } from './app.routes';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideBrowserGlobalErrorListeners(),
+    provideZonelessChangeDetection(),
+    provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),          //Càrrega del provider del service de Firebase
+    provideFirestore(() => getFirestore()),
+    provideRouter(routes)
+  ]
+};
 ```
+{% endcode %}
 
 La línia `provideFirebaseApp(() => initializeApp(environment.firebaseConfig))` inicialitza l'aplicació Firebase i l'enllaça al servidor a través de la configuració anotada als fitxers `environment`. La línia `provideFirestore(() => getFirestore())` activa una instància del servei *Firestore* per tal que pugui ser injectat i utilitzat dins del codi Angular.
 
-Seguint tots aquests passos s'aconsegueix tenir preparat tant la *suit* Firebase com l'aplicació Angular per a poder utilitzar la base de dades *Firestore*.
+Seguint tots aquests passos s'aconsegueix tenir preparades tant la *suit* Firebase com l'aplicació Angular per a poder utilitzar la base de dades *Firestore*.
 
 ## Base de dades *Firestore*
 Tal com ja s'ha dit al principi del capítol, aquesta base de dades és del tipus NoSQL, per tant, la manera d'emmagatzemar les dades i de fer-hi consultes canvia significativament.
 
-Per una banda, les dades s'emmagatzemen com a objectes JSON dins de col·leccions. Així doncs, per tal que us feu una idea, i sabent que **no són el mateix**, podeu fer les següents associacions:
+Per una banda, les dades s'emmagatzemen com a objectes `JSON` dins de col·leccions. Així doncs, per tal que us feu una idea, i sabent que **no són el mateix**, podeu fer les següents associacions:
  * Col·lecció &rarr; Taula SQL
- * Document JSON &rarr; Registre dins d'una taula SQL
+ * Document `JSON` &rarr; Registre dins d'una taula SQL
 
-Accedint de nou al *dasboard* de *Firestore* podeu crear una nova col·lecció (per exemple `dishes`) i plenar-la de dades per tenir un exemple de base.
+Accedint de nou al *dasboard* de *Firestore* podeu crear una nova col·lecció (per exemple `swcharacters`) i plenar-la de dades per tenir un exemple de base.
 
  1. Creació de la nova col·lecció
 
- ![Creació d'una nova col·lecció a *Firestore*](img/firestore_new_collection.png)
+ ![Creació d'una nova col·lecció a *Firestore*](img/ch13/firestore_new_collection.png)
 
  2. Creació d'un nou document dins de la col·lecció
 
- ![Creació d'un nou document dins de la col·lecció](img/firestore_new_collection_3.png)
+ ![Creació d'un nou document dins de la col·lecció](img/ch13/firestore_new_collection_3.png)
  
  3. Resultat final
 
- ![Resultat final](img/firestore_new_collection_4.png)
+ ![Resultat final](img/ch13/firestore_new_collection_4.png)
 
 ### Aplicació CRUD bàsica
 Una aplicació CRUD és tot aquell programari que permet treballar amb bases de dades (siguin fitxers, SQL, NoSQL, etc.) per
@@ -155,18 +168,28 @@ Una aplicació CRUD és tot aquell programari que permet treballar amb bases de 
 El servei *Firestore* de Firebase permet treballar amb una base de dades NoSQL per fer-ne una gestió senzilla. A continuació s'explica com integrar l'API de *Firestore* a Angular.
 
 #### Primers passos
-Suposarem que estem creant una aplicació de plats de cuina i, per tant, la nostra base de dades emmagatzemarà documents que tenen dos atributs: `name` (nom del plat) i `ingredients` (els ingredients que fan falta per cuinar-lo), tal com mostren les imatges de creació de la col·lecció (vegeu apartat anterior).
+Suposarem que estem creant una aplicació de personatges d'StarWars i, per tant, la nostra base de dades emmagatzemarà documents que tenen tres atributs: `name` (nom del personatge), `birth_planet` (planeta de naixement) i `image` (fotografia), tal com mostren les imatges de creació de la col·lecció (vegeu apartat anterior).
 
-El primer que cal fer és dissenyar l'aplicació modularment, aplicant el patró MVC. Per tant, s'haurà de crear un *model* (`Dish`) que repliqui el contingut dels documents de la base de dades, és a dir, que tingui els mateixos atributs que els camps del document i un *service* (`DishesService`) que gestioni l'accés a la base de dades i totes les consultes que s'hi poden fer.
+El primer que cal fer és dissenyar l'aplicació modularment, aplicant el patró MVC. Per tant, s'haurà de crear un *model* (`SWCharacter`) que repliqui el contingut dels documents de la base de dades, és a dir, que tingui els mateixos atributs que els camps del document i un *service* (`SWCharactersService`) que gestioni l'accés a la base de dades i totes les consultes que s'hi poden fer.
 
-Per a definir el model, com que és molt simple, crearem la *interface* `Dish`, la qual tindrà els mateixos 2 atributs que tenen els documents de la base de dades: `name` i `ingredients`:
+Per a definir el *model*, com que és molt simple, crearem la *interface* `SWCharacter` mitjançant la comanda
+
+```bash
+$ ng generate interface model/swcharacter
+```
+
+Aquesta *interface* tindrà els mateixos 3 atributs que tenen els documents de la base de dades (`name`, `birth_planet` i `image`), conjuntament amb un atribut opcional `id` (l'identificador del document, que actua com a *primary key*):
+
+{% code title="Codi app.config.ts" overflow="wrap" lineNumbers="true" %}
 ```typescript
-export interface Dish {
-   id?: string;   //Emmagatzemarà l'ID de la base de dades que actua de clau primària. El símbol '?' indica que aquest camp no sempre serà necessari.
-   name: string;
-   ingredients: string[];
+export interface SWCharacter {
+  id?: string;          //Emmagatzemarà l'ID de la base de dades que actua de clau primària. El símbol '?' indica que aquest camp no sempre serà necessari.
+  name: string,
+  bith_planet: string,
+  image: string
 }
 ```
+{% endcode %}
 
 A continuació caldrà generar el *service* `FirestoreDBService` que serà l'encarregat de gestionar totes les instruccions **CRUD** contra la base de dades *Firestore*.
 
@@ -176,6 +199,7 @@ Abans de fer aquest pas, però, cal explicar una mica les funcions bàsiques de 
 Per tal de poder connectar amb una col·lecció de la base de dades, l'API de *Firestore* defineix el *service* `Firestore`, la classe `CollectionReference<T>`, i un conjunt de mètodes que permeten llegir i modificar els registres (els documents) de la col·lecció.
 
 El codi necessari per crear una instància d'aquesta classe i enllaçar-la a la col·lecció que es desitja consultar és el següent:
+
 ```typescript
 import { CollectionReference, Firestore, collection } from '@angular/fire/firestore';
 
@@ -188,6 +212,7 @@ class ManageFirestore {
 }
 
 ```
+
 Així doncs, cal demanar al *service* `Firestore` la collecció `collection_name` mitjançant el mètode `collection()`, el qual retorna, justament, una instància de la classe `CollectionReference`.
 
 Vegeu que la classe `CollectionReference` és genèrica i s'ha de declarar utilitzant el tipus correcte, és a dir, la *interface* o la classe que s'hagi definit per tal de representar els documents de la col·lecció dins de la nostra aplicació.
@@ -199,6 +224,7 @@ Per poder consultar els documents d'una col·lecció hi ha diversos mètodes, de
 
 **Mètode `collectionData()`**
 Aquest mètode permet fer consultes equivalents a la sentència `SELECT * FROM` SQL, és a dir, retorna tots els documents d'una col·lecció. A més a més, implementa el patró `Observer` i, per tant, per obtenir les dades caldrà fer la subscripció a la crida:
+
 ```typescript
    collectionData(this._collection).subscribe({
       next: (data: MyType[]) => {
@@ -210,11 +236,13 @@ Aquest mètode permet fer consultes equivalents a la sentència `SELECT * FROM` 
       }
    });
 ```
+
 Mentre es mantingui la subscripció activa, cada cop que hi hagi un canvi a la col·lecció de la base de dades, aquesta funció el captarà i el retornarà per tal que pugui ser tractat, mostrat per pantalla, etc.
 
 Vegeu que el mètode `next` rep, com a paràmetre, un *array* del tipus amb què s'ha declarat l'objecte col·lecció `CollectionReference`, és a dir, `MyType`.
 
 En cas que es desitgi recuperar l'identificador (equivalent a la *primary key* SQL) dels documents, el mètode `collectionData()` ha de rebre un paràmetre de tipus `JSON` on s'especifiqui el nom de l'atribut identificador al tipus `MyType`. Així doncs, si `MyType` té un atribut `id: string`, la crida al mètode `collectionData()` és la següent:
+
 ```typescript
    collectionData(this._collection, {'idField': 'id'}).subscribe({
       next: (data: MyType[]) => {
@@ -237,6 +265,7 @@ Per a consultes més complexes també s'utilitza el mètode `collectionData()` p
 * `endBefore`
 
 Per exemple, imaginem que tenim un document que representa el conjunt de Xefs de la província de Lleida i només volem consultar aquells que són menors de 25 anys. Per fer-ho, la crida seria similar a la següent:
+
 ```typescript
    let queryCode: Query<Chef> = query(this._chefCollection, where('age', '<', 25));
     collectionData(queryCode, {'idField': 'id'}).subscribe({
@@ -249,7 +278,9 @@ Per exemple, imaginem que tenim un document que representa el conjunt de Xefs de
       }
     });
 ```
+
 Ara però, les consultes complexes de *Firestore* tenen força limitacions i una d'elles és que no és poden concatenar dues condicions de desigualtat sobre camps diferents. Per tant, la consulta que ens permetria trobar tots xefs els menors de 25 anys que no són de Lleida no es pot fer directament amb la sentència `WHERE` i l'estratègia per aconseguir els resultats és aplicar un filtre:
+
 ```typescript
    let queryCode: Query<Chef> = query(this._chefCollection, where('age', '<', 25));
    collectionData(queryCode, {'idField': 'id'}).subscribe({
@@ -272,11 +303,12 @@ Per analitzar totes les possibilitats de les diverses sentències es pot consult
 **Consulta de les dades d'un document (registre) a través de la seva ID**
 Quan volem consultar un document mitjançant la seva ID (equivalent a la *primary key*) no ho podem fer amb una consulta (*query*) normal, perquè la ID no forma part dels atributs (camps) del document, sinó que és un identificador extern.
 
-Així doncs, per tal de poder-ne llegir les dades, primer hem d'obtenir una referència al document i, posteriorment, accedir als seus camps ta, com mostra el codi següent, en el qual es consulta d'un document de la col·lecció (taula) *dishes*:
+Així doncs, per tal de poder-ne llegir les dades, primer hem d'obtenir una referència al document i, posteriorment, accedir als seus camps tal com mostra el codi següent, en el qual es consulta d'un document de la col·lecció (taula) *swcharacters*:
+
 ```typescript
-    const docRef = doc(this._firestore, "dishes", id) as DocumentReference<Dish>;
+    const docRef = doc(this._firestore, "swcharacters", id) as DocumentReference<SWCharacter>;
     getDoc(docRef).then(
-      (doc: DocumentSnapshot<Dish>) => {
+      (doc: DocumentSnapshot<SWCharacter>) => {
         console.log(doc.data());
       }
     ).catch(
@@ -294,6 +326,7 @@ La primera línia s'encarrega d'obtenir la referència al document mitjançant e
 
 ###### Inserció de dades
 Per fer la inserció d'un nou document en una col·lecció s'utilitza el mètode `addDoc`, el qual retorna una `Promise<DocumentData<MyType>`. Així doncs, donada la instància de la col·lecció (`this._collection`) i l'objecte amb les dades que es volen inserir (`my_data: MyType`), el codi complet per fer la inserció és el següent:
+
 ```typescript
    addDoc(this._chefCollection, chef).then(
       (doc: DocumentReference<Chef>) => {
@@ -307,9 +340,10 @@ Per fer la inserció d'un nou document en una col·lecció s'utilitza el mètode
 ```
 
 ###### Eliminació de dades
-Per fer l'eliminació d'un document d'una col·lecció s'utilitzen els mètodes `doc` i `deleteDoc`. El primer mètode permet seleccionar el document a través del seu identificador (equivalent a la `primary key` en el cas d'SQL) i, un cop seleccionat, el mètode `deleteDoc` l'esborra. Així doncs, el servei Firestore (`this._firestore`), el nom de la col·lecció a la qual pertany l'element que volem eliminar (`collection_name`) i l'identificador de l'objecte que volem esborrar (`my_data.id`, on `my_data` és del tipus `MyType`), el codi per fer l'eliminació és el següent:
+Per fer l'eliminació d'un document d'una col·lecció s'utilitzen els mètodes `doc` i `deleteDoc`. El primer mètode permet seleccionar el document a través del seu identificador (equivalent a la `primary key` en el cas d'SQL) i, un cop seleccionat, el mètode `deleteDoc` l'esborra. Així doncs, necessita el servei *Firestore* (`this._firestore`), el nom de la col·lecció a la qual pertany l'element que volem eliminar (`collection_name`) i l'identificador de l'objecte que volem esborrar (`my_data.id`, on `my_data` és del tipus `MyType`), el codi per fer l'eliminació és el següent:
+
 ```typescript
-   let documentRef: DocumentReference<MyType> = doc(this._firestore, 'collection_name', my_data.id) as DocumentReference<CMyTypehef>;
+   let documentRef: DocumentReference<MyType> = doc(this._firestore, 'collection_name', my_data.id) as DocumentReference<MyType>;
    deleteDoc(documentRef).then(
       () => {console.log("Doc deleted!");}
    ).catch(
@@ -320,6 +354,7 @@ Per fer l'eliminació d'un document d'una col·lecció s'utilitzen els mètodes 
 ```
 
 En cas que es vulgui eliminar més d'un document, es pot utilitzar el mètode `getDocs()` per seleccionar-los prèviament. Per exemple, en el codi que es mostra a continuació, s'elimina tots els xefs que tinguin més de 25 anys.
+
 ```typescript
    let queryCode: Query<Chef> = query(this._chefCollection, where('age', '>', 25));
    getDocs(queryCode).then(
@@ -394,7 +429,7 @@ async getChefsFromDB() {
     let chefs: Chef[] = await firstValueFrom(collectionData(this._chefCollection, {'idField': 'id'}));
 }
 ```
-
+<!--
 ## Autenticació
 El primer que cal fer és configurar el servei d'autenticació des del *dashboard* de *Firebase* seguint els passos següents:
 
@@ -756,3 +791,11 @@ export class AuthSessionService {
   }
 }
 ```
+-->
+
+<!--
+https://firebase.google.com/codelabs/firebase-web#0
+https://www.npmjs.com/package/@angular/fire
+https://github.com/angular/angularfire
+https://medium.com/@gioboa/building-realtime-web-apps-with-angular-and-firebase-database-23a9bce1fd4a
+-->

@@ -13,6 +13,7 @@
 * [Capítol 10. *Routing*](book/chapter10.md)
 * [Capítol 11. Patró *MVC*](book/chapter11.md)
 * [Capítol 12. Accés a dades externes: serveis web (API REST) i fitxers JSON](book/chapter12.md)
+* [Capítol 13. Firebase](book/chapter13.md)
 * [Capítol 14. Desplegament a *GitHub Pages*](book/chapter14.md)
 <!--
 * [Capítol 1. Format JSON i LocalStorage](book/chapter1.md)
