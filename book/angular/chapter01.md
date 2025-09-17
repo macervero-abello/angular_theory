@@ -42,9 +42,10 @@ La primera versió d'Anguar era, en realitat, un *framework* de JavasScript i s'
 * Angular 18: maig de 2024 (*zoneless*)
 * Angular 19: novembre de 2024
 * Angular 20: maig de 2025
+* Angular 21: novembre de 2025
 
 ## Webgrafia del capítol
-* Google (2025). [Angular](https://angular.dev/). Consultat el 12 de maig de 2025.
-* Angular (2025). [GitHub Angular](https://github.com/angular/angular). Consultat de 12 de maig de 2025.
-* Microsoft (2025). [TypeScript](https://www.typescriptlang.org/). Consultat el 12 de maig de 2025.
-* Udemy (2025). [Curs *Angular - The Complete Guide (2025 Edition)*](https://www.udemy.com/course/the-complete-guide-to-angular-2/). Consultat el 12 de maig de 2025.
+* Google (2025). [Angular](https://angular.dev/). Consultat el 15 de setembre de 2025.
+* Angular (2025). [GitHub Angular](https://github.com/angular/angular). Consultat de 15 de setembre de 2025.
+* Microsoft (2025). [TypeScript](https://www.typescriptlang.org/). Consultat el 15 de setembre de 2025.
+* Udemy (2025). [Curs *Angular - The Complete Guide (2025 Edition)*](https://www.udemy.com/course/the-complete-guide-to-angular-2/). Consultat el 15 de setembre de 2025.

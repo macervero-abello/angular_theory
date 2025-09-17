@@ -1,6 +1,6 @@
 # Instal·lació i preparació de l'entorn de desenvolupament
 
-Per poder traballar amb el framework [Angular](https://angular.dev/) cal instal·lar l'entorn de desenvolupament i tenir un bon editor que faciliti la tasca de desenvolupament.
+Per poder treballar amb el framework [Angular](https://angular.dev/) cal instal·lar l'entorn de desenvolupament i tenir un bon editor que faciliti la tasca de desenvolupament.
 
 En aquest curs es proposa utilitzar l'editor de codi [Visual Studio Code](https://code.visualstudio.com/), l'ús del qual està molt estès dins del món de desenvolupament web i que, a més a més, disposa d'un molt bon catàleg de *plugins* per adaptar l'experiència de desenvolupament de software al gust del programador.
 
@@ -93,7 +93,7 @@ Les preguntes 1 i 2 només apareixen el primer cop que es crea un nou projecte.
 Un cop creada l'aplicació, si n'obrim la carpeta amb Visual Studio Code (seguint l'exemple, aquesta carpeta s'anomena `project-name`) descobrirem l'estructura que mostra la Figura 2.1.
 
 <figure>
-    <img src="img/ch02/directory_structure.png" height="512px" alt="Estructura de directoris i fitxers d'un projecte Angular">
+    <img src="img/ch02/directory_structure.png" alt="Estructura de directoris i fitxers d'un projecte Angular">
     <figcaption>Figura 2.1: estructura de directoris i fitxers d'un projecte Angular</figcaption>
 </figure>
 
@@ -132,7 +132,7 @@ dins del directori del projecte. Aquesta comanda instal·la el *framework* Angul
 #### Directori amb el codi de l'aplicació
 Com ja hem vist en les línies superiors, la carpeta `src/` conté el codi de tota l'aplicació Angular en desenvolupament, per tant, en detallarem el contingut més detingudament. La Figura 2.2 mostra la distribució d'aquest directori.
 <figure>
-    <img src="img/ch02/src_directory_structure.png" height="288px" alt="Estructura del directori src/">
+    <img src="img/ch02/src_directory_structure.png" alt="Estructura del directori src/">
     <figcaption>Figura 2.2: estructura del directori src/</figcaption>
 </figure>
 
@@ -208,8 +208,8 @@ Sigui quina sigui la comanda executada, el resultat final permet visualitzar l'a
 Per tant, mentre es mantingui aquest servidor en funcionament, qualsevol canvi en el codi es podrà veure i comprovar immediatament en el navegador.
 
 ## Webgrafia del capítol
-* Google (2025). [Angular](https://angular.dev/). Consultat el 12 de maig de 2025.
-* Angular (2025). [GitHub Angular](https://github.com/angular/angular). Consultat de 12 de maig de 2025.
-* Microsoft (2025). [Visual Studio Code](https://code.visualstudio.com/). Consultat el 3 de juny de 2025
-* OpenJS Foundation (2025). [NodeJS](https://nodejs.org/). Consultat el 12 de maig de 2025.
-* Udemy (2025). [Curs *Angular - The Complete Guide (2025 Edition)*](https://www.udemy.com/course/the-complete-guide-to-angular-2/). Consultat el 5 de juny de 2025.
+* Google (2025). [Angular](https://angular.dev/). Consultat el 15 de setembre de 2025.
+* Angular (2025). [GitHub Angular](https://github.com/angular/angular). Consultat de 15 de setembre de 2025.
+* Microsoft (2025). [Visual Studio Code](https://code.visualstudio.com/). Consultat el 15 de setembre de 2025
+* OpenJS Foundation (2025). [NodeJS](https://nodejs.org/). Consultat el 15 de setembre de 2025.
+* Udemy (2025). [Curs *Angular - The Complete Guide (2025 Edition)*](https://www.udemy.com/course/the-complete-guide-to-angular-2/). Consultat el 15 de setembre de 2025.
