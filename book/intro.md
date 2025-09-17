@@ -1,11 +1,12 @@
-# Introducció a Angular
-### Curs de formació per al professorat d'FP - Curs 24/25
+# Mòdul Optatiu CFGS DAW - Desenvolupament d'Aplicacions Mòbils
+### Curs 25/26
 
-Els continguts d'aquesta guia estan basats en la versió Angular v20.
+Els continguts d'aquesta guia estan basats en la versions Angular v20 i Ionic v8.
 
 ## Angular
-* [Capítol 1. Què és Angular? Instal·lació del l'entorn de desenvolupament](chapter01.md)
-* [Capítol 2. Instal·lació i preparació del l'entorn de desenvolupament](chapter02.md)
+* [Capítol 1. Què és Angular? Instal·lació del l'entorn de desenvolupament](angular/chapter01.md)
+* [Capítol 2. Instal·lació i preparació del l'entorn de desenvolupament](angular/chapter02.md)
+<!--
 * [Capítol 3. Components Angular](chapter03.md)
 * [Capítol 4. *Data Binding*](chapter04.md)
 * [Capítol 5. Modificació del DOM](chapter05.md)
@@ -18,20 +19,9 @@ Els continguts d'aquesta guia estan basats en la versió Angular v20.
 * [Capítol 12. Accés a dades externes: serveis web (API REST) i fitxers JSON](chapter12.md)
 * [Capítol 13. Firebase](chapter13.md)
 * [Capítol 14. Desplegament a *GitHub Pages*](chapter14.md)
-<!--
-* [Capítol 1. Què és Angular. Instal·lació del l'entorn de desenvolupament](chapter01.md)
-* [Capítol 1. Format JSON i LocalStorage](chapter1.md)
-* [Capítol 2. Components Angular](chapter2.md)
-* [Capítol 3. Estils externs](chapter3.md)
-* [Capítol 4. *Routing*](chapter4.md)
-* [Capítol 5. Patró *MVC*](chapter5.md)
-* [Capítol 6. Lectura d'un fitxer JSON](chapter6.md)
-* [Capítol 7. Accés a un servei web (API REST)](chapter7.md)
-* [Capítol 8. Firebase](chapter8.md)
-* [Capítol 9. Guardes de ruta](chapter9.md)
-* [Capítol 10. Workspace: una aplicació, múltiples GUI](chapter10.md)
-* [Capítol 11. Publicació d'una aplicació Angular a GitHub Pages](chapter11.md)
 -->
+
+## Ionic
 
 <!--
 ## Llicència
