@@ -4,7 +4,7 @@
 Els continguts d'aquesta guia estan basats en la versions Angular v20 i Ionic v8.
 
 ## Angular
-* [Capítol 1. Què és Angular? Instal·lació del l'entorn de desenvolupament](angular/chapter01.md)
+* [Capítol 1. Què és Angular?](angular/chapter01.md)
 * [Capítol 2. Instal·lació i preparació del l'entorn de desenvolupament](angular/chapter02.md)
 <!--
 * [Capítol 3. Components Angular](chapter03.md)
