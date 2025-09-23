@@ -1,12 +1,12 @@
 # Capítol 3. Components Angular
 Com ja s'ha indicat en el capítol anterior, la creació de nou contingut en Angular (noves pàgines, una llista, una capçalera, etc.) es basa en els *components*. Per tant, un component pot ser tota una nova pàgina
 <figure>
-    <img src="img/ch03/wireframe_component1_1.png" height="288px" alt="La pàgina principal està formada per un únic component, el component App">
+    <img src="img/ch03/wireframe_component1_1.png" alt="La pàgina principal està formada per un únic component, el component App">
     <figcaption>Figura 3.1: la pàgina principal està formada per un únic component, el component App/</figcaption>
 </figure>
 o podem configurar una pàgina combinant múltiples components que, posteriorment, podran ser reutilitzats en altres parts de l'aplicació
 <figure>
-    <img src="img/ch03/wireframe_component1_2.png" height="288px" alt="El component App estructura tota la pàgina i, en el seu interior, conté els components Header i Carousel">
+    <img src="img/ch03/wireframe_component1_2.png" alt="El component App estructura tota la pàgina i, en el seu interior, conté els components Header i Carousel">
     <figcaption>Figura 3.2: el component App estructura tota la pàgina i, en el seu interior, conté els components Header i Carousel</figcaption>
 </figure>
 
@@ -43,8 +43,8 @@ Com que durant aquest curs no es treballarà la part de *testing*, el fitxer `.s
 Com ja s'ha vist, tot *component* té associat un fitxer TS, el qual sempre ha d'establir dos elements:
 1. la descripció del component en si mateix, mitjançant el decorador `@Component` i
 2. la classe que gestionarà la funcionalitat de la vista i que tindrà el mateix nom que el component, per exemple:
-    - `app.ts` $\rightarrow$ `App`
-    - `header.ts` $\rightarrow$ `Header`
+    - `app.ts` $$\rightarrow$$ `App`
+    - `header.ts` $$\rightarrow$$ `Header`
 
 ### Decorador `@Component`
 El decorador descriu 4 elements bàsics:
@@ -55,7 +55,7 @@ El decorador descriu 4 elements bàsics:
 
 La Figura 3.3 mostra com queda configurat el *component* `Header` que s'utilitza en l'exemple d'aquest capítol.
 <figure>
-    <img src="img/ch03/header_component1.png" height="256px" alt="Configuració del component Header">
+    <img src="img/ch03/header_component1.png" alt="Configuració del component Header">
     <figcaption>Figura 3.3: configuració del component Header</figcaption>
 </figure>
 
@@ -65,7 +65,7 @@ Tot i que l'estructura estàndard del decorador `@Component` és la que s'ha exp
 ##### Alternativa a la propietat `templateUrl`
 Tot i que no es recomana, en els casos en els quals la vista del *component* sigui extremadament senzilla, es pot substituir la propietat `templateUrl` per la propietat `template`, la qual defineix el codi `html` *inline*, tal com mostra la Figura 3.4.
 <figure>
-    <img src="img/ch03/template_property_alternative.png" height="256px" alt="Exemple d'ús de la propietat template del decorador @Component">
+    <img src="img/ch03/template_property_alternative.png" alt="Exemple d'ús de la propietat template del decorador @Component">
     <figcaption>Figura 3.4: exemple d'ús de la propietat template del decorador @Component</figcaption>
 </figure>
 
@@ -76,7 +76,7 @@ La propietat `styleUrl` té dues alternatives:
 
 De la mateixa manera que no es recomana utilitzar la propietat `template` per definir el codi `html` *inline* del *componet*, tampoc es recomana utilitzar la propietat `styles` per definir els estils `inline`. Evidentment, però, molts desenvolupadors escolliran el seu ús en casos en què els estils siguin extremadament senzills, tal com mostra la Figura 3.5. 
 <figure>
-    <img src="img/ch03/styles_property_alternative.png" height="256px" alt="Exemple d'ús de la propietat styles del decorador @Component">
+    <img src="img/ch03/styles_property_alternative.png" alt="Exemple d'ús de la propietat styles del decorador @Component">
     <figcaption>Figura 3.5: exemple d'ús de la propietat styles del decorador @Component</figcaption>
 </figure>
 
