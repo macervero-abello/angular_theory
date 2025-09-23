@@ -4,8 +4,8 @@
 * [Capítol 1. Què és Angular?](book/angular/chapter01.md)
 * [Capítol 2. Instal·lació i preparació del l'entorn de desenvolupament](book/angular/chapter02.md)
 * [Capítol 3. Components Angular](book/angular/chapter03.md)
+* [Capítol 4. *Data Binding*](book/angular/chapter04.md)
 <!--
-* [Capítol 4. *Data Binding*](book/chapter04.md)
 * [Capítol 5. Modificació del DOM](book/chapter05.md)
 * [Capítol 6. Format `JSON` i LocalStorage](book/chapter06.md)
 * [Capítol 7. Detecció de canvis](book/chapter07.md)
