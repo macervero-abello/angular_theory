@@ -1,7 +1,117 @@
 # Capítol 5. Modificació del DOM
 El *framework* Angular ofereix eines que permeten modificar el DOM (*Document Object Model*) d'HTML de manera automàtica. Aquesta modificació es pot fer de manera
-* iterativa, creant múltiples elements iguals, o
-* condicional, creant elements depenent de si una condició s'avalua certa o no.
+* condicional, creant elements depenent de si una condició s'avalua certa o no, o
+* iterativa, creant múltiples elements iguals.
+
+## Control de flux condicional `@if`
+El bloc de codi condicional `@if` permet crear i *renderitzar* codi `HTML` depenent de si una condició es compleix o no. Així doncs, si la condició és certa, el codi `HTML` s'afegeix al DOM; si no ho és, no s'hi afegeix.
+
+### Ús del control de flux iteratiu `@if`
+Tal com passa amb la sentència `@for`, la sentència `@if` també s'utilitza enmig del codi `HTML` d'un *component*. La seva sintaxi és la següent:
+```html
+<!-- HTML code -->
+@if (condition1) {
+  <!-- HTML elements to be rendered if condition1 is true -->
+} @else if (condition2) {
+  <!-- HTML elements to be rendered if condition2 is true -->
+} @else {
+  <!-- HTML elements to be rendered if neither condition1 nor condition2 are true -->
+}
+```
+
+A continuació es mostra el codi necessari per mostrar per pantalla un missatge de benvinguda només si l'usuari s'ha identificat.
+{% tabs %}
+{% tab title="Codi TS App" %}
+```typescript
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { RouterOutlet } from '@angular/router';
+
+@Component({
+  selector: 'app-root',
+  imports: [RouterOutlet, FormsModule],
+  templateUrl: './app.html',
+  styleUrl: './app.css'
+})
+export class App {
+  private _name: string = "";
+
+  get name(): string {
+    return this._name
+  }
+
+  set name(name: string) {
+    this._name = name;
+  }
+}
+```
+{% endtab %}
+
+{% tab title="Codi HTML App" %}
+```html
+<input type="text" placeholder="Escriu el teu nom..." [(ngModel)]="name"/>
+
+<br/>
+@if(name) {
+    <h1>Benvingut/da {{ name }}</h1>
+} @else {
+    <p>Si us plau, identifica't</p>
+}
+<router-outlet />
+```
+{% endtab %}
+
+{% tab title="Resultat que es mostra per pantalla amb identificació o sense" %}
+![Resultat quan l'usuari no s'ha identificat](img/ch05/if_example1.png)
+![Resultat quan l'usuari s'ha identificat](img/ch05/if_example2.png)
+{% endtab %}
+{% endtabs %}
+
+### Codi *legacy* amb la directiva estructural `*ngIf`
+La sentència `@if` també va ser introduïda com a nou estàndard de control de flux condicional a la versió 17 del *framework*. Fins aquell moment, la funció de flux condicional la complia la directiva estructural `*ngIf` i, per tant, tot i que ara estigui obsoleta (*deprecated*), hi ha molt codi de versions antigues (*legacy*) que utilitza aquesta opció.
+
+El seu objectiu és exactament el mateix que el de la sentència `@if`: crear i *renderitzar* codi `HTML` depenent d'una condició. Ara però, la sintaxi és força diferent, ja que tal com passa amb la directiva `*ngFor`, la directiva `*ngIf` també està pensada per quedar integrada dins de les etiquetes `HTML`
+
+#### Adaptació del codi que utilitza `@if` per poder utilitzar `*ngIf`
+Recuperant l'exemple de l'apartat [*Ús del control de flux iteratiu `@if`](#ús-del-control-de-flux-iteratiu-if), les adaptacions que cal fer-hi per tal que funcioni amb la directiva estructural `*ngIf` són les següents:
+1. Dins del codi `TS` cal importar la directiva `NgIf`, la qual es troba dins del mòdul `CommonModule`
+```typescript
+import { NgIf } from '@angular/common';
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { RouterOutlet } from '@angular/router';
+
+@Component({
+  selector: 'app-root',
+  imports: [RouterOutlet, FormsModule, NgIf],
+  templateUrl: './app.html',
+  styleUrl: './app.css'
+})
+export class App {
+  private _name: string = "";
+
+  get name(): string {
+    return this._name
+  }
+
+  set name(name: string) {
+    this._name = name;
+  }
+}
+```
+1. Dins del codi `HTML` s'ha de canviar el bloc `@if` per la directiva `*ngIf` conjuntament amb una etiqueta `<ng-template>` per poder fer el tractament del bloc `@else`
+```html
+<input type="text" placeholder="Escriu el teu nom..." [(ngModel)]="name"/>
+
+<br/>
+<h1 *ngIf="name; else noidentified">Benvingut/da {{ name }}</h1>
+
+<ng-template #noidentified>
+    <p>Si us plau, identifica't</p>
+</ng-template>
+<router-outlet />
+```
+Les principal diferència respecte de la sentència `@if` és que, tal com s'ha dit, el tractament de l'`@else` s'ha de fer mitjançant un *component template* `<ng-template>` que tingui definit un identificador (`#noidentified`). Aquest identificador és el que permet unir l'`*ngIf` amb el bloc `else` corresponent.
 
 ## Control de flux iteratiu `@for`
 El bloc de codi iteratiu `@for` permet crear i *renderitzar* codi `HTML` per cadascun dels elements d'una estructura de dades iterable. A més a més, quan detecta qualsevol modificació de l'estructura de dades (eliminació, actualització o inserció d'un element) adapta els elements *renderitzats* de manera automàtica.
@@ -169,116 +279,6 @@ La Figura 5.3 mostra el resultat obtingut amb aquest codi
     <figcaption>Figura 5.3: resultat d'utilitzar la directiva estructural *ngFor sobre una col·lecció de dades complexes</figcaption>
 </figure>
 
-## Control de flux condicional `@if`
-El bloc de codi condicional `@if` permet crear i *renderitzar* codi `HTML` depenent de si una condició es compleix o no. Així doncs, si la condició és certa, el codi `HTML` s'afegeix al DOM; si no ho és, no s'hi afegeix.
-
-### Ús del control de flux iteratiu `@if`
-Tal com passa amb la sentència `@for`, la sentència `@if` també s'utilitza enmig del codi `HTML` d'un *component*. La seva sintaxi és la següent:
-```html
-<!-- HTML code -->
-@if (condition1) {
-  <!-- HTML elements to be rendered if condition1 is true -->
-} @else if (condition2) {
-  <!-- HTML elements to be rendered if condition2 is true -->
-} @else {
-  <!-- HTML elements to be rendered if neither condition1 nor condition2 are true -->
-}
-```
-
-A continuació es mostra el codi necessari per mostrar per pantalla un missatge de benvinguda només si l'usuari s'ha identificat.
-{% tabs %}
-{% tab title="Codi TS App" %}
-```typescript
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { RouterOutlet } from '@angular/router';
-
-@Component({
-  selector: 'app-root',
-  imports: [RouterOutlet, FormsModule],
-  templateUrl: './app.html',
-  styleUrl: './app.css'
-})
-export class App {
-  private _name: string = "";
-
-  get name(): string {
-    return this._name
-  }
-
-  set name(name: string) {
-    this._name = name;
-  }
-}
-```
-{% endtab %}
-
-{% tab title="Codi HTML App" %}
-```html
-<input type="text" placeholder="Escriu el teu nom..." [(ngModel)]="name"/>
-
-<br/>
-@if(name) {
-    <h1>Benvingut/da {{ name }}</h1>
-} @else {
-    <p>Si us plau, identifica't</p>
-}
-<router-outlet />
-```
-{% endtab %}
-
-{% tab title="Resultat que es mostra per pantalla amb identificació o sense" %}
-![Resultat quan l'usuari no s'ha identificat](img/ch05/if_example1.png)
-![Resultat quan l'usuari s'ha identificat](img/ch05/if_example2.png)
-{% endtab %}
-{% endtabs %}
-
-### Codi *legacy* amb la directiva estructural `*ngIf`
-La sentència `@if` també va ser introduïda com a nou estàndard de control de flux condicional a la versió 17 del *framework*. Fins aquell moment, la funció de flux condicional la complia la directiva estructural `*ngIf` i, per tant, tot i que ara estigui obsoleta (*deprecated*), hi ha molt codi de versions antigues (*legacy*) que utilitza aquesta opció.
-
-El seu objectiu és exactament el mateix que el de la sentència `@if`: crear i *renderitzar* codi `HTML` depenent d'una condició. Ara però, la sintaxi és força diferent, ja que tal com passa amb la directiva `*ngFor`, la directiva `*ngIf` també està pensada per quedar integrada dins de les etiquetes `HTML`
-
-#### Adaptació del codi que utilitza `@if` per poder utilitzar `*ngIf`
-Recuperant l'exemple de l'apartat [*Ús del control de flux iteratiu `@if`](#ús-del-control-de-flux-iteratiu-if), les adaptacions que cal fer-hi per tal que funcioni amb la directiva estructural `*ngIf` són les següents:
-1. Dins del codi `TS` cal importar la directiva `NgIf`, la qual es troba dins del mòdul `CommonModule`
-```typescript
-import { NgIf } from '@angular/common';
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { RouterOutlet } from '@angular/router';
-
-@Component({
-  selector: 'app-root',
-  imports: [RouterOutlet, FormsModule, NgIf],
-  templateUrl: './app.html',
-  styleUrl: './app.css'
-})
-export class App {
-  private _name: string = "";
-
-  get name(): string {
-    return this._name
-  }
-
-  set name(name: string) {
-    this._name = name;
-  }
-}
-```
-1. Dins del codi `HTML` s'ha de canviar el bloc `@if` per la directiva `*ngIf` conjuntament amb una etiqueta `<ng-template>` per poder fer el tractament del bloc `@else`
-```html
-<input type="text" placeholder="Escriu el teu nom..." [(ngModel)]="name"/>
-
-<br/>
-<h1 *ngIf="name; else noidentified">Benvingut/da {{ name }}</h1>
-
-<ng-template #noidentified>
-    <p>Si us plau, identifica't</p>
-</ng-template>
-<router-outlet />
-```
-Les principal diferència respecte de la sentència `@if` és que, tal com s'ha dit, el tractament de l'`@else` s'ha de fer mitjançant un *component template* `<ng-template>` que tingui definit un identificador (`#noidentified`). Aquest identificador és el que permet unir l'`*ngIf` amb el bloc `else` corresponent.
-
 ## Webgrafia del capítol
-* Google (2025). [Angular](https://angular.dev/). Consultat el 18 de juny de 2025.
-* Udemy (2025). [Curs *Angular - The Complete Guide (2025 Edition)*](https://www.udemy.com/course/the-complete-guide-to-angular-2/). Consultat el 18 de juny de 2025.
+* Google (2025). [Angular](https://angular.dev/). Consultat el 15 de setembre de 2025.
+* Udemy (2025). [Curs *Angular - The Complete Guide (2025 Edition)*](https://www.udemy.com/course/the-complete-guide-to-angular-2/). Consultat el 15 de setembre de 2025.

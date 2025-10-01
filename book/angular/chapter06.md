@@ -158,9 +158,9 @@ export class App {
 {% endtabs %}
 
 ## Webgrafia del capítol
-* Google (2025). [Angular](https://angular.dev/). Consultat el 20 de juny de 2025.
-* Udemy (2025). [Curs *Angular - The Complete Guide (2025 Edition)*](https://www.udemy.com/course/the-complete-guide-to-angular-2/). Consultat el 20 de juny de 2025.
-* JSON (2025). [Indroducing JSON](https://www.json.org/json-en.html). Consultat el 20 de juny de 2025.
-* Ecma International (2025). [ECMA-404: The JSON data interchange syntax](https://ecma-international.org/publications-and-standards/standards/ecma-404/). Consultat el 20 de juny de 2025.
-* Mozilla (2025). [Window: localStorage property](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage). Consultat el 20 de juny de 2025.
-* Mozilla (2025). [Storage quotas and eviction criteria](https://developer.mozilla.org/en-US/docs/Web/API/Storage_API/Storage_quotas_and_eviction_criteria). Consultat el 20 de juny de 2025.
+* Google (2025). [Angular](https://angular.dev/). Consultat el 15 de setembre de 2025.
+* Udemy (2025). [Curs *Angular - The Complete Guide (2025 Edition)*](https://www.udemy.com/course/the-complete-guide-to-angular-2/). Consultat el 15 de setembre de 2025.
+* JSON (2025). [Indroducing JSON](https://www.json.org/json-en.html). Consultat el 15 de setembre de 2025.
+* Ecma International (2025). [ECMA-404: The JSON data interchange syntax](https://ecma-international.org/publications-and-standards/standards/ecma-404/). Consultat el 15 de setembre de 2025.
+* Mozilla (2025). [Window: localStorage property](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage). Consultat el 15 de setembre de 2025.
+* Mozilla (2025). [Storage quotas and eviction criteria](https://developer.mozilla.org/en-US/docs/Web/API/Storage_API/Storage_quotas_and_eviction_criteria). Consultat el 15 de setembre de 2025.

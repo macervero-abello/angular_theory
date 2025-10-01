@@ -8,9 +8,9 @@ Els continguts d'aquesta guia estan basats en la versions Angular v20 i Ionic v8
 * [Capítol 2. Instal·lació i preparació del l'entorn de desenvolupament](angular/chapter02.md)
 * [Capítol 3. Components Angular](angular/chapter03.md)
 * [Capítol 4. *Data Binding*](angular/chapter04.md)
+* [Capítol 5. Modificació del DOM](angular/chapter05.md)
+* [Capítol 6. Format `JSON` i LocalStorage](angular/chapter06.md)
 <!--
-* [Capítol 5. Modificació del DOM](chapter05.md)
-* [Capítol 6. Format `JSON` i LocalStorage](chapter06.md)
 * [Capítol 7. Detecció de canvis](chapter07.md)
 * [Capítol 8. Comunicació entre components Angular](chapter08.md)
 * [Capítol 9. *Style Binding*, *Class Binding* i estils externs](chapter09.md)
