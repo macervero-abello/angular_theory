@@ -683,9 +683,9 @@ export const appConfig: ApplicationConfig = {
 ```
 
 ## Webgrafia del capítol
-* Medium (2025). [What is Zone.js in Angular?](https://medium.com/@sehban.alam/what-is-zone-js-in-angular-e0029c21c32f). Consultat el 23 de juny de 2025.
-* Angular University (2025). [Angular Signals: Complete Guide](https://blog.angular-university.io/angular-signals/). Consultat el 26 de juny de 2025.
-* Wikimedia Foundation, Inc (2025). [Anonymous function](https://en.wikipedia.org/wiki/Anonymous_function). Consultat el 26 de juny de 2025.
-* Google (2025). [Angular](https://angular.dev/). Consultat el 27 de juny de 2025.
-* Udemy (2025). [Curs *Angular - The Complete Guide (2025 Edition)*](https://www.udemy.com/course/the-complete-guide-to-angular-2/). Consultat el 27 de juny de 2025.
-* Angular.love (2025). [The Latest in Angular Change Detection – All You Need to Know ](https://angular.love/the-latest-in-angular-change-detection-zoneless-signals). Consultat el 27 de juny de 2025.
+* Medium (2025). [What is Zone.js in Angular?](https://medium.com/@sehban.alam/what-is-zone-js-in-angular-e0029c21c32f). Consultat el 15 de setembre de 2025.
+* Angular University (2025). [Angular Signals: Complete Guide](https://blog.angular-university.io/angular-signals/). Consultat el 15 de setembre de 2025.
+* Wikimedia Foundation, Inc (2025). [Anonymous function](https://en.wikipedia.org/wiki/Anonymous_function). Consultat el 15 de setembre de 2025.
+* Google (2025). [Angular](https://angular.dev/). Consultat el 15 de setembre de 2025.
+* Udemy (2025). [Curs *Angular - The Complete Guide (2025 Edition)*](https://www.udemy.com/course/the-complete-guide-to-angular-2/). Consultat el 15 de setembre de 2025.
+* Angular.love (2025). [The Latest in Angular Change Detection – All You Need to Know ](https://angular.love/the-latest-in-angular-change-detection-zoneless-signals). Consultat el 15 de setembre de 2025.
