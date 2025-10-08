@@ -150,7 +150,7 @@ A continuació, hi trobem un conjunt de fitxers que en podríem anomenar *global
 3. main.ts: el primer tros codi TypeScript que s'executa cada cop que s'executa l'aplicació
 
 #### Anàlisi dels fitxers `index.html` i `main.ts`
-Tal com ja s'ha comentat en el capítol anterior, els projectes Angular són *Single Page Aplications*, és a dir, només contenen un únic fitxer `HTML` (vegeu l'apartat [Què és una *Single Page Application (SPA)*?](chapter01.md#què-és-una-single-page-application-spa))). Així doncs, el fitxer `src/index.html` serà l'únic document `HTML` que es descarregarà del servidor cada cop que s'accedeixi a l'aplicació. Ara però, el codi `HTML` d'aquest fitxer conté una etiqueta *especial*, l'`<app-root>, tal com mostra la Figure 2.3.
+Tal com ja s'ha comentat en el capítol anterior, els projectes Angular són *Single Page Aplications*, és a dir, només contenen un únic fitxer `HTML` (vegeu l'apartat [Què és una *Single Page Application (SPA)*?](chapter01.md#què-és-una-single-page-application-spa))). Així doncs, el fitxer `src/index.html` serà l'únic document `HTML` que es descarregarà del servidor cada cop que s'accedeixi a l'aplicació. Ara però, el codi `HTML` d'aquest fitxer conté una etiqueta *especial*, l'`<app-root>`, tal com mostra la Figure 2.3.
 
 <figure>
     <img src="img/ch02/single_index_file.png" alt="Fitxer index.html">
