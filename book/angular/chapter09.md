@@ -364,6 +364,7 @@ Per poder-la utilitzar en qualsevol projecte Angular s'ha d'instal·lar la llibr
 
 ```bash
 $ npm install @fortawesome/free-solid-svg-icons
+$ npm install @fortawesome/free-regular-svg-icons
 $ npm install @fortawesome/angular-fontawesome@<version>
 ```
 
@@ -383,7 +384,8 @@ Un cop instal·lada, cada cop que vulguem utilitzar una de les seves icones en a
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faHome } from '@fortawesome/free-solid-svg-icons';
+import { faHome as fasHome} from '@fortawesome/free-solid-svg-icons';
+import { faHome as farHome} from '@fortawesome/free-regular-svg-icons';
 
 @Component({
   selector: 'app-root',
@@ -392,7 +394,8 @@ import { faHome } from '@fortawesome/free-solid-svg-icons';
   styleUrl: './app.css'
 })
 export class App {
-  public homeIcon = faHome;
+  public homeIcon1 = fasHome;
+  public homeIcon2 = farHome;
 }
 ```
 {% endtab %}
@@ -400,9 +403,9 @@ export class App {
 
 
 ## Webgrafia del capítol
-* Google (2025). [Angular](https://angular.dev/). Consultat l'1 de juliol de 2025.
-* Udemy (2025). [Curs *Angular - The Complete Guide (2025 Edition)*](https://www.udemy.com/course/the-complete-guide-to-angular-2/). Consultat l'1 de juliol de 2025.
-* Refsnes Data (2025). [W3Schools](https://www.w3schools.com/). Consultat l'1 de juliol de 2025.
-* Bootstrap (2025). [Bootstrap](https://getbootstrap.com/). Consultat l'1 de juliol de 2025.
-* Font Icons, Inc (2025). [Font Awesome](https://fontawesome.com/). Consultat l'1 de juliol de 2025.
-* npm (2025). [Package angular-fontawesome](https://www.npmjs.com/package/@fortawesome/angular-fontawesome). Consultat l'1 de juliol de 2025.
+* Google (2025). [Angular](https://angular.dev/). Consultat el 15 de setembre de 2025.
+* Udemy (2025). [Curs *Angular - The Complete Guide (2025 Edition)*](https://www.udemy.com/course/the-complete-guide-to-angular-2/). Consultat el 15 de setembre de 2025.
+* Refsnes Data (2025). [W3Schools](https://www.w3schools.com/). Consultat el 15 de setembre de 2025.
+* Bootstrap (2025). [Bootstrap](https://getbootstrap.com/). Consultat el 15 de setembre de 2025.
+* Font Icons, Inc (2025). [Font Awesome](https://fontawesome.com/). Consultat el 15 de setembre de 2025.
+* npm (2025). [Package angular-fontawesome](https://www.npmjs.com/package/@fortawesome/angular-fontawesome). Consultat el 15 de setembre de 2025.

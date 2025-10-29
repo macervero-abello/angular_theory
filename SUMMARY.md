@@ -9,8 +9,8 @@
 * [Capítol 6. Format `JSON` i LocalStorage](book/angular/chapter06.md)
 * [Capítol 7. Detecció de canvis](book/angular/chapter07.md)
 * [Capítol 8. Comunicació entre components Angular](book/angular/chapter08.md)
+* [Capítol 9. *Style Binding*, *Class Binding* i estils externs](book/angular/chapter09.md)
 <!--
-* [Capítol 9. *Style Binding*, *Class Binding* i estils externs](book/chapter09.md)
 * [Capítol 10. *Routing*](book/chapter10.md)
 * [Capítol 11. Patró *MVC*](book/chapter11.md)
 * [Capítol 12. Accés a dades externes: serveis web (API REST) i fitxers JSON](book/chapter12.md)
