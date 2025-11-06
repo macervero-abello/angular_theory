@@ -92,8 +92,8 @@ $ ng deploy --base-href=.
 Un cop fets tots aquests passos i després d'haver esperat uns minuts per tal que *GitHub* faci la configuració necessària per fer la publicació a *GitHub Pages*, l'aplicació es trobarà disponible a l'adreça `https://<username>.github.io/<repository>`
 
 ## Webgrafia del capítol
-* Google (2025). [Angular](https://angular.dev/). Consultat el 7 de juliol de 2025.
-* Udemy (2025). [Curs *Angular - The Complete Guide (2025 Edition)*](https://www.udemy.com/course/the-complete-guide-to-angular-2/). Consultat el 7 de juliol de 2025.
+* Google (2025). [Angular](https://angular.dev/). Consultat el 15 de setembre de 2025.
+* Udemy (2025). [Curs *Angular - The Complete Guide (2025 Edition)*](https://www.udemy.com/course/the-complete-guide-to-angular-2/). Consultat el 15 de setembre de 2025.
 
 <!--https://gitforwindows.org/
 https://git-scm.com/downloads/linux-->

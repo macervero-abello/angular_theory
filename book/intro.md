@@ -18,8 +18,8 @@ Els continguts d'aquesta guia estan basats en la versions Angular v20 i Ionic v8
 * [Capítol 11. Patró *MVC*](chapter11.md)
 * [Capítol 12. Accés a dades externes: serveis web (API REST) i fitxers JSON](chapter12.md)
 * [Capítol 13. Firebase](chapter13.md)
-* [Capítol 14. Desplegament a *GitHub Pages*](chapter14.md)
 -->
+* [Capítol 14. Desplegament a *GitHub Pages*](angular/chapter14.md)
 
 ## Ionic
 
