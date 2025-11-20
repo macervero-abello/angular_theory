@@ -1419,5 +1419,5 @@ A la següent imatge podem veure com, cada cop que es canvia de pàgina, l'enlla
 -->
 
 ## Webgrafia del capítol
-* Google (2025). [Angular](https://angular.dev/). Consultat el 2 de juliol de 2025.
-* Udemy (2025). [Curs *Angular - The Complete Guide (2025 Edition)*](https://www.udemy.com/course/the-complete-guide-to-angular-2/). Consultat el 2 de juliol de 2025.
+* Google (2025). [Angular](https://angular.dev/). Consultat el 15 de setembre de 2025.
+* Udemy (2025). [Curs *Angular - The Complete Guide (2025 Edition)*](https://www.udemy.com/course/the-complete-guide-to-angular-2/). Consultat el 15 de setembre de 2025.
