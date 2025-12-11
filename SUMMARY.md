@@ -12,8 +12,8 @@
 * [Capítol 9. *Style Binding*, *Class Binding* i estils externs](book/angular/chapter09.md)
 * [Capítol 10. *Routing*](book/angular/chapter10.md)
 * [Capítol 11. Patró *MVC*](book/angular/chapter11.md)
+* [Capítol 12. Accés a dades externes: serveis web (API REST) i fitxers JSON](book/angular/chapter12.md)
 <!--
-* [Capítol 12. Accés a dades externes: serveis web (API REST) i fitxers JSON](book/chapter12.md)
 * [Capítol 13. Firebase](book/chapter13.md)
 -->
 * [Capítol 14. Desplegament a *GitHub Pages*](book/angular/chapter14.md)

@@ -15,8 +15,8 @@ Els continguts d'aquesta guia estan basats en la versions Angular v20 i Ionic v8
 * [Capítol 9. *Style Binding*, *Class Binding* i estils externs](angular/chapter09.md)
 * [Capítol 10. *Routing*](angular/chapter10.md)
 * [Capítol 11. Patró *MVC*](angular/chapter11.md)
+* [Capítol 12. Accés a dades externes: serveis web (API REST) i fitxers JSON](angular/chapter12.md)
 <!--
-* [Capítol 12. Accés a dades externes: serveis web (API REST) i fitxers JSON](chapter12.md)
 * [Capítol 13. Firebase](chapter13.md)
 -->
 * [Capítol 14. Desplegament a *GitHub Pages*](angular/chapter14.md)
