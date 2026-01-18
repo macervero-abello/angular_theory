@@ -166,5 +166,95 @@ Així doncs, algunes de les opcions que podem aplicar al codi d'exemple són les
 <img src="img/shopping_cart.png" i18n-alt="Alt image|Shopping cart image@@imageAlternativeText" alt="Carro de la compra" width="128px"/>
 ```
 
+### Marca `$localize`
+Quan la informació que es vol adaptar i internacionalitzar no es troba directament *hardcodejada* dins de la part `HTML` del *component*, sinó que es està encapsulada en algun atribut o funció dins del codi `TS`, cal indicar la necessitat d'adaptació mitjançant la marca `$localize`. Aquesta marca funciona d'una manera molt similar a l'atribut `i18n`, tenint en compte que els components de contextualització (significat, explicació i identificador) van encapsulats entre els símbols `:`.
+
+```typescript
+    $localize`":{meaning}|{description}@@{custom_id}:string_to_translate"`
+    i18n=`"Product name|Product name in the shopping cart@@prodName:Llet"`
+```
+
+Si recuperem el codi d'exemple que estem utilitzant en aquest captíol i volem internacionalitzar el nom dels productes del carro de la compra, el codi `TS` queda de la manera següent:
+
+```typescript
+    import { Component } from '@angular/core';
+
+    @Component({
+    selector: 'app-root',
+    imports: [],
+    templateUrl: './app.html',
+    styleUrl: './app.css'
+    })
+    export class App {
+        public products: any[] = [
+            {name: $localize`'Llet'`, price: 1.58},
+            {name: $localize`'Pernil dolç'`, price: 2.15}
+        ];
+    }
+```
+
+Si es desitja contextualitzar de manera més concreta la internacionalització, podem aplicar alguna de les opcions següents:
+
+
+```typescript
+//Sense contextualització
+public products: any[] = [
+    {name: $localize`'Llet'`, price: 1.58},
+    {name: $localize`'Pernil dolç'`, price: 2.15}
+];
+
+//Amb l'identificador: aquesta contextualització és bàsica i la que s'acostuma a posar sempre, com a mínim
+public products: any[] = [
+    {name: $localize`:@@prodName1:'Llet'`, price: 1.58},
+    {name: $localize`:@@prodName2:'Pernil dolç'`, price: 2.15}
+];
+
+//Amb l'explicació
+public products: any[] = [
+    {name: $localize`:Product name in the shopping cart 1:'Llet'`, price: 1.58},
+    {name: $localize`:Product name in the shopping cart 2:'Pernil dolç'`, price: 2.15}
+];
+
+//Amb l'explicació i l'identificador: l'opció més comuna
+public products: any[] = [
+    {name: $localize`:Product name in the shopping cart 1@@prodName1:'Llet'`, price: 1.58},
+    {name: $localize`:Product name in the shopping cart 2@@prodName2:'Pernil dolç'`, price: 2.15}
+];
+
+//Contextualització completa
+public products: any[] = [
+    {name: $localize`:Product name|Product name in the shopping cart 1@@prodName1:'Llet'`, price: 1.58},
+    {name: $localize`:Product name|Product name in the shopping cart 2@@prodName2:'Pernil dolç'`, price: 2.15}
+]
+```
 
 ## Extracció de tots els elements que han de ser traduïts
+Un cop l'aplicació ja ha estat preparada per a ser internacionalitzada, cal extreure tots els textos que s'han d'adaptar. Els passos a seguir són els següents:
+
+1. Obtenir el fitxer d'idioma font (*source language file*)
+2. Fer una còpia del fitxer d'idioma font per a cadascun dels idiomes als quals es vulgui traduir l'aplicació. Cadascun d'aquest fitxers serà un fitxer de traducció (*translation file*)
+3. Traduir cadascun dels fitxers de traducció.
+
+### Creació del *source language file*
+Per tal d'obtenir el fitxer d'idioma font (*source language file*) cal executar la comanda següent dins del directori principal del projecte:
+
+```bash
+$ ng extract-i18n
+```
+
+Això genera un fitxer anomenat `messages.xlf` dins del directori principal del projecte. Ara però, la comanda té diverses opcions que permeten canviar-ne els paràmetres de creació:
+
+1. `--format`: estableix el format del *source language file*, que pot ser
+    * ARB (`.arb`)
+    * JSON (`.json`)
+    * XLIFF 1.2 (`.xlf`)
+    * XLIFF 2 (`.xlf`)
+    * XMB (`.xmb` o `.xtb`)
+2. `--out-file`: defineix el nom del *source language file*
+3. `--output-path`: defineix la carpeta on es vol guardar el *source language file*
+
+Per exemple:
+
+```bash
+$ ng extract-i18n --format=json --out-file source.json --output-path src/locale
+```
