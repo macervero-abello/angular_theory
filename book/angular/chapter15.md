@@ -11,8 +11,9 @@ La **internacionalització** (i18n) consisteix a dissenyar i preparar un project
 Per poder internacionalitzar i localitzar una aplicació Angular s'han de seguir els passos següents:
 1. Instal·lació de la llibreria de localització
 2. Preparar els components i els textos per tal que puguin ser traduïts
-3. Extracció de tots els elements que han de ser traduïts
-4. Crear els fitxers de traducció per als diversos idiomes
+3. Definir en quin *locale* s'ha creat l'aplicació base
+4. Extracció de tots els elements que han de ser traduïts
+5. Crear els fitxers de traducció per als diversos idiomes
 
 L'explicació teòrica es realitzarà sobre el projecte que es mostra a continuació, el qual només té el *component* principal `App`
 
@@ -120,7 +121,7 @@ Així doncs, algunes de les opcions que podem aplicar al codi d'exemple són les
 <h1 i18n="Complete title of the site">Tiquet de la compra internacionalitzat/localitzat</h1>
 
 <!--Amb l'explicació i l'identificador: l'opció més comuna-->
-<h1 i18n="Complete title of the site@@pageTitle">Tiquet de la compra internacionalitzat/localitzat</h1>
+<h1 i18n="Complete title of the site@@pageTitle">Tiquet de la compra  internacionalitzat/localitzat</h1>
 
 <!--Contextualització completa-->
 <h1 i18n="Site header|Complete title of the site@@pageTitle">Tiquet de la compra internacionalitzat/localitzat</h1>
@@ -181,20 +182,22 @@ Quan la informació que es vol adaptar i internacionalitzar no es troba directam
 Si recuperem el codi d'exemple que estem utilitzant en aquest captíol i volem internacionalitzar el nom dels productes del carro de la compra, el codi `TS` queda de la manera següent:
 
 ```typescript
-    import { Component } from '@angular/core';
+import { Component, signal, Signal } from '@angular/core';
 
-    @Component({
+@Component({
     selector: 'app-root',
     imports: [],
     templateUrl: './app.html',
     styleUrl: './app.css'
-    })
-    export class App {
-        public products: any[] = [
-            {name: $localize`Llet`, price: 1.58},
-            {name: $localize`Pernil dolç`, price: 2.15}
-        ];
-    }
+})
+export class App {
+    public readonly products: Signal<any[]> = signal([
+        {name: 'Llet', price: 1.58},
+        {name: 'Pernil dolç', price: 2.15}
+    ]).asReadonly();
+
+    public readonly date: Signal<Date> = signal(new Date()).asReadonly();
+}
 ```
 
 Si es desitja contextualitzar de manera més concreta la internacionalització, podem aplicar alguna de les opcions següents:
@@ -202,35 +205,60 @@ Si es desitja contextualitzar de manera més concreta la internacionalització, 
 
 ```typescript
 //Sense contextualització
-public products: any[] = [
+public products: Signal<any[]> = signal([
     {name: $localize`Llet`, price: 1.58},
     {name: $localize`Pernil dolç`, price: 2.15}
-];
+]).asReadonly();
 
 //Amb l'identificador: aquesta contextualització és bàsica i la que s'acostuma a posar sempre, com a mínim
-public products: any[] = [
+public products: Signal<any[]> = signal([
     {name: $localize`:@@prodName1:Llet`, price: 1.58},
     {name: $localize`:@@prodName2:Pernil dolç`, price: 2.15}
-];
+]).asReadonly();
 
 //Amb l'explicació
-public products: any[] = [
+public products: Signal<any[]> = signal([
     {name: $localize`:Product name in the shopping cart 1:Llet`, price: 1.58},
     {name: $localize`:Product name in the shopping cart 2:Pernil dolç`, price: 2.15}
-];
+]).asReadonly();
 
 //Amb l'explicació i l'identificador: l'opció més comuna
-public products: any[] = [
+public products: Signal<any[]> = signal([
     {name: $localize`:Product name in the shopping cart 1@@prodName1:Llet`, price: 1.58},
     {name: $localize`:Product name in the shopping cart 2@@prodName2:Pernil dolç`, price: 2.15}
-];
+]).asReadonly();
 
 //Contextualització completa
-public products: any[] = [
+public products: Signal<any[]> = signal([
     {name: $localize`:Product name|Product name in the shopping cart 1@@prodName1:Llet`, price: 1.58},
     {name: $localize`:Product name|Product name in the shopping cart 2@@prodName2:Pernil dolç`, price: 2.15}
-]
+]).asReadonly();
 ```
+
+## Definir en quin *locale* s'ha creat l'aplicació base
+Com s'ha pogut veure en els apartats anteriors, els textos de l'aplicació estan preparats per a una determinada regió (*locale*), el qual ha de ser configurat dins del fitxer `angular.json` ja que, si no es configura, per defecte s'agafa el *locale* `en-US` (anglès dels Estats Units). En aquest fitxer s'hi ha d'afegir l'objecte `i18n` tal com mostra el codi següent:
+
+```json
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "angular_i18n_example_project": {
+      "projectType": "application",
+      ...
+      "i18n": {
+        "sourceLocale": "ca-ES"
+      },
+      "architect": {
+        ...
+      }
+    }
+  }
+}
+```
+
+Per defecte, un *locale* es codifica seguint la norma `{language-code}-{country-code}` i en podeu trobar un llistat en aquest [enllaç](https://simplelocalize.io/data/locales/).
 
 ## Extracció de tots els elements que han de ser traduïts
 Un cop l'aplicació ja ha estat preparada per a ser internacionalitzada, cal extreure tots els textos que s'han d'adaptar. Els passos a seguir són els següents:
@@ -262,3 +290,77 @@ Per exemple:
 ```bash
 $ ng extract-i18n --format=json --out-file source.json --output-path src/locale
 ```
+
+{% hint style="danger" %}
+**Recomanació** es recomana que, per extreure el *source language file* s'utilitzi el format per defecte, el nom `source.xlf` i la carpeta `src/locale`
+{% endhint %}
+
+Si recuperem el codi de l'aplicació preparat per a ser localitzat
+
+{% tabs %}
+{% tab title="Codi app.html" overflow="wrap" lineNumbers="true" %}
+```html
+<h1>Tiquet de la compra internacionalitzat/localitzat</h1>
+<p>{{ date() }}</p>
+
+<p>S'han comprat {{ products().length }} productes</p>
+
+<li>
+@for(prod of products(); track prod.id) {
+    <ul>{{ prod.name }} - {{prod.price}}€</ul>
+}
+</li>
+
+<img src="img/shopping_cart.png" alt="Carro de la compra" width="128px"/>
+```
+{% endtab %}
+
+{% tab title="Codi app.ts" overflow="wrap" lineNumbers="true" %}
+```typescript
+import { Component, signal, Signal } from '@angular/core';
+
+@Component({
+    selector: 'app-root',
+    imports: [],
+    templateUrl: './app.html',
+    styleUrl: './app.css'
+})
+export class App {
+    public products: Signal<any[]> = signal([
+      {name: $localize`:Product name|Product name in the shopping cart 1@@prodName1:Llet`, price: 1.58},
+      {name: $localize`:Product name|Product name in the shopping cart 2@@prodName2:Pernil dolç`, price: 2.15}
+    ]).asReadonly();
+
+    public readonly date: Signal<Date> = signal(new Date()).asReadonly();
+}
+```
+{% endtab %}
+{% endtabs %}
+
+l'execució de la comanda `ng extract-i18n` genera el fitxer XLIFF següent:
+
+![*Source translation file*](img/ch15/source_translation_file_1.png)
+
+on es pot comprovar que per cada element que cal traduir es genera una etiqueta `<trans-unit>`. Aquest etiqueta conté la informació següent:
+
+1. L'identificador de l'element a traduir (atribut `id` de l'etiqueta `<trans-unit>`)
+2. El text de l'element que cal que es tradueixi (etiqueta `<source>`)
+3. La localització on es troba l'element (etiqueta `<context-group>`)
+4. Dades de contextualització: significat i explicació (etiquetes `<note>`)
+
+En cas que la internacionalització del codi es faci sense cap dada de contextualització que ajudi a l'equip de traducció, el resultat del fitxer XLIFF és el següent:
+
+![*Source translation file*](img/ch15/source_translation_file_2.png)
+
+Es pot comprovar que aquesta segona versió no proporciona tota l'ajuda necessària a l'equip de traducció i que els identificadors passen a ser números completament aleatoris que no aporten cap informació semàntica. És per aquesta raó que, com a mínim, es recomana definir l'identificador i l'explicació de cada element que cal internacionalitzar.
+
+## Creació dels fitxers de traducció (*translation files*) per als diversos idiomes
+Un cop s'ha obtingut el *source language file*, per poder fer la traducció a un altre idioma només fa falta seguir els passos següents:
+
+1. Fer una còpia del *source language file* dins de la carpeta `src/locale`
+2. Canviar el nom del fitxer per tal d'afegir-hi el codi de l'idioma. Per exemple, si el *source language file* s'anomena `source.xlf`, el *translation file* per a la llengua castellana s'anomenarà `source.es.xlf`
+3. Traduir el fitxer `source.es.xlf`
+4. Configurar l'aplicació per tal d'indicar que està preparada per a treballar amb el nou idioma
+
+## Webgrafia del capítol
+* Google (2025). [Angular](https://angular.dev/). Consultat el 15 de setembre de 2025.
