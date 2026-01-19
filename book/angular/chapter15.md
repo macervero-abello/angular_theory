@@ -19,35 +19,39 @@ L'explicació teòrica es realitzarà sobre el projecte que es mostra a continua
 {% tabs %}
 {% tab title="Codi app.html" overflow="wrap" lineNumbers="true" %}
 ```html
-    <h1>Tiquet de la compra internacionalitzat/localitzat</h1>
-    <p>{{ date }}, {{ time }}</p>
+<h1>Tiquet de la compra internacionalitzat/localitzat</h1>
+<p>{{ date() }}</p>
 
-    <p>S'han comprat {{ products.length }} productes</p>
+<p>S'han comprat {{ products().length }} productes</p>
 
-    <li>
-    @for(prod of prodcts: track prod.id) {
-        <ul>{{ prod.name }} - {{prod.price}}€</ul>
-    }
-    </li>
+<li>
+@for(prod of products(); track prod.id) {
+    <ul>{{ prod.name }} - {{prod.price}}€</ul>
+}
+</li>
+
+<img src="img/shopping_cart.png" alt="Carro de la compra" width="128px"/>
 ```
 {% endtab %}
 
 {% tab title="Codi app.ts" overflow="wrap" lineNumbers="true" %}
 ```typescript
-    import { Component } from '@angular/core';
+import { Component, signal, Signal } from '@angular/core';
 
-    @Component({
+@Component({
     selector: 'app-root',
     imports: [],
     templateUrl: './app.html',
     styleUrl: './app.css'
-    })
-    export class App {
-        public products: any[] = [
-            {name: 'Llet', price: 1.58},
-            {name: 'Pernil dolç', price: 2.15}
-        ];
-    }
+})
+export class App {
+    public readonly products: Signal<any[]> = signal([
+        {name: 'Llet', price: 1.58},
+        {name: 'Pernil dolç', price: 2.15}
+    ]).asReadonly();
+
+    public readonly date: Signal<Date> = signal(new Date()).asReadonly();
+}
 ```
 {% endtab %}
 {% endtabs %}
@@ -77,7 +81,7 @@ Per indicar que el text d'una determinada etiqueta `HTML` o d'un *component* s'h
 <h1 i18n>Tiquet de la compra internacionalitzat/localitzat</h1>
 <p>{{ date() }}</p>
 
-<p>S'han comprat {{ products.length }} productes</p>
+<p>S'han comprat {{ products().length }} productes</p>
 
 <li>
   @for(prod of products(); track prod.id) {
@@ -129,7 +133,7 @@ L'atribut `i18n-{attribute-name}` s'utilitza indicar que el text d'un determinat
 <h1 i18n>Tiquet de la compra internacionalitzat/localitzat</h1>
 <p>{{ date() }}</p>
 
-<p>S'han comprat {{ products.length }} productes</p>
+<p>S'han comprat {{ products().length }} productes</p>
 
 <li>
   @for(prod of products(); track prod.id) {
@@ -170,8 +174,8 @@ Així doncs, algunes de les opcions que podem aplicar al codi d'exemple són les
 Quan la informació que es vol adaptar i internacionalitzar no es troba directament *hardcodejada* dins de la part `HTML` del *component*, sinó que es està encapsulada en algun atribut o funció dins del codi `TS`, cal indicar la necessitat d'adaptació mitjançant la marca `$localize`. Aquesta marca funciona d'una manera molt similar a l'atribut `i18n`, tenint en compte que els components de contextualització (significat, explicació i identificador) van encapsulats entre els símbols `:`.
 
 ```typescript
-    $localize`":{meaning}|{description}@@{custom_id}:string_to_translate"`
-    i18n=`"Product name|Product name in the shopping cart@@prodName:Llet"`
+    $localize`:{meaning}|{description}@@{custom_id}:string_to_translate`
+    $localize`:Product name|Product name in the shopping cart@@prodName:Llet`
 ```
 
 Si recuperem el codi d'exemple que estem utilitzant en aquest captíol i volem internacionalitzar el nom dels productes del carro de la compra, el codi `TS` queda de la manera següent:
@@ -187,8 +191,8 @@ Si recuperem el codi d'exemple que estem utilitzant en aquest captíol i volem i
     })
     export class App {
         public products: any[] = [
-            {name: $localize`'Llet'`, price: 1.58},
-            {name: $localize`'Pernil dolç'`, price: 2.15}
+            {name: $localize`Llet`, price: 1.58},
+            {name: $localize`Pernil dolç`, price: 2.15}
         ];
     }
 ```
@@ -199,32 +203,32 @@ Si es desitja contextualitzar de manera més concreta la internacionalització, 
 ```typescript
 //Sense contextualització
 public products: any[] = [
-    {name: $localize`'Llet'`, price: 1.58},
-    {name: $localize`'Pernil dolç'`, price: 2.15}
+    {name: $localize`Llet`, price: 1.58},
+    {name: $localize`Pernil dolç`, price: 2.15}
 ];
 
 //Amb l'identificador: aquesta contextualització és bàsica i la que s'acostuma a posar sempre, com a mínim
 public products: any[] = [
-    {name: $localize`:@@prodName1:'Llet'`, price: 1.58},
-    {name: $localize`:@@prodName2:'Pernil dolç'`, price: 2.15}
+    {name: $localize`:@@prodName1:Llet`, price: 1.58},
+    {name: $localize`:@@prodName2:Pernil dolç`, price: 2.15}
 ];
 
 //Amb l'explicació
 public products: any[] = [
-    {name: $localize`:Product name in the shopping cart 1:'Llet'`, price: 1.58},
-    {name: $localize`:Product name in the shopping cart 2:'Pernil dolç'`, price: 2.15}
+    {name: $localize`:Product name in the shopping cart 1:Llet`, price: 1.58},
+    {name: $localize`:Product name in the shopping cart 2:Pernil dolç`, price: 2.15}
 ];
 
 //Amb l'explicació i l'identificador: l'opció més comuna
 public products: any[] = [
-    {name: $localize`:Product name in the shopping cart 1@@prodName1:'Llet'`, price: 1.58},
-    {name: $localize`:Product name in the shopping cart 2@@prodName2:'Pernil dolç'`, price: 2.15}
+    {name: $localize`:Product name in the shopping cart 1@@prodName1:Llet`, price: 1.58},
+    {name: $localize`:Product name in the shopping cart 2@@prodName2:Pernil dolç`, price: 2.15}
 ];
 
 //Contextualització completa
 public products: any[] = [
-    {name: $localize`:Product name|Product name in the shopping cart 1@@prodName1:'Llet'`, price: 1.58},
-    {name: $localize`:Product name|Product name in the shopping cart 2@@prodName2:'Pernil dolç'`, price: 2.15}
+    {name: $localize`:Product name|Product name in the shopping cart 1@@prodName1:Llet`, price: 1.58},
+    {name: $localize`:Product name|Product name in the shopping cart 2@@prodName2:Pernil dolç`, price: 2.15}
 ]
 ```
 
