@@ -20,6 +20,7 @@ Els continguts d'aquesta guia estan basats en la versions Angular v20 i Ionic v8
 * [Capítol 13. Firebase](chapter13.md)
 -->
 * [Capítol 14. Desplegament a *GitHub Pages*](angular/chapter14.md)
+* [Capítol 15. Internacionalització i Localització](angular/chapter15.md)
 
 ## Ionic
 

@@ -339,7 +339,7 @@ export class App {
 
 l'execució de la comanda `ng extract-i18n` genera el fitxer XLIFF següent:
 
-![*Source translation file*](img/ch15/source_translation_file_1.png)
+![*Source language file*](img/ch15/source_translation_file_1.png)
 
 on es pot comprovar que per cada element que cal traduir es genera una etiqueta `<trans-unit>`. Aquest etiqueta conté la informació següent:
 
@@ -350,7 +350,7 @@ on es pot comprovar que per cada element que cal traduir es genera una etiqueta 
 
 En cas que la internacionalització del codi es faci sense cap dada de contextualització que ajudi a l'equip de traducció, el resultat del fitxer XLIFF és el següent:
 
-![*Source translation file*](img/ch15/source_translation_file_2.png)
+![*Source language file*](img/ch15/source_translation_file_2.png)
 
 Es pot comprovar que aquesta segona versió no proporciona tota l'ajuda necessària a l'equip de traducció i que els identificadors passen a ser números completament aleatoris que no aporten cap informació semàntica. És per aquesta raó que, com a mínim, es recomana definir l'identificador i l'explicació de cada element que cal internacionalitzar.
 
@@ -359,8 +359,65 @@ Un cop s'ha obtingut el *source language file*, per poder fer la traducció a un
 
 1. Fer una còpia del *source language file* dins de la carpeta `src/locale`
 2. Canviar el nom del fitxer per tal d'afegir-hi el codi de l'idioma. Per exemple, si el *source language file* s'anomena `source.xlf`, el *translation file* per a la llengua castellana s'anomenarà `source.es.xlf`
-3. Traduir el fitxer `source.es.xlf`
+3. Traduir el *translation file*, en el cas de l'exemple, el `source.es.xlf`
 4. Configurar l'aplicació per tal d'indicar que està preparada per a treballar amb el nou idioma
+
+### Traducció del *translation file*
+Tenint present que el *translation file* és una còpia directa del *source language file*, per poder-ne fer la traducció només fa falta afegir l'etiqueta `<target>` dins de cada element `<trans-unit>`. Més concretament, l'etiqueta `<target>` s'acostuma a posar just a sota de l'etiqueta `<source>`. Seguint l'exemple, a continuació es mostra com quedaria el `source.es.xfl`.
+
+![*Translation file*](img/ch15/translation_file.png)
+
+### Configuració de l'aplicació per tal de fer constar amb quins idiomes pot treballar
+Aquesta configuració s'ha de fer dins del fitxer `angular.json` (cal recordar que cada cop que es modifica el fitxer `angular.json` s'ha de reactivar el servidor de desenvolupament, en cas que estigués obert) i consisteix en dues parts:
+
+1. indicar els idiomes disponibles i en quins *translation files* es troben i
+2. preparar l'aplicació per tal que, en el moment de compilació, es generi una versió per a cada idioma configurat.
+
+A continuació es mostra l'aspecte final del fitxer `angular.json`
+
+```json
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "angular_i18n_example_project": {
+      "projectType": "application",
+      ...
+      "i18n": {
+        "sourceLocale": "ca-ES",
+        "locales": {
+          "es": {
+            "translation": "src/locale/source.es.xlf"
+          },
+          "en": {
+            "translation": "src/locale/source.en.xlf"
+          }
+        }
+      },
+      "architect": {
+        "build": {
+          "builder": "@angular/build:application",
+          "options": {
+            "browser": "src/main.ts",
+            ...
+            "polyfills": [
+              "@angular/localize/init"
+            ],
+            "localize": true
+          },
+          ...
+        },
+        ...
+      }
+    }
+  }
+}
+```
+
+Per tal d'indicar a quins idiomes ha estat traduïda l'aplicació s'ha d'afegir l'objecte `locales` dins de l'objecte `i18n`, el qual conté un element per cada idioma creat, tot indicant on es troba el seu *translation file*.
+
+Per configurar que, durant la compilació, es generi una versió per cadascun d'aquests idiomes, s'ha d'afegir l'atribut `localize: true` dins de l'objecte `architect.options`.
 
 ## Webgrafia del capítol
 * Google (2025). [Angular](https://angular.dev/). Consultat el 15 de setembre de 2025.

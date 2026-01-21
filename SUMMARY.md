@@ -17,3 +17,4 @@
 * [Capítol 13. Firebase](book/chapter13.md)
 -->
 * [Capítol 14. Desplegament a *GitHub Pages*](book/angular/chapter14.md)
+* [Capítol 15. Internacionalització i Localització](book/angular/chapter15.md)
