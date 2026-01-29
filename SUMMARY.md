@@ -13,6 +13,6 @@
 * [Capítol 10. *Routing*](book/angular/chapter10.md)
 * [Capítol 11. Patró *MVC*](book/angular/chapter11.md)
 * [Capítol 12. Accés a dades externes: serveis web (API REST) i fitxers JSON](book/angular/chapter12.md)
-* [Capítol 13. Firebase](book/chapter13.md)
+* [Capítol 13. Firebase](book/angular/chapter13.md)
 * [Capítol 14. Desplegament a *GitHub Pages*](book/angular/chapter14.md)
 * [Capítol 15. Internacionalització i Localització](book/angular/chapter15.md)
