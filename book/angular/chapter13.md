@@ -3,7 +3,7 @@ Firebase és una *suit* de Google que ofereix tot un conjunt d'eines per ajudar 
 
 En el nostre cas utilitzarem la seva base de dades NoSQL (*Firestore*) i el seu servei d'autenticació per tal de tenir un petit servidor de dades per a les nostres aplicacions.
 
-Ara però, per qüestions de compatibilitat de vesions, el primer que cal fer és assegurar que la versió d'Angular del projecte és, com a mínim, la 16. En cas que no sigui així, caldrà actualitzar el projecte on es vulgui incorporar la *suit* Firebase seguint els passos indicats en el següent [enllaç](https://angular.dev/update-guide):
+Ara però, per qüestions de compatibilitat de vesions, el primer que cal fer és assegurar que la versió d'Angular del projecte és, com a mínim, la 16. En cas que no sigui així, caldrà actualitzar el projecte on es vulgui incorporar la *suit* Firebase seguint els passos indicats en el següent [enllaç](https://angular.dev/update-guide).
 
 <!--
 ```bash
