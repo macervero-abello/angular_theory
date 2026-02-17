@@ -811,28 +811,6 @@ export class AuthSessionService {
     return this.currentUser != null;
   }
 }
-
-
-
-
-import { Injectable } from '@angular/core';
-import { Auth, GoogleAuthProvider, User, UserCredential, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, signOut } from '@angular/fire/auth';
-
-@Injectable({
-  providedIn: 'root'
-})
-export class AuthSessionService {
-   constructor(private _auth: Auth) {}
-   register(email: string, passwd: string): void {...}
-   loginWithEmail(email: string, passwd: string): void {...}
-   loginWithGoogle(): void {...}
-   logout(): void {...}
-   get currentUser(): User | null {...}
-
-   isSessionActive(): boolean {
-    return this.currentUser != null;
-  }
-}
 ```
 
 <!--
