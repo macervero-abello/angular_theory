@@ -429,29 +429,29 @@ async getChefsFromDB() {
     let chefs: Chef[] = await firstValueFrom(collectionData(this._chefCollection, {'idField': 'id'}));
 }
 ```
-<!--
 ## Autenticació
 El primer que cal fer és configurar el servei d'autenticació des del *dashboard* de *Firebase* seguint els passos següents:
 
  1. Activació del servei d'autenticació
 
- ![Activació del servei d'autenticació](img/firebase_auth.png)
+ ![Activació del servei d'autenticació](img/ch13/firebase_auth.png)
 
  2. Configuració dels mètodes d'accés (serveis d'autenticació)
 
- ![Configuració dels mètodes d'accés](img/firebase_auth_services.png)
+ ![Configuració dels mètodes d'accés](img/ch13/firebase_auth_services.png)
  
  3. Configuració del servei d'autenticació de Google: cal indicar el nom de l'aplicació per la qual es permet l'autenticació de Goole i un correu d'assistència (el correu de l'administrador, normalment).
 
- ![Configuració del servei d'autenticació de Google](img/firebase_auth_google.png)
+ ![Configuració del servei d'autenticació de Google](img/ch13/firebase_auth_google.png)
 
  4. Configuració de l'autentiació amb correu i contrasenya
 
- ![Configuració de l'autenticació amb correu i contrasenya](img/firebase_auth_email.png)
+ ![Configuració de l'autenticació amb correu i contrasenya](img/ch13/firebase_auth_email.png)
 
 Un cop seguits tots aquests passos, el *dashboard* del servei d'autenticació mostrarà la següent informació:
 
-![Resultat final](img/firebase_auth_final.png)
+![Resultat final](img/ch13/firebase_auth_final.png)
+
 
 ### Aplicació amb gestió de sessió bàsica
 Tota aplicació que hagi d'autenticar usuaris ha de fer una gestió de la sessió bàsica que permeti
@@ -460,40 +460,43 @@ Tota aplicació que hagi d'autenticar usuaris ha de fer una gestió de la sessi�
  3. tancar sessió i
  4. obtenir la informació de l'estat de la sessió.
 
-Per aconseguir-ho, el primer que cal fer és activar la dependència del servei d'autenticació dins del fitxer `app.module.ts`.
+Per aconseguir-ho, el primer que cal fer és activar la dependència del servei d'autenticació dins del fitxer `app.config.ts`.
 
 ```typescript
-...
-import { environment } from 'src/environments/environment';
-import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
-import { provideFirestore, getFirestore } from '@angular/fire/firestore';
-import { getAuth, provideAuth } from '@angular/fire/auth';
+import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
+import { provideRouter } from '@angular/router';
 
-@NgModule({
-  declarations: [AppComponent],
-  imports: [
-    ...
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { provideFirestore, getFirestore } from '@angular/fire/firestore';
+import { provideAuth, getAuth } from '@angular/fire/auth';
+import { environment } from '../environments/environment.development';
+
+import { routes } from './app.routes';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideBrowserGlobalErrorListeners(),
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideFirestore(() => getFirestore()),
-    provideAuth(() => getAuth())
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
-})
-export class AppModule { }
+    provideAuth(() => getAuth()),
+    provideRouter(routes)
+  ]
+};
 ```
 
 A continuació també cal crear el servei `AuthSessionService` (el nom del servei és a gust del desenvolupador) que permeti fer tota la gestió de la sessió. Aquest servei hauria d'injectar el serveu l'`Auth`, que és el servei que proporciona la llibreria `@angular/fire` per gestionar l'autenticació d'usuaris.
 
 ```typescript
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Auth } from '@angular/fire/auth';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthSessionService {
-  constructor(private _auth: Auth) {}
+  private _auth: Auth = inject(Auth);
+
+  constructor() {}
 }
 ```
 
@@ -503,16 +506,18 @@ Si l'aplicació que es desitja crear permet l'inici de sessió utilitzant un cor
 El servei `Auth` ofereix el mètode `createUserWithEmailAndPassword()` per tal d'aconseguir-ho, el qual retorna un objecte de tipus `Promise<UserCredential>` si el procés de registre ha anat bé. Així doncs, el codi bàsic per poder crear un nou compte és el que es mostra a continuació.
 
 ```typescript
-import { Injectable } from '@angular/core';
-import { Auth, UserCredential, createUserWithEmailAndPassword } from '@angular/fire/auth';
+import { inject, Injectable } from '@angular/core';
+import { Auth, createUserWithEmailAndPassword, UserCredential } from '@angular/fire/auth';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthSessionService {
-  constructor(private _auth: Auth) {}
+  private _auth: Auth = inject(Auth);
 
-  register(email: string, passwd: string): void {
+  constructor() {}
+
+  public register(email: string, passwd: string): void {
     createUserWithEmailAndPassword(this._auth, email, passwd).then(
       (userCredential: UserCredential) => {console.log(userCredential);}
     ).catch(
@@ -531,21 +536,23 @@ Com es pot comprovar en aquest codi, un objecte `Promise<UserCredential>` implic
 
 Si s'executa el mètode `register()` del service `AuthSessionService` amb l'usuari `mcerve44@xtec.cat` i la contrasenya `123456` es pot comprovar la creació del nou compte al *dashboard* d'autenticació de *Firebase*.
 
-![Resultat de registrar un nou compte](img/firebase_auth_register.png)
+![Resultat de registrar un nou compte](img/ch13/firebase_auth_register.png)
 
 Ara però, en el cas de la gestió de sessió, potser interessa que els mètodes siguin bloquejants, és a dir, que no s'executin en 2n pla i, per tant, l'aplicació s'esperi fins a rebre'n el resultat. En cas que es vulgui fer això, el tractament de la `Promise<UserCredentials>` s'ha de fer amb les instruccions `async/await` de la manera següent:
 
 ```typescript
-import { Injectable } from '@angular/core';
-import { Auth, UserCredential, createUserWithEmailAndPassword } from '@angular/fire/auth';
+import { inject, Injectable } from '@angular/core';
+import { Auth, createUserWithEmailAndPassword, UserCredential } from '@angular/fire/auth';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthSessionService {
-  constructor(private _auth: Auth) {}
+  private _auth: Auth = inject(Auth);
 
-  async register(email: string, passwd: string): Promise<boolean> {
+  constructor() {}
+
+  public async register(email: string, passwd: string): Promise<boolean> {
     try {
       let userCredential: UserCredential = await createUserWithEmailAndPassword(this._auth, email, passwd);
       return true;
@@ -560,7 +567,7 @@ export class AuthSessionService {
 La crida d'aquesta funció (en el component d'inici de sessió) es farà com mostra el codi que trobareu a continuació:
 
 ```typescript
-  async register(email: string, passwd: string): Promise<void> {
+  public async register(email: string, passwd: string): Promise<void> {
     let logged = await this._authSessionService.register(email, passwd);
   }
 ```
@@ -571,17 +578,19 @@ L'inici de sessió difereix força depenent de si es vol fer a través de correu
 ##### Inici de sessió amb correu electrònic i contrasenya
 Per assolir aquet tipus d'autenticació el servei `Auth` ofereix el mètode `signInWithEmailAndPassword()`, el qual també retorna un objecte de tipus `Promise<UserCredential>`. Per tant, el codi bàsic per fer l'inici de sessió és molt similar a l'anterior.
 ```typescript
-import { Injectable } from '@angular/core';
-import { Auth, UserCredential, createUserWithEmailAndPassword, signInWithEmailAndPassword } from '@angular/fire/auth';
+import { inject, Injectable } from '@angular/core';
+import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, UserCredential } from '@angular/fire/auth';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthSessionService {
-  constructor(private _auth: Auth) {}
-  register(email: string, passwd: string): void {...}
+  private _auth: Auth = inject(Auth);
 
-  loginWithEmail(email: string, passwd: string): void {
+  constructor() {}
+  public register(email: string, passwd: string): void {...}
+
+  public loginWithEmail(email: string, passwd: string): void {
     signInWithEmailAndPassword(this._auth, email, passwd).then(
       (userCredential: UserCredential) => {console.log(userCredential);}
     ).catch(
@@ -595,17 +604,19 @@ export class AuthSessionService {
 
 La versió bloquejant del codi és la següent:
 ```typescript
-import { Injectable } from '@angular/core';
-import { Auth, UserCredential, createUserWithEmailAndPassword, signInWithEmailAndPassword } from '@angular/fire/auth';
+import { inject, Injectable } from '@angular/core';
+import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, UserCredential } from '@angular/fire/auth';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthSessionService {
-  constructor(private _auth: Auth) {}
-  async register(email: string, passwd: string): Promise<boolean> {...}
+  private _auth: Auth = inject(Auth);
 
-  async loginWithEmail(email: string, passwd: string): Promise<boolean> {
+  constructor() {}
+  public async register(email: string, passwd: string): Promise<boolean> {...}
+
+  public async loginWithEmail(email: string, passwd: string): Promise<boolean> {
     try {
       let userCredential: UserCredential = await signInWithEmailAndPassword(this._auth, email, passwd);
       return true;
@@ -619,7 +630,7 @@ export class AuthSessionService {
 
 La crida correspon al codi que es mostra a continuació, el qual aniria al component gestor de la funcionalitat de login:
 ```typescript
-  async login(email: string, passwd: string): Promise<void> {
+  public async login(email: string, passwd: string): Promise<void> {
     let logged = await this._authSessionService.loginWithEmail(email, passwd);
     console.log("Logged: " + logged);
   }
@@ -628,18 +639,20 @@ La crida correspon al codi que es mostra a continuació, el qual aniria al compo
 ##### Inici de sessió amb el servei d'autenticació de Google
 En cas que es vulgui utilitzar el servei (o proveïdor) d'autenticació de Google, el servei `Auth` proporciona el mètode `signInWithPopup()`, el qual necessita rebre un objecte del proveïdor desitjat, en aquest cas Google, i retorna, altre cop, un objecte de tipus `Promise<UserCredential>`.
 ```typescript
-import { Injectable } from '@angular/core';
-import { Auth, GoogleAuthProvider, UserCredential, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup } from '@angular/fire/auth';
+import { inject, Injectable } from '@angular/core';
+import { Auth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, UserCredential } from '@angular/fire/auth';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthSessionService {
-  constructor(private _auth: Auth) {}
-  register(email: string, passwd: string): void {...}
-  loginWithEmail(email: string, passwd: string): void {...}
+  private _auth: Auth = inject(Auth);
 
-  loginWithGoogle(): void {
+  constructor() {}
+  public register(email: string, passwd: string): void {...}
+  public loginWithEmail(email: string, passwd: string): void {...}
+
+  public loginWithGoogle(): void {
     signInWithPopup(this._auth, new GoogleAuthProvider()).then(
       (userCredential: UserCredential) => {console.log(userCredential);}
     ).catch(
@@ -653,20 +666,22 @@ export class AuthSessionService {
 
 La versió bloquejant del codi és la següent:
 ```typescript
-import { Injectable } from '@angular/core';
-import { Auth, GoogleAuthProvider, UserCredential, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup } from '@angular/fire/auth';
+import { inject, Injectable } from '@angular/core';
+import { Auth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, UserCredential } from '@angular/fire/auth';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthSessionService {
-  constructor(private _auth: Auth) {}
-  async register(email: string, passwd: string): Promise<boolean> {...}
-  async loginWithEmail(email: string, passwd: string): Promise<boolean> {...}
+  private _auth: Auth = inject(Auth);
 
-  async loginWithGoogle(): Promise<boolean> {
+  constructor() {}
+  public async register(email: string, passwd: string): Promise<boolean> {...}
+  public async loginWithEmail(email: string, passwd: string): Promise<boolean> {...}
+
+  public async loginWithGoogle(): Promise<boolean> {
     try {
-      let userCredential = signInWithPopup(this._auth, new GoogleAuthProvider());
+      let userCredential: UserCredential = await signInWithPopup(this._auth, new GoogleAuthProvider());
       return true;
     } catch(error: any) {
       console.log(error);
@@ -678,29 +693,30 @@ export class AuthSessionService {
 
 La crida és la següent:
 ```typescript
-  async login(): Promise<void> {
+  public async login(): Promise<void> {
     let logged = await this._authSessionService.loginWithGoogle();
     console.log("Logged: " + logged);
   }
 ```
 
-
 #### Tancament de sessió (logout)
 El tancament de sessió, s'hagi iniciat aquesta com s'hagi iniciat, és molt senzill i només necessita utilitzar el mètode `signOut()` que ofereix el servei `Auth`.
 ```typescript
-import { Injectable } from '@angular/core';
-import { Auth, GoogleAuthProvider, UserCredential, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup } from '@angular/fire/auth';
+import { inject, Injectable } from '@angular/core';
+import { Auth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, signOut, UserCredential } from '@angular/fire/auth';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthSessionService {
-  constructor(private _auth: Auth) {}
-  register(email: string, passwd: string): void {...}
-  loginWithEmail(email: string, passwd: string): void {...}
-  loginWithGoogle(): void {...}
+  private _auth: Auth = inject(Auth);
 
-  logout(): void {
+  constructor() {}
+  public register(email: string, passwd: string): void {...}
+  public loginWithEmail(email: string, passwd: string): void {...}
+  public loginWithGoogle(): void {...}
+
+  public logout(): void {
     signOut(this._auth).then(
       () => {}
     ).catch(
@@ -714,19 +730,21 @@ export class AuthSessionService {
 
 Versió del codi bloquejant:
 ```typescript
-import { Injectable } from '@angular/core';
-import { Auth, GoogleAuthProvider, UserCredential, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup } from '@angular/fire/auth';
+import { inject, Injectable } from '@angular/core';
+import { Auth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, signOut, UserCredential } from '@angular/fire/auth';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthSessionService {
-  constructor(private _auth: Auth) {}
-  async register(email: string, passwd: string): Promise<boolean> {...}
-  async loginWithEmail(email: string, passwd: string): Promise<boolean> {...}
-  async loginWithGoogle(): Promise<boolean> {...}
+  private _auth: Auth = inject(Auth);
 
-  async logout(): Promise<boolean> {
+  constructor() {}
+  public async register(email: string, passwd: string): Promise<boolean> {...}
+  public async loginWithEmail(email: string, passwd: string): Promise<boolean> {...}
+  public async loginWithGoogle(): Promise<boolean> {...}
+
+  public async logout(): Promise<boolean> {
     try {
       await signOut(this._auth);
       return true;
@@ -740,38 +758,63 @@ export class AuthSessionService {
 
 I la crida
 ```typescript
-  async logout(): Promise<void> {
+  public async logout(): Promise<void> {
     let logged_out = await this._authSessionService.logout();
     console.log("Logged out: " + logged_out);
   }
 ```
 
-
 #### Obtenció de l'usuari autenticat
 Per tal d'obtenir les dades de l'usuari autenticat, el servei `Auth` té l'atribut `currentUser`, de tipus `User`.
 ```typescript
-import { Injectable } from '@angular/core';
-import { Auth, GoogleAuthProvider, User, UserCredential, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, signOut } from '@angular/fire/auth';
+import { inject, Injectable } from '@angular/core';
+import { Auth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, signOut, User, UserCredential } from '@angular/fire/auth';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthSessionService {
-   constructor(private _auth: Auth) {}
-   register(email: string, passwd: string): void {...}
-   loginWithEmail(email: string, passwd: string): void {...}
-   loginWithGoogle(): void {...}
-   logout(): void {...}
+  private _auth: Auth = inject(Auth);
 
-   get currentUser(): User | null {
-      return this._auth.currentUser;
-   }
+  constructor() {}
+  public async register(email: string, passwd: string): Promise<boolean> {...}
+  public async loginWithEmail(email: string, passwd: string): Promise<boolean> {...}
+  public async loginWithGoogle(): Promise<boolean> {...}
+  public async logout(): Promise<boolean> {...}
+
+  public get currentUser(): User | null {
+    return this._auth.currentUser;
+  }
 }
 ```
 
 #### Consulta per saber si la sessió s'ha iniciat o no
 Hi ha diverses maneres de saber si l'usuari ha iniciat sessió o no, però una de les més senzilles és aprofitar el valor de la propietat `currentUser`: si l'objecte és `null`, la sessió no s'ha iniciat; si l'objecte té valor, la sessió s'ha iniciat.
 ```typescript
+import { inject, Injectable } from '@angular/core';
+import { Auth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, signOut, User, UserCredential } from '@angular/fire/auth';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class AuthSessionService {
+  private _auth: Auth = inject(Auth);
+
+  constructor() {}
+  public async register(email: string, passwd: string): Promise<boolean> {...}
+  public async loginWithEmail(email: string, passwd: string): Promise<boolean> {...}
+  public async loginWithGoogle(): Promise<boolean> {...}
+  public async logout(): Promise<boolean> {...}
+  public get currentUser(): User | null {...}
+
+  public isSessionActive(): boolean {
+    return this.currentUser != null;
+  }
+}
+
+
+
+
 import { Injectable } from '@angular/core';
 import { Auth, GoogleAuthProvider, User, UserCredential, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, signOut } from '@angular/fire/auth';
 
@@ -791,11 +834,16 @@ export class AuthSessionService {
   }
 }
 ```
--->
 
 <!--
 https://firebase.google.com/codelabs/firebase-web#0
 https://www.npmjs.com/package/@angular/fire
 https://github.com/angular/angularfire
 https://medium.com/@gioboa/building-realtime-web-apps-with-angular-and-firebase-database-23a9bce1fd4a
+-->
+
+<!--
+A TENIR EN COMPTE
+https://github.com/angular/angularfire/issues/3689
+https://github.com/angular/angularfire/issues/3678
 -->
