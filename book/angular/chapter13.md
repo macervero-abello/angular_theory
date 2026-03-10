@@ -59,7 +59,7 @@ Fet això, tornarem al *dashboard* del nostre projecte de Firebase per crear i c
 2. Crear la nova base de dades
  
 ![Creació de la BD Firestore](img/ch13/firebase_create_db.png)
- 
+
  1. Configurar el servidor on s'allotjarà la base de dades (busqueu un que sigui europeu)
  
  ![Localització de la BD Firestore](img/ch13/firestore_db_location.png)
