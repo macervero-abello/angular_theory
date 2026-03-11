@@ -37,12 +37,15 @@ Per aquesta raó, per tot aquell desenvolupador novell en aquesta tecnologia, é
 
 **Diferències importants**
 * Els components mantenen la nomenclatura *legacy* i, per tant, els fitxers de qualsevol component, per exemple, l'`App`, mantenen la paraula *component*:
+
 | Angular               | Ionic                     |
 | --------------------- | ------------------------- |
 | app.html              | app.component.html        |
 | app.css               | app.component.css         |
 | app.ts                | app.component.ts          |
+
 * En Ionic encara no han integrat el fitxer de configuració `app.config.ts` i, per tant, tota la configuració s'ha de continuar fent al fitxer `main.ts`.
+
 * En Ionic, qualsevol *proxy* que es defineixi en desenvolupament queda completament desactivat en producció
 
 {% endhint %}
