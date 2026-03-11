@@ -31,9 +31,20 @@ Si el projecte Angular al qual es vol afegir el framework Ionic ja està creat, 
 ```
 
 {% hint style="warning" %}
-Quan s'afegeix Ionic v8 a un projecte Angular v20 ja existent, la nomenclatura de components i la configuració no queden prou ben afinades, ja que Ionic v8, tot i ser 100% compatible amb Angular v20, s'ha quedat en un impàs d'actualització entre les versions 16 i 20.
+Quan s'afegeix Ionic v8 a un projecte Angular v20 ja existent, la nomenclatura de components i la configuració no queden prou ben afinades, ja que Ionic v8, tot i ser 100% compatible amb Angular v20, s'ha quedat en un impàs d'actualització entre les versions 16 i 20, la qual cosa fa que mantingui una estructura més similar a la versió 17 que no pas a la 20.
 
-Per aquesta raó és més còmode i recomanable crear un projecte Ionic v8 de nou i afegir-hi el codi Angular ja existent poc a poc.
+Per aquesta raó, per tot aquell desenvolupador novell en aquesta tecnologia, és més còmode i recomanable crear un projecte Ionic v8 de nou i afegir-hi el codi Angular ja existent poc a poc.
+
+**Diferències importants**
+* Els components mantenen la nomenclatura *legacy* i, per tant, els fitxers de qualsevol component, per exemple, l'`App`, mantenen la paraula *component*:
+| Angular               | Ionic                     |
+| --------------------- | ------------------------- |
+| app.html              | app.component.html        |
+| app.css               | app.component.css         |
+| app.ts                | app.component.ts          |
+* En Ionic encara no han integrat el fitxer de configuració `app.config.ts` i, per tant, tota la configuració s'ha de continuar fent al fitxer `main.ts`.
+* En Ionic, qualsevol *proxy* que es defineixi en desenvolupament queda completament desactivat en producció
+
 {% endhint %}
 
 <!--Cal parar compte si el projecte Angular inicial no és independent, és a dir, pertany a un *workspace*. En aquest cas, després d'executar la comanda cal revisar que el fitxer `angular.json` conté la configuració correcta i que aquesta només afecta al projecte que ens interessa.
@@ -68,3 +79,5 @@ Quan un projecte Angular també conté Ionic, les comandes de terminal que s'han
 | Iniciar el servidor  | `ng serve`            | `ionic serve`              |
 | Compilar l'aplicació | `ng build`            | `ionic build`              |
 | Generar un component | `ng generate ...`     | `ng generate ...`          |
+
+La diferència més important és que, amb Ionic, es perd la possibilitat d'afegir l'opció `--skip-tests` a les comandes de tipus `generate`, per tant, el fitxer de proves unitàries sempre queda creat.

@@ -22,6 +22,7 @@ Els continguts d'aquesta guia estan basats en la versions Angular v20 i Ionic v8
 * [Capítol 16. Internacionalització i Localització](angular/chapter16.md)
 
 ## Ionic
+* [Capítol 1. Creació d'un projecte Ionic](ionic/chapter01.md)
 
 <!--
 ## Llicència

@@ -1,6 +1,8 @@
 # Table of contents
 
 * [Índex](book/intro.md)
+
+## Angular
 * [Capítol 1. Què és Angular?](book/angular/chapter01.md)
 * [Capítol 2. Instal·lació i preparació del l'entorn de desenvolupament](book/angular/chapter02.md)
 * [Capítol 3. Components Angular](book/angular/chapter03.md)
@@ -17,3 +19,6 @@
 * [Capítol 14. Guardes de ruta](book/angular/chapter14.md)
 * [Capítol 15. Desplegament a *GitHub Pages*](book/angular/chapter15.md)
 * [Capítol 16. Internacionalització i Localització](book/angular/chapter16.md)
+
+## Ionic
+* [Capítol 1. Creació d'un projecte Ionic](book/ionic/chapter01.md)
