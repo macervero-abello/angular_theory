@@ -1035,15 +1035,14 @@ Amb aquests petits canvis, el resultat final en pantalla mostra el següent:
 
 ![Visualització del resultat al navegador](img/ch10/subrouting4.png)
 
-
-<!--
 ## *Lazy routing*
-El *lazy routing* es caracteritza pel fet que les rutes i, per tant, els components associats, no es carreguen fins que l'usuari hi entra per primer cop (no hi ha cap precàrrega)
+El *lazy routing* es caracteritza pel fet que les rutes i, per tant, els components associats, no es carreguen fins que l'usuari hi entra per primer cop (no hi ha cap precàrrega).
 
 Això significa que cada cop que l'usuari entra per primer cop a una pàgina, hi ha un petit lapsus de temps durant el qual el sistema de *routing* fa la càrrega de la nova ruta. Aquest temps d'espera, però, és molt ràpid i, per tant, no és apreciable per l'usuari
 
 Aquest tipus de *routing* és el més addient, especialment en aplicacions web molt grans.
 
+<!--
 ### Passos inicials per poder configurar el *lazy routing*
 Per tal de poder configurar el *lazy routing*, cada pàgina de la nostra aplicació, és a dir, cada component que pugui ser enrutat, ha de tenir associats dos fitxers:
 1. `component_name-routing.module.ts` i 
@@ -1095,158 +1094,96 @@ const routes: Routes = [];
 })
 export class AppRoutingModule { }
 ```
+-->
 
-#### Contextualització d'un exemple
-Per fer l'explicació seguirem el mateix exemple que s'ha utilitzat en l'explicació del *routing* tradicional, dues pàgines: la pàgina `home`, definida al `HomeComponent`, i la pàgina `about`, definida a l'`AboutComponent`.
+### Contextualització d'un exemple
+Per fer l'explicació se seguirà el mateix exemple que s'ha utilitzat en l'explicació del *routing* tradicional, dues pàgines: la pàgina `home`, definida al *component* `Home`, i la pàgina `about`, definida al *component* `About`, ambdós *components* dins de la carpeta `view`.
 
-#### Configuració dels fragments de les rutes i activació del servei de routing
-La ruta `home` i la ruta `about` són rutes arrel o principals, per tant, han de quedar configurades dins del fitxer `app-routing.module.ts`.
+Addicionalment, també es tindrà el *component* arrel `App` que actuarà com a contenidor de rutes i, per tant, contindrà l'etiqueta `<router-outlet />` en el seu `HTML` i la dependència `RouterOutlet` dins dels `imports` del seu `TS`.
 
-Aquesta configuració es pot fer a mà o de manera automàtica mitjançant el terminal, per tant, en comptes de generar els components amb la comanda
-```bash
-ng generate component path/component_name --skip-tests
-```
-ho farem amb la comanda
-```bash
-ng generate module path/component_name  --route route_name --module app.module
-```
-Aquesta instrucció genera el següent:
-1. El component `component_name`, és a dir, els seus fitxers `HTML`, `TS` i `CSS`
-2. El mòdul `component_name.module.ts`
-3. El mòdul d'enrutament `component_name-routing.module.ts`
-A més a més, configura els fitxers `app-routing.module.ts`, `component_name.module.ts` i `component_name-routing.module.ts` de la manera correcta per treballar amb *lazy routing*.
-
-En el cas que s'exemplifica, les comandes seran les següents:
-```bash
-ng generate module view/pages/home  --route home --module app.module
-ng generate module view/pages/about  --route about --module app.module
-```
-Les quals, a part dels dos components, actualitzen els fitxers de la manera següent:
 {% tabs %}
-{% tab title="Codi app.module.ts" %}
-```typescript
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-
-import { AppComponent } from './app.component';
-import { AppRoutingModule } from './app-routing.module';
-
-@NgModule({
-  declarations: [
-    AppComponent,
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
-})
-export class AppModule { }
-```
+{% tab title="Codi app.html" overflow="wrap" lineNumbers="true" %}
+  ```html
+  <router-outlet />
+  ```
 {% endtab %}
 
-{% tab title="Codi app-routing.module.ts" %}
-```typescript
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+{% tab title="Codi app.ts" overflow="wrap" lineNumbers="true" %}
+  ```typescript
+  import { Component } from '@angular/core';
+  import { RouterOutlet } from '@angular/router';
 
-const routes: Routes = [
-  { path: 'home', loadChildren: () => import('./view/pages/home/home.module').then(m => m.HomeModule) },
-  { path: 'about', loadChildren: () => import('./view/pages/about/about.module').then(m => m.AboutModule) }
-];
-
-@NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
-})
-export class AppRoutingModule { }
-```
-{% endtab %}
-
-{% tab title="Codi home.module.ts (equivalent en el cas del component about)" %}
-```typescript
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-
-import { HomeRoutingModule } from './home-routing.module';
-import { HomeComponent } from './home.component';
-
-
-@NgModule({
-  declarations: [
-    HomeComponent
-  ],
-  imports: [
-    CommonModule,
-    HomeRoutingModule
-  ]
-})
-export class HomeModule { }
-```
-{% endtab %}
-
-{% tab title="Codi home-routing.module.ts (equivalent en el cas del component about)"%}
-```typescript
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './home.component';
-
-const routes: Routes = [
-  { path: '', component: HomeComponent }
-];
-
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
-})
-export class HomeRoutingModule { }
-```
+  @Component({
+    selector: 'app-root',
+    imports: [RouterOutlet],
+    templateUrl: './app.html',
+    styleUrl: './app.css'
+  })
+  export class App {}
+  ```
 {% endtab %}
 {% endtabs %}
 
-Interpretació de tot aquest codi:
-1. A diferència del *routing* tradicional, els components ja no s'importen a l'`app.module.ts`, sinó que s'importen en el seu propi mòdul (`home.module.ts` i `about.module.ts` respectivament).
-2. L'`app.module.ts` importa l'`app-routing.module.ts` i, per tant, permet realitar la càrrega de les diverses rutes existents.
-3. L'`app-routing.module.ts` no defineix les rutes directament amb la propietat `component` (això és el que fa el *routing* tradicional), sinó que defineix la propietat `loadChildren` per indicar quin mòdul cal carregar en el moment d'accedir a aquella ruta.
-4. La ruta definitiva, la que defineix el `component` que cal activar, es troba al fitxer de *routing* específic (`home.module.ts` i `about.module.ts` respectivament), definida sobre el `path` buit (perquè el fragment de ruta ja ha quedat definit a l'`app-routing.module.ts`).
 
-Així doncs, en el moment en que l'usuari demana una ruta per primer cop, Angular la carrega seguint el següent patró:
-1. A través de l'`app.module.ts` sap que les rutes estan definides a l'`app-routing.module.ts`
-2. Va a buscar la ruta a l'`app-routing.module.ts` i mira quin mòdul ha de carregar (posem, per exemple que s'ha activat la ruta `home` i, per tant, cal activar el `home.module.ts`).
-3. Accedeix al mòdul específic (`home.module.ts`) i importa el component (`HomeComponent`) i descobreix el fitxer de *routing* (`home-routing.module.ts`) que cal carregar a continuació.
-4. Va a buscar la ruta al fitxer de *routing* (`home-routing.module.ts`) i, finalment, mostra per pantalla el `component` que s'hi indica (`HomeComponent`), el qual ja ha estat importat en el pas anterior.
+### Configuració dels fragments de les rutes i activació del servei de *routing*
+Tal com passa amb el *routing* tradicional, la configuració de les rutes i del servei de *routing* s'ha de fer dins dels fitxers `app.routes.ts` i `app.config.ts`, respectivament. La diferència rau, justament, en com es defineixen les rutes per tal que la seva càrrega sigui de tipus *lazy*
 
-##### Configuració d'una ruta per defecte i gestió de ruta no trobada
-La ruta per defecte s'ha de configurar a mà dins del fitxer `app-routing.module.ts`, seguint les mateixes normes que en el cas del *routing* tradicional. En canvi, per gestionar una ruta no trobada, s'ha de fer mitjançant la comanda indicada anteriorment:
-```bash
-ng generate module view/pages/page-not-found  --route '**' --module app.module
-```
+Així doncs, sabent que la ruta `home` i la ruta `about` són rutes arrel o principals, el fitxer `app.routes.ts` té l'aspecte que es mostra a continuació.
 
-El fitxer `app-routing.module.ts` quedarà de la manera següent:
-```typescript
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+{% code title="Codi app.routes.ts" overflow="wrap" lineNumbers="true" %}
+  ```typescript
+  import { Routes } from '@angular/router';
 
-const routes: Routes = [
-  { path: 'home', loadChildren: () => import('./view/pages/home/home.module').then(m => m.HomeModule) },
-  { path: 'about', loadChildren: () => import('./view/pages/about/about.module').then(m => m.AboutModule) },
-  { path: '', redirectTo: 'home', pathMatch: 'full'},
-  { path: '**', loadChildren: () => import('./view/pages/page-not-found/page-not-found.module').then(m => m.PageNotFoundModule) }
-];
+  export const routes: Routes = [
+    { path: 'home', loadComponent: () => import('./view/home/home').then((m) => m.Home) },
+    { path: 'about', loadComponent: () => import('./view/about/about').then((m) => m.About) }
+  ];
+  ```
+{% endcode %}
 
-@NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
-})
-export class AppRoutingModule { }
-```
+En aquest codi es pot veure que l'`app.routes.ts` no defineix les rutes directament amb la propietat `component` (això és el que fa el *routing* tradicional), sinó que defineix la propietat `loadComponent` per indicar quin *component* cal carregar en el moment d'accedir a aquella ruta. Per fer aquesta càrrega en mode *lazy routing*, Angular ha de fer és importar (carregar) el *component* `Home` o `About` (segons la ruta) a partir del fitxer `TS` corresponent (`home.ts` o `about.ts`, respectivament).
+
+El document `app.config.ts` manté la configuració del servei de *routing*, de la mateixa manera que passa en el cas del *routing* tradicional.
+
+{% code title="Codi app.config.ts" overflow="wrap" lineNumbers="true" %}
+  ```typescript
+  import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZonelessChangeDetection } from '@angular/core';
+  import { provideRouter } from '@angular/router';
+
+  import { routes } from './app.routes';
+
+  export const appConfig: ApplicationConfig = {
+    providers: [
+      provideBrowserGlobalErrorListeners(),
+      provideZonelessChangeDetection(),
+      provideRouter(routes)               // Activació del servei de routing
+    ]
+  };
+  ```
+{% endcode %}
+
+#### Configuració d'una ruta per defecte i gestió de ruta no trobada
+Seguint l'aplicació de la propietat `loadComponent`, el fitxer `app.routes.ts` amb la ruta per defecte i la ruta no trobada queda de la següent manera:
+
+{% code title="Codi app.routes.ts" overflow="wrap" lineNumbers="true" %}
+  ```typescript
+    import { Routes } from '@angular/router';
+
+    export const routes: Routes = [
+      { path: 'home', loadComponent: () => import('./view/home/home').then((m) => m.Home) },
+      { path: 'about', loadComponent: () => import('./view/about/about').then((m) => m.About) },
+      { path: '', redirectTo: 'home', pathMatch: 'full' }
+      { path: '**', loadComponent: () => import('./view/page-not-found/page-not-found').then((m) => m.PageNotFound) },
+    ];
+  ```
+{% endcode %}
 
 #### Navegació a través d'enllaços i botons
 La navegació mitjançant enllaços i botons en el *lazy routing* es fa exactament igual que en el cas del *routing* tradicional:
-1. Cal posar l'etiqueta `<router-outlet></router-outlet>` a l'`app.component.html` per definir el contenidor de rutes
-2. Per navegar mitjançant enllaços s'ha d'utilitzar la propietat `routerLink` per definir la ruta (mai utilitzar `href`!)
-3. Per navegar mitjançant botons, es pot utilitzar la propietat `routerLink` o el *service* `Router` a través de l'*Event Binding* de l'esdeveniment *clic*
+1. Cal posar l'etiqueta `<router-outlet></router-outlet>` al *component* `App` per definir el contenidor de rutes.
+2. Per navegar mitjançant enllaços s'ha d'utilitzar la propietat `routerLink` per definir la ruta (mai utilitzar `href`!), la qual cosa implica l'importació del `RouterModule` dins del *component* on es vulgui utilitzar.
+3. Per navegar mitjançant botons, es pot utilitzar la propietat `routerLink` o el *service* `Router` amb el seu mètode `navigate()` a través de l'*Event Binding* de l'esdeveniment *clic*.
+
 
 ### Configuració de subrutes
 En el *lazy routing* tenim, exactament, la mateixa casuística de tipus de subrutes que en el cas del *routing* tradicional:
@@ -1257,18 +1194,73 @@ En el *lazy routing* tenim, exactament, la mateixa casuística de tipus de subru
  - Subrutes parametritzades que formen part d'una altra pàgina (dependents)
  - Subrutes parametritzades que són pàgines diferents (independents)
 
-L'únic que canvia respecte del *routing* tradicional és la manera com configurem els `routing.module` corresponents; la resta (etiquetes `<router-outlet>`, navegació, captació dels paràmetres amb el *service* `ActivatedRoute`) funciona exactament igual.
+L'únic que canvia respecte del *routing* tradicional és la manera com configurem el fitxer `app.routes.ts` i l'aparició d'un fitxer `routes.ts` per cadascun dels *components* que actuen com a ruta *parent*; la resta (etiquetes `<router-outlet>`, navegació, captació dels paràmetres) funciona exactament igual.
 
 #### Subrutes estàtiques
 Per fer l'explicació seguirem el mateix exemple que en el cas del *routing* tradicional i crearem una pàgina `contact` que pengi de la pàgina `home`.
 
-##### Subrutes estàtiques que formen part d'una altra pàgina (dependents)
+##### Subrutes estàtiques que formen part d'una altra pàgina
 Si volem crear una pàgina `contact` subruta de la pàgina `home` (`contact` formarà part de la pàgina `home`) caldrà seguir els passos següents:
-1. El fitxer `home.component.html` haurà d'incloure l'etiqueta `<router-outlet>`
-2. El nou component es crearà a partir de la mateixa comanda que en el cas anterior
-```bash
-ng generate module view/pages/home/contact  --route contact --module view/pages/home/home.module
-```
+1. El fitxer `home.html` haurà d'incloure l'etiqueta `<router-outlet>`
+2. Es crearà el nou component amb la comanda `ng generate component`
+3. Es modificarà el fitxer `app.routes.ts` per poder contemplar la subruta
+4. Es crearan els fitxers `home.config.ts` i `home.routes.ts` per gestionar el *lazy routing* dels *components* `parent` i `child` com a subruta
+
+Així doncs, el fitxer `app.routes.ts` quedarà de la manera següent:
+
+{% code title="Codi app.routes.ts" overflow="wrap" lineNumbers="true" %}
+  ```typescript
+    import { Routes } from '@angular/router';
+
+    export const routes: Routes = [
+      { path: 'home', loadChildren: () => import('./view/home/home.routes').then((r) => r.routes) },
+      { path: 'about', loadComponent: () => import('./view/about/about').then((m) => m.About) },
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
+      { path: '**', loadComponent: () => import('./view/page-not-found/page-not-found').then((m) => m.PageNotFound) }
+    ];
+  ```
+{% endcode %}
+
+En aquest cas es pot veure que la ruta `home`, que és la que té subrutes, ja no utilitza l'atribut `loadComponent`, sinó l'atribut `loadChildren`. Aquest nou atribut indica que cal carregar la configuració de rutes especificada al fitxer `home.routes.ts`.
+
+Si focalitzem ara l'atenció en el fitxer `home.routes.ts`, que cal crear a mà, el seu contingut és el següent:
+
+{% code title="Codi home.routes.ts" overflow="wrap" lineNumbers="true" %}
+  ```typescript
+    import { Routes } from "@angular/router";
+    import { Home } from "./home";
+
+    export const routes: Routes = [
+        { path: '', component: Home, children: [
+                { path: 'contact', loadComponent: () => import(`../contact/contact`) .then((c) => c.Contact) }
+            ]
+        }
+    ];
+  ```
+{% endcode %}
+
+En aquest punt trobem, per una banda, la càrrega de la ruta directa pel *parent* `home`, amb l'atribut `component`, i la càrrega *lazy* de la subruta `contact`, amb l'atribut `loadComponent`.
+
+Finalment, cal activar el servei de *routing* per al component `Home` dins del fitxer `home.config.ts`, tal com es mostra a continuació:
+
+{% code title="Codi home.config.ts" overflow="wrap" lineNumbers="true" %}
+  ```typescript
+    import { ApplicationConfig } from '@angular/core';
+    import { provideRouter } from '@angular/router';
+
+    import { routes } from './home.routes';
+
+    export const aboutConfig: ApplicationConfig = {
+        providers: [
+            provideRouter(routes)
+        ]
+    };
+  ```
+{% endcode %}
+
+
+
+<!--
 Fixeu-vos que aquesta comanda indica que el component i la ruta `contact` depenen del mòdul `home.module.ts`, per tant, ja no és una ruta principal (les principals són les que apareixen a `app-routing.module.ts`), sinó una ruta niada (`/home/contact`).
 3. Cal modificar el fitxer `home-routing.module.ts` per tal que les rutes siguin dependents l'una de l'altra mitjançant la propietat `children` i, a més a més, aconseguir que tots dos components es mostrin en pantalla en cas que l'usuari activi la ruta `/home/contact`:
 ```typescript
@@ -1288,7 +1280,9 @@ const routes: Routes = [
 })
 export class HomeRoutingModule { }
 ```
+-->
 
+<!--
 ##### Subrutes estàtiques que són pàgines diferents (independents)
 Seguint el mateix exemple, si volem crear una pàgina `contact` subruta de la pàgina `home`, però essent pàgines independents, caldrà crear el nou component a partir de la següent comanda
 ```bash
