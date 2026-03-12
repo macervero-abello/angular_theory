@@ -1135,8 +1135,8 @@ Així doncs, sabent que la ruta `home` i la ruta `about` són rutes arrel o prin
   import { Routes } from '@angular/router';
 
   export const routes: Routes = [
-    { path: 'home', loadComponent: () => import('./view/home/home').then((m) => m.Home) },
-    { path: 'about', loadComponent: () => import('./view/about/about').then((m) => m.About) }
+    { path: 'home', loadComponent: () => import('./view/home/home').then((c) => c.Home) },
+    { path: 'about', loadComponent: () => import('./view/about/about').then((c) => c.About) }
   ];
   ```
 {% endcode %}
@@ -1170,10 +1170,10 @@ Seguint l'aplicació de la propietat `loadComponent`, el fitxer `app.routes.ts` 
     import { Routes } from '@angular/router';
 
     export const routes: Routes = [
-      { path: 'home', loadComponent: () => import('./view/home/home').then((m) => m.Home) },
-      { path: 'about', loadComponent: () => import('./view/about/about').then((m) => m.About) },
+      { path: 'home', loadComponent: () => import('./view/home/home').then((c) => c.Home) },
+      { path: 'about', loadComponent: () => import('./view/about/about').then((c) => c.About) },
       { path: '', redirectTo: 'home', pathMatch: 'full' }
-      { path: '**', loadComponent: () => import('./view/page-not-found/page-not-found').then((m) => m.PageNotFound) },
+      { path: '**', loadComponent: () => import('./view/page-not-found/page-not-found').then((c) => c.PageNotFound) },
     ];
   ```
 {% endcode %}
@@ -1214,9 +1214,9 @@ Així doncs, el fitxer `app.routes.ts` quedarà de la manera següent:
 
     export const routes: Routes = [
       { path: 'home', loadChildren: () => import('./view/home/home.routes').then((r) => r.routes) },
-      { path: 'about', loadComponent: () => import('./view/about/about').then((m) => m.About) },
+      { path: 'about', loadComponent: () => import('./view/about/about').then((c) => c.About) },
       { path: '', redirectTo: 'home', pathMatch: 'full' },
-      { path: '**', loadComponent: () => import('./view/page-not-found/page-not-found').then((m) => m.PageNotFound) }
+      { path: '**', loadComponent: () => import('./view/page-not-found/page-not-found').then((c) => c.PageNotFound) }
     ];
   ```
 {% endcode %}
