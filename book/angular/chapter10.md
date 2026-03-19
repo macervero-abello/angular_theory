@@ -1278,102 +1278,102 @@ Seguint el mateix exemple, si volem crear una pàgina `contact` subruta de la p�
   ```
 {% endcode %}
 
+Tal com es pot veure, ara s'especifiquen dues rutes diferenciades, la ruta directa, que en aquest cas és `home`, i la subruta, que és `home/contact`. Tot i que aquesta configuració és la més ortodoxa, és a dir, la que té l'estructura més correcta i més similar a l'estructura que es crea al *routing* tradicional, hi ha una segona opció que també és valida i que defineix les dues rutes com a rutes independents:
+
+{% code title="Codi home.routes.ts" overflow="wrap" lineNumbers="true" %}
+  ```typescript
+    import { Routes } from "@angular/router";
+    import { Home } from "./home";
+
+    export const routes: Routes = [
+        { path: '', component: Home },
+        { path: 'contact', loadComponent: () => import('../contact/contact').then((c) => c.Contact) }
+    ];
+  ```
+{% endcode %}
+
+Ambdues configuracions activen la ruta `/home/contact`, essent `home` i `contact` dues pàgines independents visualment
 
 
-
-
-
-
-```bash
-ng generate module view/pages/home/contact  --route contact --module view/pages/home/home.module
-```
-Fet això, el mòdul `home-routing.module.ts` queda de la manera següent:
-```typescript
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './home.component';
-
-const routes: Routes = [
-  { path: '', component: HomeComponent },
-  { path: 'contact', loadChildren: () => import('./contact/contact.module').then(m => m.ContactModule) }
-];
-
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
-})
-export class HomeRoutingModule { }
-```
-Aquest codi activa la ruta `/home/contact`, essent `home` i `contact` dues pàgines independents visualment.
-
-Una altra manera vàlida d'activar la mateixa ruta i que depèn de l'estil del programador (a uns els agradarà més d'una manera i a altres d'una altra) s'aconsegueix modificant el `home-routing.module.ts` de la manera següent:
-```typescript
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './home.component';
-
-const routes: Routes = [
-  { path: '', children: [
-    { path: '', component: HomeComponent }, 
-    { path: 'contact', loadChildren: () => import('./contact/contact.module').then(m => m.ContactModule) }
-  ]},
-];
-
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
-})
-export class HomeRoutingModule { }
-```
-Totes dues opcions funcionen correctament; la segona, però, s'assembla més a la versió del *routing* tradicional.
-
-<!--
 ### Subrutes parametritzades
-Per seguir l'explicació d'aquest apartat, també seguirem el mateix exemple que en el cas de *routing* tradicional i, per tant, suposarem que tenim una pàgina que mostra un llistat d'elements. Cada cop que l'usuari premi un d'aquests elements es mostrarà una nova ruta amb totes les seves dades detallades. La URL de la llista serà `localhost:4200/list` i la que mostrarà els detalls de cadascun dels elements `localhost:4200/home/0`, on 0 és el paràmetre i serà un identificador o un valor que estigui enllaçat a l'element que volem visualitzar.
+Per seguir l'explicació d'aquest apartat, també seguirem el mateix exemple que en el cas de *routing* tradicional i, per tant, suposarem que tenim una pàgina que mostra un llistat d'elements. Cada cop que l'usuari premi un d'aquests elements es mostrarà una nova ruta amb totes les seves dades detallades. La URL de la llista serà `localhost:4200/list` i la que mostrarà els detalls de cadascun dels elements `localhost:4200/list/0`, on 0 és el paràmetre i serà un identificador o un valor que estigui enllaçat a l'element que volem visualitzar.
 
-Per crear la ruta `list` haurem executat la comanda:
-```bash
-ng generate module view/pages/list  --route list --module app.module
-```
-la qual haurà generat el component `ListComponent` amb el seus mòduls (`list.module.ts` i `list-routing.module.ts`) i també haurà modificat el mòdul `app-routing.module.ts` de la manera següent:
-```typescript
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+Segons aquest context, el fitxer `app.routes.ts` queda configurat de la manera següent: 
 
-const routes: Routes = [
-  { path: 'home', loadChildren: () => import('./view/pages/home/home.module').then(m => m.HomeModule) },
-  { path: 'about', loadChildren: () => import('./view/pages/about/about.module').then(m => m.AboutModule) },
-  { path: 'list', loadChildren: () => import('./view/pages/list/list.module').then(m => m.ListModule) },
-  { path: '', redirectTo: 'home', pathMatch: 'full'},
-  { path: '**', loadChildren: () => import('./view/pages/page-not-found/page-not-found.module').then(m => m.PageNotFoundModule) }
-];
+{% code title="Codi app.routes.ts" overflow="wrap" lineNumbers="true" %}
+  ```typescript
+    import { Routes } from '@angular/router';
 
-@NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
-})
-export class AppRoutingModule { }
-```
+    export const routes: Routes = [
+        { path: 'home', loadChildren: () => import('./view/home/home.routes').then((r) => r.routes) },
+        { path: 'about', loadComponent: () => import('./view/about/about').then((c) => c.About) },
+        { path: 'list', loadChildren: () => import('./view/list/list.routes').then((r) => r.routes) },
+        { path: '', redirectTo: 'home', pathMatch: 'full' },
+        { path: '**', loadComponent: () => import('./view/page-not-found/page-not-found').then((c) => c.PageNotFound) }
+    ];
+  ```
+{% endcode %}
+
+Pel que fa al fitxer `app.config.ts`, la seva configuració dependrà de la manera com es vulgui tractar el paràmetre. Ara però, com que aquest tractament es fa exactament igual que en el cas del *routing* tradicional es poden tornar a consultar els apartats [Subrutes parametritzades tractades amb un `InputSignal`](#subrutes-parametritzades-tractades-amb-un-inputsignal), [Subrutes parametritzades legacy tractades amb el decorador @Input()](#subrutes-parametritzades-legacy-tractades-amb-el-decorador-input) i [Subrutes parametritzades legacy tractades amb un Observable](#subrutes-parametritzades-legacy-tractades-amb-un-observable).
+
 
 ##### Subrutes parametritzades que formen part d'una altra pàgina
-Per configurar la ruta s'han de seguir els mateixos passos que en el cas de les rutes estàtiques que formen part d'una altra pàgina. Ara però, en aquest cas, la comanda a executar serà la següent:
-```bash
-ng generate module view/pages/list/details  --route ':id' --module view/pages/list/list.module
-```
+Tal com passa amb el *routing* tradicional, la pàgina principal que ha de contenir la subruta (en aquest cas, el *component* `List`) ha de tenir l'etiqueta `<router-outlet>`. Addicionalment, el fitxer `list.routes.ts` ha de quedar configurat de la següent manera:
+
+{% code title="Codi list.routes.ts" overflow="wrap" lineNumbers="true" %}
+  ```typescript
+    import { Routes } from "@angular/router";
+    import { List } from "./list";
+
+    export const routes: Routes = [
+        { path: '', component: List, children: [
+                { path: ':id', loadComponent: () => import('../list-detail/list-detail').then((c) => c.ListDetail) }
+            ]
+        }
+    ]
+  ```
+{% endcode %}
+
 
 ##### Subrutes parametritzades que són pàgines diferents
-Per configurar la ruta s'han de seguir els mateixos passos que en el cas de les rutes estàtiques que són pàgines diferents. Ara però, en aquest cas, la comanda a executar serà la següent:
-```bash
-ng generate module view/pages/list/details  --route ':id' --module view/pages/list/list.module
-```
+Seguint els mateixos passos, el fitxer `list.routes.ts` ha de quedar configurat de la manera següent:
+
+{% code title="Codi list.routes.ts" overflow="wrap" lineNumbers="true" %}
+  ```typescript
+    import { Routes } from "@angular/router";
+    import { List } from "./list";
+
+    export const routes: Routes = [
+        { path: '', children: [
+                { path: '', component: List },
+                { path: ':id', loadComponent: () => import('../list-detail/list-detail').then((c) => c.ListDetail) }
+            ]
+        }
+    ]
+  ```
+{% endcode %}
+
+o, de manera, més compacta:
+{% code title="Codi list.routes.ts" overflow="wrap" lineNumbers="true" %}
+  ```typescript
+    import { Routes } from "@angular/router";
+    import { List } from "./list";
+
+    export const routes: Routes = [
+        { path: '', component: List },
+        { path: ':id', loadComponent: () => import('../list-detail/list-detail').then((c) => c.ListDetail) }
+    ]
+  ```
+{% endcode %}
+
 
 ## Remarcar l'enllaç del menú corresponent a la ruta activa
-En els menús de les nostres pàgines i aplicacions web és molt útil deixar remarcat el botó o l'enllaç corresponent a la ruta que hi ha activa en cada moment. Per fer-ho podem utilitzar l'atribut `routerLinkActive`, proporcionat per Angular. Aplicant un *property binding* a aquest atribut es pot definir l'estil que cal aplicar quan es detecti que la `URL` conté la ruta a la qual fa referència.
+En els menús de les pàgines i aplicacions web és molt útil deixar remarcat el botó o l'enllaç corresponent a la ruta que hi ha activa en cada moment. Per fer-ho podem utilitzar l'atribut `routerLinkActive`, proporcionat per Angular. Aplicant un *property binding* a aquest atribut es pot definir l'estil que cal aplicar quan es detecti que la `URL` conté la ruta a la qual fa referència.
 
-Seguint amb l'exemple d'aquest capítol, afegim el `HeaderComponent` per fer un menú comú a totes les pàgines (quedarà incrustat a l'`HTML` de l'`AppComponent`), de tal manera que en definim el seu codi `HTML` i `CSS` de la manera següent:
+Seguint amb l'exemple d'aquest capítol, afegim el `HeaderComponent` per fer un menú comú a totes les pàgines (quedarà incrustat a l'`HTML` del *component* l'`App`), de tal manera que se'n defineix el seu codi `HTML` i `CSS` de la manera següent:
 
 {% tabs %}
-{% tab title="Codi header.component.html" %}
+{% tab title="Codi header.html" %}
 ```html
 <header>
     <h3>Capçalera</h3>
@@ -1385,7 +1385,7 @@ Seguint amb l'exemple d'aquest capítol, afegim el `HeaderComponent` per fer un 
 ```
 {% endtab %}
 
-{% tab title="Codi header.component.css" %}
+{% tab title="Codi header.css" %}
 ```css
 header {
     border: #AAAAAA 5px solid;
