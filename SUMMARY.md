@@ -22,3 +22,5 @@
 
 ## Ionic
 * [Capítol 1. Creació d'un projecte Ionic](book/ionic/chapter01.md)
+* [Capítol 2. Creació de pàgines (*pages*) amb Ionic](book/ionic/chapter02.md)
+* [Capítol 3. Components de navegació amb Ionic](book/ionic/chapter03.md)

@@ -23,6 +23,8 @@ Els continguts d'aquesta guia estan basats en la versions Angular v20 i Ionic v8
 
 ## Ionic
 * [Capítol 1. Creació d'un projecte Ionic](ionic/chapter01.md)
+* [Capítol 2. Creació de pàgines (*pages*) amb Ionic](ionic/chapter02.md)
+* [Capítol 3. Components de navegació amb Ionic](ionic/chapter03.md)
 
 <!--
 ## Llicència
