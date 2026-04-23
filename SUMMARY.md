@@ -24,3 +24,5 @@
 * [Capítol 1. Creació d'un projecte Ionic](book/ionic/chapter01.md)
 * [Capítol 2. Creació de pàgines (*pages*) amb Ionic](book/ionic/chapter02.md)
 * [Capítol 3. Components de navegació amb Ionic](book/ionic/chapter03.md)
+* [Capítol 4. *Live Reload* de l'aplicació mòbil](book/ionic/chapter04.md)
+* [Capítol 05. Creació i execució de l'APK (aplicació mòbil)](book/ionic/chapter05.md)

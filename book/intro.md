@@ -25,6 +25,8 @@ Els continguts d'aquesta guia estan basats en la versions Angular v20 i Ionic v8
 * [Capítol 1. Creació d'un projecte Ionic](ionic/chapter01.md)
 * [Capítol 2. Creació de pàgines (*pages*) amb Ionic](ionic/chapter02.md)
 * [Capítol 3. Components de navegació amb Ionic](ionic/chapter03.md)
+* [Capítol 4. *Live Reload* de l'aplicació mòbil](ionic/chapter04.md)
+* [Capítol 05. Creació i execució de l'APK (aplicació mòbil)](ionic/chapter05.md)
 
 <!--
 ## Llicència
