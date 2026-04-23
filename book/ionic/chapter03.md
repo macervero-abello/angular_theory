@@ -233,14 +233,65 @@ Es pot veure que s'afegeix una botonera a la part esquerra de la capçalera (`sl
 
 ![Visualització del botó de menú](img/ch03/ionic_menu_icon.png)
 
-<!--### Múltiples menús i menús secundaris
+### Múltiples menús i menús secundaris
 Ionic preveu que una aplicació pugui tenir múltiples menús o que, fins i tot, en pugui tenir un de secundari, és a dir, que no gestioni la navegació principal, sinó només un petita part o un apartat de tota l'aplicació.
 
 En cas que es vulgui crear múltiples menús per una mateixa aplicació, tot i que no és massa aconsellable, caldrà jugar amb diversos `contentId` i diversos `<ion-router-outlet>` per poder carregar les diferents vistes.
 
 En cas que es vulgui crear un menú secundari, aquest menú, s'haurà de definir dins de l'`HTML` de la pàgina que s'encarregarà de fer-ne la gestió (ja no estarà definit a l'`app.component.html`).
 
-## Navegació amb pestanyes
+#### Múltiples menús que es visualitzen de manera independent
+Suposem que l'aplicació anterior s'amplia amb un apartat de música (llistat de cançons i reproductor) gestionat per un segon menú. El menú principal es manté definit a l'`HTML` de l'`AppComponent` amb només un parell de canvis: la definició de l'atribut `menuId`, que permetrà indicar quin menú cal obrir mitjançant la icona clàssica (*hamburguer icon*), i l'afegit d'un nou botó per saltar a l'apartat de música. Així doncs, el fitxer `app.component.html` queda de la manera següent:
+
+{% tab title="Codi app.component.html" overflow="wrap" lineNumbers="true" %}
+  ```html
+    <ion-app>
+      <ion-menu contentId="main-menu" menuId="main-menu" persistent="false">
+        <ion-header>
+          <ion-toolbar>
+            <ion-title>Menú</ion-title>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content class="ion-padding">
+          <ion-list>
+            <ion-menu-toggle>
+              <ion-item [routerLink]="['/home']" [routerLinkActive]="['activatedLink']">
+                <ion-label><ion-icon name="home-sharp"></ion-icon> Home</ion-label>
+              </ion-item>
+            </ion-menu-toggle>
+
+            <ion-menu-toggle>
+              <ion-item [routerLink]="['/list']" [routerLinkActive]="['activatedLink']">
+                <ion-label>List</ion-label>
+              </ion-item>
+            </ion-menu-toggle>
+
+            <ion-menu-toggle>
+              <ion-item [routerLink]="['/music']" [routerLinkActive]="['activatedLink']">
+                <ion-label>Music</ion-label>
+              </ion-item>
+            </ion-menu-toggle>
+
+            <ion-menu-toggle>
+              <ion-item [routerLink]="['/about']" [routerLinkActive]="['activatedLink']">
+                <ion-label>About</ion-label>
+              </ion-item>
+            </ion-menu-toggle>
+          </ion-list>
+        </ion-content>
+      </ion-menu>
+
+      <ion-router-outlet id="main-menu"></ion-router-outlet>
+    </ion-app>
+  ```
+{% endtab %}
+
+De les noves pàgines creades, `MusicPage`, `MusicListPage` i `PlayerPage`, la `MusiPage` definirà el segon menú. Com que el més normal és que, per cada menú que hi hagi a l'aplicació es defineixi un `<ion-router-outlet>` associat, `MusicPage` també contindrà aquesta etiqueta i, per tant, farà de contenidor de les pàgines `MusicListPage` i `PlayerPage`.
+
+
+els fitxers de ruta `app.routes.ts` i `music.page.ts` queden definits de la manera següent
+
+<!--## Navegació amb pestanyes
 La navegació per pestanyes és una mica més complexa que la resta perquè necessita la creació d'una pàgina que gestioni les pestanyes (aquesta funció no la fa l'`AppComponent`) i la modificació de la definició de les rutes per defecte que es generen per tal que tot funcioni correctament.
 
 Així doncs, en cas que la navegació principal de la nostra aplicació estigui guiada per pestanyes, el fitxer `app.component.html` només contindrà les etiquetes `<ion-app>` i `<ion-router-outlet>`, com en el cas de navegació per botons:
