@@ -203,3 +203,35 @@ Addicionalment, si el mòbil està connectat per USB a l'ordinador, es pot fer l
 * `chrome://inspect/#devices` a *Chrome*-->
 
 <!-- https://stackoverflow.com/questions/68346778/ionic-capacitor-how-to-see-console-when-running-on-android-emulator -->
+
+## Redireccionament de ports amb VisualStudio Code
+Aquesta opció permet crear un servidor *on-the-fly* sense necessitat d'activar les eines de desenvolupador del mòbil. Ara però, farà falta dues eines:
+* [VisualStudio Code](https://code.visualstudio.com/)
+* Un compte de [GitHub](https://github.com/)
+
+Tenint totes dues eines només fa falta seguir els passos següents:
+1. Executar el servidor de desenvolupament d'Ionic des del terminal del VisualStudio Code
+
+```bash
+    ionic serve
+```
+
+Tal com és sabut, aquesta comanda executa un servidor de desenvolupament a l'adreça `localhost:8100`
+
+2. Un cop el servidor estigui actiu cal accedir a la pestanya *Ports* de VisualStudio Code.
+
+![Pestanya *Ports* del VisualStudio Code](img/ch04/vscode_ports.png)
+
+3. Dins d'aquesta pestanya s'ha de crear una redirecció del port 8100, procés que demana iniciar sessió amb el compte de GitHub.
+
+![Inici del procés de redirecció de ports](img/ch04/vscode_ports_forward.png)
+
+![Redirecció del port 8100](img/ch04/vscode_ports_set_port.png)
+
+Un cop fets tots aquests passos, el resultat final és el que es mostra a continuació:
+
+![Redirecció del port 8100 activa](img/ch04/vscode_ports_result.png)
+
+Com es pot veure, aquesta connexió és privada, la qual cosa significa que sempre que s'hi vulgui accedir s'haurà d'iniciar sessió a GitHub. En cas de voler evitar això, es pot fer *clic* dret sobre *Private* i configurar la visibilitat del port (opció *Port Visibility*) a *Public*.
+
+L'adreça indicada en el camp *Forwarded Address* és la que s'ha d'utilitzar per accedir al servidor de desenvolupament des de qualsevol dispositiu (el propi ordinador, el mòbil, un altre ordinador, etc.).
