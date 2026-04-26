@@ -14,6 +14,10 @@ Tal com ja s'ha vist en el [Capítol 4](chapter04.md), Capacitor permet compilar
 ```bash
     ionic capacitor build android   #Compila el codi per a la plataforma Android
     ionic capacitor build ios       #Compila el codi per a la plataforma IOS
+
+    # Alternativa amb npx
+    npx cap build android
+    npx cap build ios
 ```
 
 Aquest pas crea, en cas que no existeixin, les carpetes `android` i `ios` (els projectes Android i IOS que es poden obrir, directament, amb Andrid Studio i XCode, respectivament) i la carpeta `wwww`.
@@ -23,6 +27,10 @@ Aquest pas crea, en cas que no existeixin, les carpetes `android` i `ios` (els p
 ```bash
     ionic capacitor sync android    #Sincronitza la configuració de la plataforma Android
     ionic capacitor sync ios        #Sincronitza la configuració de la plataforma IOS
+
+    # Alternativa amb npx
+    npx cap sync android
+    npx cap sync ios
 ```
 
 Executant aquestes instruccions s'aconsegueixen crear alguns fitxers de configuració importants com, per exemple, el fitxer `android/capacitor.settings.gradle`, en el cas de la plataforma Android.
@@ -30,10 +38,12 @@ Executant aquestes instruccions s'aconsegueixen crear alguns fitxers de configur
 3. Obertura del projecte amb Android Studio o XCode, segons la plataforma
 
 ```bash
-#    ionic capacitor open android    #Obre el projecte Android amb Android Studio
-#    ionic capacitor open ios        #Obre el projecte IOS amb XCode
-    npx cap open android    #Obre el projecte Android amb Android Studio
-    npx cap open ios        #Obre el projecte IOS amb XCode
+    ionic capacitor open android    #Obre el projecte Android amb Android Studio
+    ionic capacitor open ios        #Obre el projecte IOS amb XCode
+
+    # Alternativa amb npx
+    npx cap open android
+    npx cap open ios
 ```
 
 Si treballeu amb Linux, la comanda per obrir el projecte Android us demanarà que tingueu la variable d'entorn `CAPACITOR_ANDROID_STUDIO_PATH` configurada.
@@ -67,7 +77,9 @@ Aquest pas crea l'APK dins de la carpeta `android/app/build/outputs/apk/debug`.
 També podem executar l'APK al mòbil a través d'Ionic i Capacitor mitjançant les comandes següents:
 
 ```bash
-    #ionic capacitor run android
+    ionic capacitor run android
+
+    # Alternativa amb npx
     npx cap run android
 ```
 
@@ -97,7 +109,9 @@ Per crear la pantalla d'inici de l'aplicació (*Splash Screen*) cal seguir 4 pas
 
 ```bash
 	npm install @capacitor/splash-screen
-#    npm ionic capacitor sync
+    npm ionic capacitor sync
+
+    # Alternativa amb npx
     npx cap sync
 ```
 	

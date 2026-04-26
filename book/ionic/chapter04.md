@@ -60,17 +60,29 @@ En cas que no hi siguin, les comandes per poder-les instal·lar localment dins d
 Finalment, per activar-ne l'ús cal executar la comanda
 
 ```bash
-    #ionic integrations enable capacitor
+    ionic integrations enable capacitor
+```
+
+o l'alternativa
+
+```bash
     npx cap init
 ```
+
+{% hint style="warning" %}
+Les comandes `ionic` pertanyen a l'ecosistema del *Ionic CLI*, en canvi, les comandes `npx` pertanyen a l'ecosistema del *Capacitor CLI* i normalment són equivalents. Tot i això, és recomana utilitzar les comandes `ionic` ja que, en algunes ocasions, realitzen tasques més completes.
+{% endhint %}
 
 ## Afegir la plataforma Android (o IOS, segons es desitgi)
 Un cop instal·lat Capacitor, cal instal·lar les eines necessàries segons la plataforma per a la qual s'estiguin desenvolupant i crear el projecte. Així doncs, la comanda per instal·lar les eines d'Android i poder-ne crear el projecte i sincronitzar-ne el codi són les següents:
 
 ```bash
     npm i @capacitor/android        # Només en cas que la dependència no estigui al package.json
-#    ionic capacitor add android
-#    ionic capacitor sync
+
+    ionic capacitor add android
+    ionic capacitor sync
+
+    # Alternativa amb npx
     npx cap add android
     npx cap sync
 ```
@@ -79,8 +91,11 @@ En el cas d'IOS, les comandes són les següents:
 
 ```bash
     npm i @capacitor/ios            # Només en cas que la dependència no estigui al package.json
-#    ionic capacitor add ios
-#    ionic capacitor sync
+
+    ionic capacitor add ios
+    ionic capacitor sync
+
+    # Alternativa amb npx
     npx cap add ios
     npx cap sync
 ```
