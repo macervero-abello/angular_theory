@@ -26,3 +26,4 @@
 * [Capítol 3. Components de navegació amb Ionic](book/ionic/chapter03.md)
 * [Capítol 4. *Live Reload* de l'aplicació mòbil](book/ionic/chapter04.md)
 * [Capítol 5. Creació i execució de l'APK (aplicació mòbil)](book/ionic/chapter05.md)
+* [Capítol 6. Lector de codis de barres](book/ionic/chapter06.md)

@@ -27,6 +27,7 @@ Els continguts d'aquesta guia estan basats en la versions Angular v20 i Ionic v8
 * [Capítol 3. Components de navegació amb Ionic](ionic/chapter03.md)
 * [Capítol 4. *Live Reload* de l'aplicació mòbil](ionic/chapter04.md)
 * [Capítol 5. Creació i execució de l'APK (aplicació mòbil)](ionic/chapter05.md)
+* [Capítol 6. Lector de codis de barres](ionic/chapter06.md)
 
 <!--
 ## Llicència
