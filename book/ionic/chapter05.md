@@ -109,7 +109,7 @@ Per crear la pantalla d'inici de l'aplicació (*Splash Screen*) cal seguir 4 pas
 
 ```bash
 	npm install @capacitor/splash-screen
-    npm ionic capacitor sync
+    ionic capacitor sync
 
     # Alternativa amb npx
     npx cap sync
